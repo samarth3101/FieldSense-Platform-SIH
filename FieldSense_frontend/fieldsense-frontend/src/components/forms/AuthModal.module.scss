@@ -1,19 +1,121 @@
-/* src/components/forms/AuthModal.module.scss */
+// 🎚️ MANUAL HEIGHT CONTROLS FOR DESKTOP - INCREASED HEIGHT
+// Adjust these values to control desktop modal size:
+$desktop-modal-width: 400px;          // Reduced from 420px for tighter fit
+$desktop-modal-max-height: 95vh;      // INCREASED from 90vh to 95vh for more space
+$desktop-modal-padding: 1.875rem;     // INCREASED from 1.75rem for better spacing
+$desktop-content-gaps: 1.125rem;      // INCREASED from 1rem for better breathing room
+
 .overlay {
   position: fixed;
   inset: 0;
-  background: rgba(0,0,0,0.6);
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
   display: flex;
   justify-content: center;
-  align-items: center;
+  align-items: flex-end;
+  z-index: 1000;
+  opacity: 0;
+  animation: overlayAppear 0.3s ease-out forwards;
+  
+  // Reverse animation for closing
+  &.overlayClosing {
+    animation: overlayDisappear 0.3s ease-in forwards;
+  }
+  
+  @media (min-width: 769px) {
+    align-items: center;
+  }
 }
 
 .modal {
-  background: #fff;
-  padding: 2rem;
-  border-radius: 12px;
-  width: 350px;
+  background: #ffffff;
+  border: none;
+  border-radius: 24px 24px 0 0;
+  width: 100%;
   position: relative;
+  box-shadow: 
+    0 -10px 40px rgba(0, 0, 0, 0.15),
+    0 0 0 1px rgba(255, 255, 255, 0.1);
+  transform: translateY(100%);
+  transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+  animation: modalSlideUp 0.4s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+  padding: 1rem 1.5rem;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  
+  // 📱 MOBILE: AUTO HEIGHT - FIX FOR PROPER SIZING
+  height: auto;
+  max-height: 90vh;
+  min-height: 60vh; // Ensure minimum height but not full screen
+  
+  // PWA safe area handling
+  padding-bottom: max(2rem, env(safe-area-inset-bottom));
+  
+  &.transitioning {
+    transform: translateY(0) scale(0.999);
+  }
+  
+  // 🔄 REVERSE ANIMATION FOR MOBILE CLOSE
+  &.modalClosing {
+    animation: modalSlideDown 0.4s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+  }
+  
+  // 📏 SIGNUP MODE: Reserve space for terms text
+  &.signupMode {
+    .termsContainer {
+      min-height: 40px; // Reserve space for terms
+    }
+  }
+  
+  // 🖥️ DESKTOP STYLES - INCREASED HEIGHT
+  @media (min-width: 769px) {
+    border-radius: 16px;
+    width: $desktop-modal-width;          // 🎚️ Control width here
+    max-width: 90vw;
+    height: auto;
+    min-height: auto;
+    max-height: $desktop-modal-max-height; // 🎚️ INCREASED Control height here
+    padding: $desktop-modal-padding;       // 🎚️ INCREASED Control padding here
+    transform: translateY(10px);
+    animation: modalSlideIn 0.3s ease-out forwards;
+    border: 1px solid #e5e7eb;
+    box-shadow: 
+      0 20px 25px -5px rgba(0, 0, 0, 0.1),
+      0 10px 10px -5px rgba(0, 0, 0, 0.04);
+    overflow-y: visible; // 🚫 NO SCROLL ON DESKTOP
+    
+    // 🔄 REVERSE ANIMATION FOR DESKTOP CLOSE
+    &.modalClosing {
+      animation: modalSlideOut 0.3s ease-in forwards;
+    }
+    
+    // 📏 SIGNUP MODE: Reserve space for terms text on desktop too
+    &.signupMode {
+      .termsContainer {
+        min-height: 35px;
+      }
+    }
+  }
+}
+
+// Mobile handle indicator - clickable
+.modalHandle {
+  width: 36px;
+  height: 4px;
+  background: #d1d5db;
+  border-radius: 2px;
+  margin: 0 auto 1.25rem auto;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  
+  &:hover {
+    background: #9ca3af;
+  }
+  
+  @media (min-width: 769px) {
+    display: none;
+  }
 }
 
 .closeBtn {
@@ -21,56 +123,680 @@
   right: 1rem;
   top: 1rem;
   border: none;
-  background: none;
-  font-size: 1.2rem;
+  background: #f9fafb;
+  color: #6b7280;
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
   cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.25s ease;
+  z-index: 10;
+  
+  // Better touch target
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  user-select: none;
+  
+  &:hover, &:active {
+    background: #f3f4f6;
+    color: #374151;
+    transform: scale(1.02);
+  }
+}
+
+.header {
+  text-align: center;
+  margin-bottom: $desktop-content-gaps; // 🎚️ Control spacing here
+  
+  .logoContainer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.75rem;
+    margin-bottom: 0.875rem;
+    
+    .logo {
+      color: #059669;
+      display: flex;
+      align-items: center;
+      transition: transform 0.25s ease;
+      
+      svg {
+        width: 26px;
+        height: 26px;
+        display: block;
+        
+        @media (max-width: 480px) {
+          width: 28px;
+          height: 28px;
+        }
+        
+        // 🖥️ Desktop icon
+        @media (min-width: 769px) {
+          width: 24px;
+          height: 24px;
+        }
+      }
+      
+      &:hover {
+        transform: scale(1.05);
+      }
+    }
+    
+    .title {
+      font-size: 1.875rem;
+      font-weight: 700;
+      margin: 0;
+      color: #111827;
+      letter-spacing: -0.025em;
+      
+      @media (max-width: 480px) {
+        font-size: 2rem;
+      }
+      
+      // 🖥️ Desktop title
+      @media (min-width: 769px) {
+        font-size: 1.75rem;
+      }
+    }
+  }
+  
+  .subtitle {
+    color: #6b7280;
+    font-size: 0.95rem;
+    margin: 0;
+    line-height: 1.4;
+    transition: color 0.2s ease;
+    
+    @media (max-width: 480px) {
+      font-size: 1rem;
+      padding: 0 1rem;
+    }
+    
+    // 🖥️ Desktop subtitle
+    @media (min-width: 769px) {
+      font-size: 0.875rem;
+    }
+  }
 }
 
 .roleToggle {
   display: flex;
-  gap: 1rem;
-  margin: 1rem 0;
+  gap: 0.5rem;
+  margin-bottom: $desktop-content-gaps; // 🎚️ Control spacing here
+  background: #f9fafb;
+  border-radius: 14px;
+  padding: 0.375rem;
+  
+  @media (max-width: 480px) {
+    gap: 0.5rem;
+    padding: 0.375rem;
+    border-radius: 16px;
+  }
+  
+  @media (min-width: 769px) {
+    padding: 0.3rem;
+  }
 }
 
-.roleToggle button {
+.roleBtn {
   flex: 1;
-  padding: 0.5rem;
-  border: 1px solid #ccc;
-  background: #f7f7f7;
+  border: none;
+  background: transparent;
+  color: #6b7280;
   cursor: pointer;
-  border-radius: 6px;
+  border-radius: 10px;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  
+  // Enhanced touch target
+  min-height: 48px;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  user-select: none;
+  
+  .roleContent {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 0.75rem 0.875rem;
+    font-size: 0.875rem;
+    font-weight: 500;
+    
+    svg {
+      width: 18px;
+      height: 18px;
+      transition: transform 0.2s ease;
+      flex-shrink: 0;
+    }
+    
+    span {
+      white-space: nowrap;
+    }
+    
+    @media (max-width: 480px) {
+      padding: 0.75rem 0.875rem;
+      font-size: 0.925rem;
+      gap: 0.5rem;
+      
+      svg {
+        width: 18px;
+        height: 18px;
+      }
+    }
+    
+    @media (min-width: 769px) {
+      padding: 0.7rem 0.8rem;
+      font-size: 0.85rem;
+      
+      svg {
+        width: 17px;
+        height: 17px;
+      }
+    }
+  }
+  
+  &:hover {
+    background: rgba(255, 255, 255, 0.8);
+    color: #374151;
+    transform: translateY(-1px);
+    box-shadow: 0 2px 8px -2px rgba(0, 0, 0, 0.1);
+    
+    .roleContent svg {
+      transform: scale(1.05);
+    }
+  }
+  
+  &.active {
+    background: #ffffff;
+    color: #059669;
+    box-shadow: 0 2px 8px -2px rgba(0, 0, 0, 0.15);
+    transform: translateY(-1px);
+    
+    .roleContent svg {
+      transform: scale(1.02);
+    }
+  }
+  
+  &:active {
+    transform: scale(0.98);
+  }
 }
 
-.roleToggle .active {
-  background: #4caf50;
-  color: #fff;
-  border-color: #4caf50;
+// Enhanced Social Auth Container
+.socialAuthContainer {
+  overflow: hidden;
+  transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+  margin-bottom: 0;
+  
+  &[style*="height: 0"] {
+    margin-bottom: 0;
+  }
+  
+  &:not([style*="height: 0"]) {
+    margin-bottom: $desktop-content-gaps; // 🎚️ Control spacing here
+  }
 }
 
-.form input {
+.socialAuth {
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.875rem;
+  transform: translateY(0);
+  transition: transform 0.3s ease;
+  
+  @media (max-width: 480px) {
+    gap: 0.875rem;
+  }
+  
+  @media (min-width: 769px) {
+    gap: 0.75rem;
+  }
+}
+
+// MOBILE: Horizontal social buttons container
+.socialButtonsContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 0.875rem;
+  
+  @media (max-width: 768px) {
+    flex-direction: row;
+    gap: 0.6rem;
+    justify-content: center;
+  }
+  
+  @media (min-width: 769px) {
+    gap: 0.75rem;
+  }
+}
+
+.socialBtn {
+  border: none;
+  background: #ffffff;
+  border: 1.5px solid #e5e7eb;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  
+  // Enhanced touch target
+  min-height: 48px;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  user-select: none;
+  
+  // Desktop: Full width with text
+  @media (min-width: 769px) {
+    width: 100%;
+    min-height: 44px;
+    
+    svg {
+      width: 19px;
+      height: 19px;
+      transition: transform 0.2s ease;
+      flex-shrink: 0;
+    }
+    
+    .socialText {
+      font-size: 0.85rem;
+      font-weight: 500;
+      color: #374151;
+      white-space: nowrap;
+      margin-left: 0.65rem;
+    }
+  }
+  
+  // Mobile: Icons only, circular
+  @media (max-width: 768px) {
+    width: 52px;
+    height: 52px;
+    border-radius: 14px;
+    flex: 1;
+    max-width: 70px;
+    
+    svg {
+      width: 22px;
+      height: 22px;
+      transition: transform 0.2s ease;
+    }
+    
+    .socialText {
+      display: none;
+    }
+  }
+  
+  &:hover {
+    background: #f9fafb;
+    border-color: #d1d5db;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px -4px rgba(0, 0, 0, 0.1);
+    
+    svg {
+      transform: scale(1.05);
+    }
+  }
+  
+  &:active {
+    transform: scale(0.96);
+  }
+}
+
+// Enhanced Divider
+.divider {
+  position: relative;
+  text-align: center;
+  margin: 1.25rem 0 0 0;
   width: 100%;
-  padding: 0.5rem;
-  margin-bottom: 0.8rem;
-  border: 1px solid #ddd;
-  border-radius: 6px;
+  
+  &::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, #e5e7eb 20%, #e5e7eb 80%, transparent);
+    z-index: 1;
+  }
+  
+  span {
+    position: relative;
+    background: #ffffff;
+    color: #9ca3af;
+    padding: 0 1rem;
+    font-size: 0.775rem;
+    font-weight: 500;
+    z-index: 2;
+    display: inline-block;
+    
+    @media (max-width: 480px) {
+      font-size: 0.8rem;
+      padding: 0 1.125rem;
+    }
+  }
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-bottom: $desktop-content-gaps; // 🎚️ Control spacing here
+  transition: transform 0.3s ease;
+  
+  @media (max-width: 480px) {
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+  }
+  
+  @media (min-width: 769px) {
+    gap: 0.875rem;
+  }
+}
+
+.inputGroup {
+  position: relative;
+  
+  .input {
+    width: 100%;
+    padding: 0.875rem 1rem 0.875rem 3rem;
+    background: #ffffff;
+    border: 1.5px solid #e5e7eb;
+    border-radius: 12px;
+    color: #111827;
+    font-size: 0.875rem;
+    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    box-sizing: border-box;
+    
+    // Better mobile input handling
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    
+    &::placeholder {
+      color: #9ca3af;
+      transition: color 0.2s ease;
+    }
+    
+    &:focus {
+      outline: none;
+      border-color: #059669;
+      background: #ffffff;
+      box-shadow: 0 0 0 3px rgba(5, 150, 105, 0.08);
+      transform: translateY(-1px);
+    }
+    
+    @media (max-width: 480px) {
+      padding: 0.925rem 1rem 0.925rem 3.25rem;
+      font-size: 16px; // Prevent zoom on iOS
+    }
+    
+    @media (min-width: 769px) {
+      padding: 0.85rem 1rem 0.85rem 2.9rem;
+    }
+  }
+  
+  .inputIcon {
+    position: absolute;
+    left: 1rem;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #9ca3af;
+    pointer-events: none;
+    transition: color 0.2s ease;
+    
+    svg {
+      width: 16px;
+      height: 16px;
+      display: block;
+    }
+    
+    @media (max-width: 480px) {
+      left: 1.125rem;
+      
+      svg {
+        width: 17px;
+        height: 17px;
+      }
+    }
+    
+    @media (min-width: 769px) {
+      left: 0.95rem;
+      
+      svg {
+        width: 15px;
+        height: 15px;
+      }
+    }
+  }
 }
 
 .submitBtn {
   width: 100%;
-  padding: 0.6rem;
-  background: #0070f3;
+  padding: 0.875rem;
+  background: #059669;
   color: white;
   border: none;
-  border-radius: 6px;
+  border-radius: 12px;
   cursor: pointer;
+  font-size: 0.875rem;
+  font-weight: 600;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 48px;
+  transform: translateY(0);
+  
+  // Enhanced touch feedback
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  user-select: none;
+  
+  &:hover:not(:disabled) {
+    background: #047857;
+    transform: translateY(-1px);
+    box-shadow: 0 6px 16px -4px rgba(5, 150, 105, 0.3);
+  }
+  
+  &:active:not(:disabled) {
+    transform: scale(0.98);
+  }
+  
+  &:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+  }
+  
+  @media (max-width: 480px) {
+    font-size: 0.925rem;
+    padding: 1rem;
+    min-height: 50px;
+  }
+  
+  @media (min-width: 769px) {
+    min-height: 46px;
+    padding: 0.85rem;
+  }
+}
+
+.spinner {
+  width: 17px;
+  height: 17px;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-top: 2px solid white;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+// 🚀 ENHANCED FOOTER - PREVENTS SHIFTS
+.footer {
+  text-align: center;
+  padding-top: 0.75rem;
+  
+  @media (min-width: 769px) {
+    padding-top: 0.625rem;
+  }
 }
 
 .toggleText {
-  margin-top: 1rem;
-  font-size: 0.9rem;
+  color: #6b7280;
+  font-size: 0.875rem;
+  margin: 0 0 0.75rem 0;
+  transition: color 0.2s ease;
+  line-height: 1.5;
+  
+  @media (max-width: 480px) {
+    font-size: 0.925rem;
+    line-height: 1.6;
+  }
+  
+  @media (min-width: 769px) {
+    font-size: 0.825rem;
+    margin: 0 0 0.625rem 0;
+  }
 }
 
-.toggleText span {
-  color: #0070f3;
+.toggleLink {
+  color: #059669;
+  background: none;
+  border: none;
   cursor: pointer;
+  font-weight: 600;
+  text-decoration: none;
+  transition: all 0.2s ease;
+  
+  // Better touch target
+  padding: 0.25rem 0.5rem;
+  border-radius: 6px;
+  margin: 0 -0.5rem;
+  
+  &:hover, &:active {
+    color: #047857;
+    text-decoration: underline;
+    background: rgba(5, 150, 105, 0.05);
+  }
+}
+
+// 🚀 TERMS CONTAINER - PREVENTS HEIGHT SHIFTS
+.termsContainer {
+  min-height: 32px; // Reserve space to prevent shifts
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  transition: min-height 0.3s ease;
+  
+  @media (max-width: 480px) {
+    min-height: 36px;
+  }
+}
+
+.termsText {
+  color: #9ca3af;
+  font-size: 0.75rem;
+  margin: 0;
+  line-height: 1.4;
+  transition: opacity 0.3s ease;
+  animation: fadeIn 0.3s ease-out;
+  
+  .link {
+    color: #059669;
+    text-decoration: none;
+    transition: color 0.2s ease;
+    padding: 0.1rem 0.2rem;
+    border-radius: 3px;
+    margin: 0 -0.2rem;
+    
+    &:hover, &:active {
+      color: #047857;
+      text-decoration: underline;
+      background: rgba(5, 150, 105, 0.05);
+    }
+  }
+  
+  @media (max-width: 480px) {
+    font-size: 0.775rem;
+    padding: 0 0.5rem;
+    line-height: 1.5;
+  }
+}
+
+// 🎬 ENHANCED ANIMATIONS WITH REVERSE
+@keyframes overlayAppear {
+  0% { opacity: 0; }
+  100% { opacity: 1; }
+}
+
+@keyframes overlayDisappear {
+  0% { opacity: 1; }
+  100% { opacity: 0; }
+}
+
+@keyframes modalSlideUp {
+  0% {
+    transform: translateY(100%);
+    opacity: 0.8;
+  }
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes modalSlideDown {
+  0% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(100%);
+    opacity: 0.8;
+  }
+}
+
+@keyframes modalSlideIn {
+  0% {
+    transform: translateY(10px);
+    opacity: 0;
+  }
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes modalSlideOut {
+  0% {
+    transform: translateY(0) scale(1);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(-10px) scale(0.95);
+    opacity: 0;
+  }
+}
+
+@keyframes fadeIn {
+  0% { opacity: 0; transform: translateY(5px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+// PWA-specific enhancements
+@media (display-mode: standalone) {
+  .modal {
+    padding-top: max(1rem, env(safe-area-inset-top));
+  }
 }
