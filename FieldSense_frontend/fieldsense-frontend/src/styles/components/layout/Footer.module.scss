@@ -1,0 +1,455 @@
+@import '../../variables.scss';
+@import '../../mixins.scss';
+
+.footer {
+  background: linear-gradient(135deg, $gray-900 0%, $gray-800 100%);
+  color: $gray-300;
+  padding-top: $space-16;
+  padding-bottom: $space-8;
+  position: relative;
+  
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, $gray-700 50%, transparent);
+  }
+}
+
+.container {
+  @include container;
+}
+
+// Main Footer Content
+.footerMain {
+  display: grid;
+  gap: $space-12;
+  margin-bottom: $space-12;
+  padding-bottom: $space-12;
+  border-bottom: 1px solid $gray-700;
+  
+  @include tablet-up {
+    grid-template-columns: 1fr 2fr;
+    gap: $space-16;
+  }
+  
+  @include desktop-up {
+    gap: $space-20;
+  }
+}
+
+// Company Section
+.companySection {
+  @include mobile-only {
+    text-align: center;
+  }
+}
+
+.logo {
+  @include flex-center;
+  gap: $space-3;
+  text-decoration: none;
+  margin-bottom: $space-6;
+  width: fit-content;
+  
+  @include mobile-only {
+    margin: 0 auto $space-6;
+  }
+}
+
+.logoIcon {
+  font-size: $text-2xl;
+  background: $primary-green;
+  width: 48px;
+  height: 48px;
+  border-radius: $radius-xl;
+  @include flex-center;
+  transition: transform $transition-base;
+  
+  .logo:hover & {
+    transform: rotate(5deg) scale(1.1);
+  }
+}
+
+.logoText {
+  display: flex;
+  flex-direction: column;
+}
+
+.logoName {
+  font-family: $font-display;
+  font-size: $text-xl;
+  font-weight: $font-bold;
+  color: $white;
+  line-height: 1;
+}
+
+.logoTagline {
+  font-family: $font-body;
+  font-size: $text-xs;
+  color: $gray-400;
+  line-height: 1;
+}
+
+.companyDescription {
+  @include body-base;
+  color: $gray-400;
+  margin-bottom: $space-8;
+  max-width: 400px;
+  line-height: $leading-relaxed;
+  
+  @include mobile-only {
+    margin: 0 auto $space-8;
+  }
+}
+
+// Contact Info
+.contactInfo {
+  margin-bottom: $space-8;
+}
+
+.contactItem {
+  @include flex-center;
+  gap: $space-3;
+  margin-bottom: $space-3;
+  
+  @include mobile-only {
+    justify-content: center;
+  }
+}
+
+.contactIcon {
+  width: 16px;
+  height: 16px;
+  color: $primary-green;
+  flex-shrink: 0;
+}
+
+.contactLink {
+  color: $gray-300;
+  text-decoration: none;
+  font-size: $text-sm;
+  transition: color $transition-base;
+  
+  &:hover {
+    color: $white;
+  }
+}
+
+.contactText {
+  color: $gray-400;
+  font-size: $text-sm;
+}
+
+// Social Links
+.socialLinks {
+  display: flex;
+  gap: $space-4;
+  
+  @include mobile-only {
+    justify-content: center;
+  }
+}
+
+.socialLink {
+  @include flex-center;
+  width: 40px;
+  height: 40px;
+  background: rgba($white, 0.05);
+  border: 1px solid $gray-700;
+  border-radius: $radius-lg;
+  color: $gray-400;
+  text-decoration: none;
+  transition: all $transition-base;
+  
+  &:hover {
+    background: rgba($primary-green, 0.1);
+    border-color: $primary-green;
+    color: $primary-green;
+    transform: translateY(-2px);
+  }
+}
+
+.socialIcon {
+  width: 18px;
+  height: 18px;
+}
+
+// Links Section
+.linksSection {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: $space-8;
+  
+  @include tablet-up {
+    grid-template-columns: repeat(4, 1fr);
+    gap: $space-12;
+  }
+}
+
+.linkColumn {
+  // Style for each column
+}
+
+.columnTitle {
+  font-family: $font-display;
+  font-size: $text-base;
+  font-weight: $font-semibold;
+  color: $white;
+  margin-bottom: $space-4;
+}
+
+.linkList {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.linkItem {
+  margin-bottom: $space-2;
+}
+
+.link {
+  @include flex-center;
+  gap: $space-1;
+  color: $gray-400;
+  text-decoration: none;
+  font-size: $text-sm;
+  transition: color $transition-base;
+  justify-content: flex-start;
+  
+  &:hover {
+    color: $white;
+  }
+}
+
+.externalIcon {
+  width: 12px;
+  height: 12px;
+  opacity: 0.6;
+}
+
+// Newsletter
+.newsletter {
+  display: flex;
+  flex-direction: column;
+  gap: $space-6;
+  padding: $space-8;
+  background: rgba($white, 0.02);
+  border: 1px solid $gray-700;
+  border-radius: $radius-2xl;
+  margin-bottom: $space-12;
+  
+  @include tablet-up {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+  }
+}
+
+.newsletterContent {
+  flex: 1;
+  
+  @include tablet-up {
+    max-width: 400px;
+  }
+}
+
+.newsletterTitle {
+  font-family: $font-display;
+  font-size: $text-lg;
+  font-weight: $font-semibold;
+  color: $white;
+  margin-bottom: $space-2;
+}
+
+.newsletterDescription {
+  color: $gray-400;
+  font-size: $text-sm;
+  line-height: $leading-relaxed;
+}
+
+.newsletterForm {
+  display: flex;
+  gap: $space-3;
+  
+  @include mobile-only {
+    flex-direction: column;
+  }
+}
+
+.emailInput {
+  position: relative;
+  flex: 1;
+  min-width: 250px;
+}
+
+.inputIcon {
+  position: absolute;
+  left: $space-4;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 16px;
+  height: 16px;
+  color: $gray-500;
+}
+
+.input {
+  width: 100%;
+  padding: $space-3 $space-4 $space-3 $space-12;
+  background: rgba($white, 0.05);
+  border: 1px solid $gray-600;
+  border-radius: $radius-lg;
+  color: $white;
+  font-size: $text-sm;
+  
+  &::placeholder {
+    color: $gray-500;
+  }
+  
+  &:focus {
+    outline: none;
+    border-color: $primary-green;
+    background: rgba($white, 0.08);
+  }
+}
+
+.subscribeBtn {
+  @include button-primary;
+  white-space: nowrap;
+  
+  @include mobile-only {
+    width: 100%;
+  }
+}
+
+// Footer Bottom
+.footerBottom {
+  @include flex-between;
+  padding-top: $space-8;
+  border-top: 1px solid $gray-700;
+  margin-bottom: $space-6;
+  
+  @include mobile-only {
+    flex-direction: column;
+    gap: $space-6;
+    text-align: center;
+  }
+}
+
+.bottomLeft {
+  display: flex;
+  flex-direction: column;
+  gap: $space-4;
+  
+  @include tablet-up {
+    flex-direction: row;
+    align-items: center;
+    gap: $space-8;
+  }
+}
+
+.copyright {
+  color: $gray-500;
+  font-size: $text-sm;
+}
+
+.legalLinks {
+  display: flex;
+  gap: $space-6;
+  
+  @include mobile-only {
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: $space-4;
+  }
+}
+
+.legalLink {
+  color: $gray-400;
+  text-decoration: none;
+  font-size: $text-sm;
+  transition: color $transition-base;
+  
+  &:hover {
+    color: $white;
+  }
+}
+
+.bottomRight {
+  // Styles for right side content
+}
+
+.madeInIndia {
+  @include flex-center;
+  gap: $space-2;
+  color: $gray-400;
+  font-size: $text-sm;
+  font-weight: $font-medium;
+  
+  .flag {
+    font-size: $text-base;
+  }
+}
+
+.heartIcon {
+  width: 14px;
+  height: 14px;
+  color: #ef4444;
+}
+
+// Compliance Badges
+.compliance {
+  display: flex;
+  gap: $space-6;
+  justify-content: center;
+  padding-top: $space-6;
+  border-top: 1px solid $gray-800;
+  
+  @include mobile-only {
+    flex-direction: column;
+    align-items: center;
+    gap: $space-3;
+  }
+}
+
+.complianceItem {
+  @include flex-center;
+  gap: $space-2;
+}
+
+.badge {
+  padding: $space-1 $space-2;
+  background: rgba($primary-green, 0.1);
+  border: 1px solid rgba($primary-green, 0.3);
+  color: $primary-green;
+  font-size: $text-xs;
+  font-weight: $font-medium;
+  border-radius: $radius-base;
+}
+
+.badgeText {
+  color: $gray-500;
+  font-size: $text-xs;
+}
+
+// Responsive adjustments
+@include mobile-only {
+  .footer {
+    padding-top: $space-12;
+  }
+  
+  .footerMain {
+    gap: $space-8;
+    margin-bottom: $space-8;
+    padding-bottom: $space-8;
+  }
+  
+  .newsletter {
+    padding: $space-6;
+    margin-bottom: $space-8;
+  }
+}

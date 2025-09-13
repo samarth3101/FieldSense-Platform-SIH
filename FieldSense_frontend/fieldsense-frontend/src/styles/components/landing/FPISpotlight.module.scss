@@ -1,0 +1,545 @@
+// @import '../../variables.scss';
+// @import '../../mixins.scss';
+
+@import 'src/styles/variables.scss';
+@import 'src/styles/mixins.scss';
+
+
+.fpiSection {
+  @include section-padding;
+  background: $gray-900;
+  color: $white;
+  position: relative;
+  overflow: hidden;
+  
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(135deg, rgba($primary-green, 0.05) 0%, rgba($info, 0.05) 100%);
+    z-index: 1;
+  }
+}
+
+.container {
+  @include container;
+  position: relative;
+  z-index: 2;
+}
+
+// Header
+.header {
+  text-align: center;
+  margin-bottom: $space-16;
+  opacity: 0;
+  transform: translateY(30px);
+  transition: all 0.8s ease-out;
+  
+  &.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.badge {
+  @include flex-center;
+  gap: $space-2;
+  background: rgba($primary-green, 0.1);
+  border: 1px solid rgba($primary-green, 0.3);
+  color: $primary-green;
+  padding: $space-2 $space-4;
+  border-radius: $radius-full;
+  font-size: $text-sm;
+  font-weight: $font-medium;
+  margin-bottom: $space-6;
+  display: inline-flex;
+}
+
+.badgeIcon {
+  width: 16px;
+  height: 16px;
+}
+
+.title {
+  @include heading-2;
+  color: $white;
+  margin-bottom: $space-6;
+}
+
+.highlight {
+  background: linear-gradient(135deg, $accent-yellow, $yellow-400);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.subtitle {
+  @include body-large;
+  color: $gray-300;
+  max-width: 700px;
+  margin: 0 auto;
+}
+
+// Content Layout
+.content {
+  display: grid;
+  gap: $space-12;
+  
+  @include desktop-up {
+    grid-template-columns: 1fr 400px;
+    gap: $space-16;
+  }
+}
+
+// Code Section
+.codeSection {
+  opacity: 0;
+  transform: translateY(40px);
+  transition: all 0.8s ease-out 0.2s;
+  
+  &.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.codeHeader {
+  @include flex-between;
+  background: rgba($white, 0.05);
+  border: 1px solid rgba($white, 0.1);
+  border-bottom: none;
+  border-radius: $radius-xl $radius-xl 0 0;
+  padding: $space-4 $space-6;
+}
+
+.codeTitle {
+  @include flex-center;
+  gap: $space-4;
+}
+
+.language {
+  background: rgba($primary-green, 0.2);
+  color: $primary-green;
+  padding: $space-1 $space-3;
+  border-radius: $radius-base;
+  font-size: $text-xs;
+  font-weight: $font-medium;
+  text-transform: uppercase;
+}
+
+.filename {
+  color: $gray-300;
+  font-size: $text-sm;
+  font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+}
+
+.copyBtn {
+  @include flex-center;
+  width: 36px;
+  height: 36px;
+  background: rgba($white, 0.05);
+  border: 1px solid rgba($white, 0.1);
+  border-radius: $radius-lg;
+  color: $gray-400;
+  cursor: pointer;
+  transition: all $transition-base;
+  
+  &:hover {
+    background: rgba($white, 0.1);
+    color: $white;
+  }
+}
+
+.copyIcon {
+  width: 16px;
+  height: 16px;
+}
+
+.codeBlock {
+  background: rgba($black, 0.3);
+  border: 1px solid rgba($white, 0.1);
+  border-top: none;
+  overflow-x: auto;
+  font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+}
+
+.code {
+  padding: $space-6;
+  margin: 0;
+  font-size: $text-sm;
+  line-height: 1.6;
+  color: $gray-300;
+  white-space: pre;
+  overflow-x: auto;
+}
+
+// Endpoints
+.endpoints {
+  margin-top: $space-8;
+  background: rgba($white, 0.02);
+  border: 1px solid rgba($white, 0.1);
+  border-radius: $radius-xl;
+  padding: $space-6;
+}
+
+.endpointsTitle {
+  font-family: $font-display;
+  font-size: $text-lg;
+  font-weight: $font-semibold;
+  color: $white;
+  margin-bottom: $space-4;
+}
+
+.endpointsList {
+  display: flex;
+  flex-direction: column;
+  gap: $space-3;
+}
+
+.endpoint {
+  padding: $space-4;
+  background: rgba($white, 0.03);
+  border: 1px solid transparent;
+  border-radius: $radius-lg;
+  cursor: pointer;
+  transition: all $transition-base;
+  
+  &:hover,
+  &.active {
+    background: rgba($white, 0.05);
+    border-color: rgba($primary-green, 0.3);
+  }
+}
+
+.endpointMethod {
+  @include flex-center;
+  gap: $space-3;
+  margin-bottom: $space-2;
+  justify-content: flex-start;
+}
+
+.method {
+  padding: $space-1 $space-2;
+  border-radius: $radius-base;
+  font-size: $text-xs;
+  font-weight: $font-bold;
+  text-transform: uppercase;
+  
+  &.post {
+    background: rgba(#10b981, 0.2);
+    color: #10b981;
+  }
+  
+  &.get {
+    background: rgba($info, 0.2);
+    color: $info;
+  }
+}
+
+.path {
+  font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+  font-size: $text-sm;
+  color: $gray-300;
+}
+
+.endpointDescription {
+  color: $gray-400;
+  font-size: $text-sm;
+  margin-bottom: $space-1;
+}
+
+.endpointResponse {
+  color: $gray-500;
+  font-size: $text-xs;
+  font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+}
+
+// Info Section
+.infoSection {
+  opacity: 0;
+  transform: translateY(40px);
+  transition: all 0.8s ease-out 0.4s;
+  
+  &.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+// Features
+.features {
+  margin-bottom: $space-12;
+}
+
+.featuresTitle {
+  @include heading-3;
+  color: $white;
+  margin-bottom: $space-6;
+}
+
+.featuresList {
+  display: flex;
+  flex-direction: column;
+  gap: $space-6;
+}
+
+.feature {
+  display: flex;
+  gap: $space-4;
+  padding: $space-4;
+  background: rgba($white, 0.03);
+  border-radius: $radius-xl;
+  animation: featureSlideIn 0.8s ease-out both;
+  animation-delay: var(--delay);
+  
+  // Color variants
+  &.blue .featureIcon {
+    background: linear-gradient(135deg, $info, #60a5fa);
+  }
+  
+  &.yellow .featureIcon {
+    background: linear-gradient(135deg, $accent-yellow, $yellow-400);
+  }
+  
+  &.green .featureIcon {
+    background: linear-gradient(135deg, $primary-green, $green-400);
+  }
+  
+  &.purple .featureIcon {
+    background: linear-gradient(135deg, #8b5cf6, #a78bfa);
+  }
+}
+
+.featureIcon {
+  width: 48px;
+  height: 48px;
+  border-radius: $radius-xl;
+  @include flex-center;
+  flex-shrink: 0;
+  
+  .icon {
+    width: 24px;
+    height: 24px;
+    color: $white;
+  }
+}
+
+.featureContent {
+  flex: 1;
+}
+
+.featureTitle {
+  font-family: $font-display;
+  font-size: $text-base;
+  font-weight: $font-semibold;
+  color: $white;
+  margin-bottom: $space-2;
+}
+
+.featureDescription {
+  color: $gray-400;
+  font-size: $text-sm;
+  line-height: $leading-relaxed;
+}
+
+// API Key Section
+.apiKeySection {
+  background: rgba($white, 0.05);
+  border: 1px solid rgba($white, 0.1);
+  border-radius: $radius-2xl;
+  padding: $space-6;
+  margin-bottom: $space-8;
+}
+
+.apiKeyHeader {
+  @include flex-center;
+  gap: $space-3;
+  margin-bottom: $space-4;
+  justify-content: flex-start;
+}
+
+.keyIcon {
+  width: 24px;
+  height: 24px;
+  color: $accent-yellow;
+}
+
+.apiKeyTitle {
+  font-family: $font-display;
+  font-size: $text-lg;
+  font-weight: $font-semibold;
+  color: $white;
+  margin: 0;
+}
+
+.apiKeyDescription {
+  color: $gray-400;
+  font-size: $text-sm;
+  margin: 0;
+}
+
+.apiKeyDemo {
+  margin-bottom: $space-6;
+}
+
+.keyPreview {
+  @include flex-between;
+  background: rgba($black, 0.3);
+  border: 1px solid rgba($white, 0.1);
+  border-radius: $radius-lg;
+  padding: $space-4;
+  font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+}
+
+.keyPrefix {
+  color: $gray-500;
+  font-size: $text-sm;
+}
+
+.keyValue {
+  color: $gray-300;
+  font-size: $text-sm;
+  flex: 1;
+  margin-left: $space-2;
+}
+
+.keyStatus {
+  background: rgba($primary-green, 0.2);
+  color: $primary-green;
+  padding: $space-1 $space-2;
+  border-radius: $radius-base;
+  font-size: $text-xs;
+  font-weight: $font-medium;
+}
+
+.getKeyBtn {
+  @include button-primary;
+  width: 100%;
+  text-decoration: none;
+  
+  .btnIcon {
+    width: 16px;
+    height: 16px;
+  }
+}
+
+// Stats
+.stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: $space-4;
+  margin-bottom: $space-8;
+}
+
+.stat {
+  text-align: center;
+  padding: $space-4;
+  background: rgba($white, 0.03);
+  border-radius: $radius-xl;
+}
+
+.statValue {
+  display: block;
+  font-family: $font-display;
+  font-size: $text-xl;
+  font-weight: $font-bold;
+  color: $accent-yellow;
+  line-height: 1;
+  margin-bottom: $space-1;
+}
+
+.statLabel {
+  color: $gray-400;
+  font-size: $text-xs;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+// Documentation
+.documentation {
+  background: rgba($white, 0.05);
+  border: 1px solid rgba($white, 0.1);
+  border-radius: $radius-2xl;
+  padding: $space-6;
+}
+
+.docHeader {
+  margin-bottom: $space-4;
+}
+
+.docTitle {
+  font-family: $font-display;
+  font-size: $text-lg;
+  font-weight: $font-semibold;
+  color: $white;
+  margin-bottom: $space-2;
+}
+
+.docDescription {
+  color: $gray-400;
+  font-size: $text-sm;
+}
+
+.docBtn {
+  @include button-secondary;
+  width: 100%;
+  text-decoration: none;
+  color: $white;
+  border-color: rgba($white, 0.3);
+  
+  &:hover {
+    background: rgba($white, 0.1);
+    border-color: rgba($white, 0.5);
+  }
+  
+  .btnIcon {
+    width: 16px;
+    height: 16px;
+  }
+}
+
+// Animations
+@keyframes featureSlideIn {
+  from {
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+// Mobile adjustments
+@include mobile-only {
+  .content {
+    gap: $space-8;
+  }
+  
+  .code {
+    font-size: $text-xs;
+    padding: $space-4;
+  }
+  
+  .stats {
+    grid-template-columns: 1fr;
+    gap: $space-3;
+  }
+  
+  .feature {
+    padding: $space-3;
+  }
+  
+  .featureIcon {
+    width: 40px;
+    height: 40px;
+    
+    .icon {
+      width: 20px;
+      height: 20px;
+    }
+  }
+}

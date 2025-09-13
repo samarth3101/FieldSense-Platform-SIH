@@ -1,7 +1,15 @@
-import type { NextConfig } from "next";
+/** @type {import('next').NextConfig} */
+const nextConfig = {
+  sassOptions: {
+    includePaths: ['./src/styles'],
+    additionalData: `
+      @import "src/styles/variables.scss";
+      @import "src/styles/mixins.scss";
+    `,
+  },
+  experimental: {
+    optimizePackageImports: ['lucide-react'],
+  },
+}
 
-const nextConfig: NextConfig = {
-  /* config options here */
-};
-
-export default nextConfig;
+module.exports = nextConfig

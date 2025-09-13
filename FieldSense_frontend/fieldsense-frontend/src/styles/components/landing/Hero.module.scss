@@ -1,0 +1,739 @@
+// @import '../../variables.scss';
+// @import '../../mixins.scss';
+
+@import 'src/styles/variables.scss';
+@import 'src/styles/mixins.scss';
+
+
+.hero {
+  position: relative;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+  background: linear-gradient(135deg, $primary-green 0%, $green-600 100%);
+}
+
+// Background
+.background {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+}
+
+.backgroundImage {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(rgba($primary-green, 0.1), rgba($soil-brown, 0.2)),
+              url('/images/hero-farmland.jpg') center/cover no-repeat;
+  opacity: 0.4;
+  animation: parallaxSlow 30s ease-in-out infinite;
+}
+
+.backgroundOverlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    135deg,
+    rgba($primary-green, 0.85) 0%,
+    rgba($primary-green, 0.7) 50%,
+    rgba($soil-brown, 0.75) 100%
+  );
+}
+
+// Floating Elements
+.floatingElements {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 2;
+}
+
+.floatingElement {
+  position: absolute;
+  color: rgba($white, 0.15);
+  font-size: $text-2xl;
+  animation: float 8s ease-in-out infinite;
+  animation-delay: var(--delay);
+  
+  &:nth-child(1) {
+    top: 15%;
+    left: 10%;
+  }
+  
+  &:nth-child(2) {
+    top: 25%;
+    right: 15%;
+  }
+  
+  &:nth-child(3) {
+    top: 65%;
+    left: 5%;
+  }
+  
+  &:nth-child(4) {
+    bottom: 40%;
+    right: 25%;
+  }
+  
+  &:nth-child(5) {
+    bottom: 20%;
+    left: 20%;
+  }
+  
+  .icon {
+    width: 32px;
+    height: 32px;
+  }
+}
+
+// Content Container
+.container {
+  @include container;
+  position: relative;
+  z-index: 3;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: $space-12;
+  align-items: center;
+  min-height: 100vh;
+  padding-top: $space-20;
+  padding-bottom: $space-16;
+  
+  @include desktop-up {
+    grid-template-columns: 1fr 450px;
+    gap: $space-16;
+    padding-top: $space-16;
+  }
+  
+  @include large-up {
+    max-width: 1400px;
+    grid-template-columns: 1fr 500px;
+    gap: $space-20;
+  }
+}
+
+.content {
+  opacity: 0;
+  transform: translateY(40px);
+  transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+  
+  &.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+// Headlines
+.headline {
+  margin-bottom: $space-10;
+}
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  background: rgba($white, 0.15);
+  border: 1px solid rgba($white, 0.2);
+  border-radius: $radius-full;
+  padding: $space-2 $space-4;
+  margin-bottom: $space-6;
+  animation: slideUp 0.8s ease-out 0.2s both;
+}
+
+.badgeText {
+  font-family: $font-body;
+  font-size: $text-sm;
+  font-weight: $font-medium;
+  color: $white;
+  
+  @include tablet-up {
+    font-size: $text-base;
+  }
+}
+
+.title {
+  @include heading-1;
+  color: $white;
+  margin-bottom: $space-6;
+  display: flex;
+  flex-direction: column;
+  gap: $space-2;
+}
+
+.titleMain {
+  display: block;
+  animation: slideUp 0.8s ease-out 0.4s both;
+}
+
+.titleSub {
+  display: block;
+  color: $accent-yellow;
+  animation: slideUp 0.8s ease-out 0.6s both;
+  position: relative;
+  
+  &::after {
+    content: '';
+    position: absolute;
+    bottom: -4px;
+    left: 0;
+    width: 0;
+    height: 3px;
+    background: $accent-yellow;
+    animation: expandLine 1s ease-out 1.2s both;
+  }
+}
+
+.subtitle {
+  @include body-large;
+  color: rgba($white, 0.9);
+  margin-bottom: $space-4;
+  animation: fadeIn 0.8s ease-out 0.8s both;
+}
+
+.description {
+  @include body-base;
+  color: rgba($white, 0.8);
+  max-width: 550px;
+  animation: fadeIn 0.8s ease-out 1s both;
+  line-height: $leading-relaxed;
+  
+  strong {
+    color: $accent-yellow;
+    font-weight: $font-semibold;
+  }
+}
+
+// Actions
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: $space-4;
+  margin-bottom: $space-12;
+  animation: slideUp 0.8s ease-out 1.2s both;
+  
+  @include mobile-only {
+    flex-direction: column;
+  }
+}
+
+.primaryCta {
+  @include button-base;
+  position: relative;
+  padding: $space-4 $space-8;
+  background: $accent-yellow;
+  color: $gray-900;
+  font-size: $text-lg;
+  font-weight: $font-bold;
+  border-radius: $radius-xl;
+  box-shadow: $shadow-lg;
+  overflow: hidden;
+  
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(45deg, transparent 30%, rgba($white, 0.2) 50%, transparent 70%);
+    transform: translateX(-100%);
+    transition: transform 0.6s ease;
+  }
+  
+  &:hover {
+    background: lighten($accent-yellow, 5%);
+    transform: translateY(-2px);
+    box-shadow: $shadow-xl;
+    
+    &::before {
+      transform: translateX(100%);
+    }
+  }
+  
+  .ctaIcon {
+    width: 22px;
+    height: 22px;
+  }
+  
+  .ctaSubtext {
+    position: absolute;
+    bottom: -20px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: $text-xs;
+    opacity: 0.7;
+    white-space: nowrap;
+  }
+}
+
+.secondaryCta {
+  @include button-base;
+  position: relative;
+  padding: $space-4 $space-8;
+  background: rgba($white, 0.1);
+  border: 2px solid rgba($white, 0.3);
+  color: $white;
+  font-size: $text-lg;
+  border-radius: $radius-xl;
+  text-decoration: none;
+  backdrop-filter: blur(10px);
+  
+  &:hover {
+    background: rgba($white, 0.2);
+    border-color: rgba($white, 0.5);
+    transform: translateY(-1px);
+    box-shadow: $shadow-md;
+  }
+  
+  .ctaIcon {
+    width: 22px;
+    height: 22px;
+    transition: transform $transition-base;
+  }
+  
+  &:hover .ctaIcon {
+    transform: translateX(4px);
+  }
+  
+  .ctaSubtext {
+    position: absolute;
+    bottom: -20px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: $text-xs;
+    opacity: 0.7;
+    white-space: nowrap;
+  }
+}
+
+// Stats Carousel
+.statsContainer {
+  animation: fadeIn 0.8s ease-out 1.4s both;
+}
+
+.statsCarousel {
+  position: relative;
+  height: 80px;
+  overflow: hidden;
+  background: rgba($white, 0.1);
+  border-radius: $radius-2xl;
+  border: 1px solid rgba($white, 0.2);
+  backdrop-filter: blur(10px);
+}
+
+.stat {
+  @include absolute-center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: $space-2;
+  color: $white;
+  opacity: 0;
+  transform: translateY(20px);
+  transition: all 0.5s ease;
+  
+  &.active {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  
+  .statIcon {
+    font-size: $text-xl;
+  }
+  
+  .statNumber {
+    font-family: $font-display;
+    font-size: $text-2xl;
+    font-weight: $font-extrabold;
+    line-height: 1;
+    
+    @include tablet-up {
+      font-size: $text-3xl;
+    }
+  }
+  
+  .statLabel {
+    font-family: $font-body;
+    font-size: $text-sm;
+    opacity: 0.8;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+}
+
+.statsIndicators {
+  display: flex;
+  justify-content: center;
+  gap: $space-2;
+  margin-top: $space-4;
+}
+
+.indicator {
+  width: 8px;
+  height: 8px;
+  border-radius: $radius-full;
+  background: rgba($white, 0.3);
+  border: none;
+  cursor: pointer;
+  transition: all $transition-base;
+  
+  &.active {
+    background: $accent-yellow;
+    transform: scale(1.2);
+  }
+  
+  &:hover {
+    background: rgba($white, 0.6);
+  }
+}
+
+// Trust Indicators
+.trustIndicators {
+  text-align: center;
+  animation: fadeIn 0.8s ease-out 1.6s both;
+}
+
+.trustText {
+  display: block;
+  font-family: $font-body;
+  font-size: $text-sm;
+  color: rgba($white, 0.7);
+  margin-bottom: $space-4;
+}
+
+.trustLogos {
+  display: flex;
+  justify-content: center;
+  gap: $space-6;
+  flex-wrap: wrap;
+}
+
+.trustLogo {
+  padding: $space-2 $space-4;
+  background: rgba($white, 0.1);
+  border: 1px solid rgba($white, 0.2);
+  border-radius: $radius-lg;
+  font-family: $font-display;
+  font-size: $text-sm;
+  font-weight: $font-bold;
+  color: rgba($white, 0.8);
+  transition: all $transition-base;
+  
+  &:hover {
+    background: rgba($white, 0.2);
+    color: $white;
+    transform: translateY(-2px);
+  }
+}
+
+// Hero Illustration
+.heroIllustration {
+  position: relative;
+  display: none;
+  
+  @include desktop-up {
+    display: block;
+    animation: fadeIn 1s ease-out 1.8s both;
+  }
+}
+
+.plantContainer {
+  position: relative;
+  width: 400px;
+  height: 500px;
+  margin: 0 auto;
+  
+  @include large-up {
+    width: 450px;
+    height: 550px;
+  }
+}
+
+.plant {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.stem {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  width: 8px;
+  height: 0;
+  background: linear-gradient(to top, $soil-brown, $primary-green);
+  border-radius: $radius-base;
+  transform: translateX(-50%);
+  animation: growStem 2s ease-out 2s both;
+}
+
+.leaf {
+  position: absolute;
+  width: 80px;
+  height: 60px;
+  background: $primary-green;
+  border-radius: 0 100% 0 100%;
+  opacity: 0;
+  transform: scale(0);
+  animation: growLeaf 1s ease-out both;
+  animation-delay: calc(2s + var(--leaf-delay));
+  
+  &:nth-child(2) {
+    bottom: 150px;
+    left: 35%;
+    transform: rotate(-25deg) scale(0);
+  }
+  
+  &:nth-child(3) {
+    bottom: 200px;
+    right: 35%;
+    transform: rotate(25deg) scale(0);
+  }
+  
+  &:nth-child(4) {
+    bottom: 250px;
+    left: 40%;
+    transform: rotate(-15deg) scale(0);
+  }
+}
+
+.flower {
+  position: absolute;
+  top: 50px;
+  left: 50%;
+  transform: translateX(-50%) scale(0);
+  font-size: $text-4xl;
+  animation: bloom 1s ease-out 3.5s both;
+}
+
+// Data Overlay
+.dataOverlay {
+  position: absolute;
+  top: 20%;
+  right: -80px;
+  background: rgba($white, 0.95);
+  border-radius: $radius-2xl;
+  padding: $space-6;
+  box-shadow: $shadow-xl;
+  border: 1px solid $gray-200;
+  animation: slideInRight 1s ease-out 4s both;
+  
+  @include large-up {
+    right: -100px;
+  }
+}
+
+.chartContainer {
+  width: 180px;
+}
+
+.chartTitle {
+  font-family: $font-display;
+  font-size: $text-sm;
+  font-weight: $font-semibold;
+  color: $gray-700;
+  margin-bottom: $space-3;
+  text-align: center;
+}
+
+.chartBars {
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  gap: $space-2;
+  height: 80px;
+  margin-bottom: $space-3;
+}
+
+.chartBar {
+  flex: 1;
+  background: linear-gradient(to top, $primary-green, $green-400);
+  border-radius: $radius-sm;
+  height: 0;
+  animation: growBar 0.8s ease-out both;
+  animation-delay: calc(4.2s + var(--bar-delay));
+}
+
+.chartFooter {
+  font-family: $font-body;
+  font-size: $text-xs;
+  color: $gray-500;
+  text-align: center;
+}
+
+// Data Points
+.dataPoints {
+  position: absolute;
+  inset: 0;
+}
+
+.dataPoint {
+  position: absolute;
+  background: rgba($white, 0.9);
+  border-radius: $radius-xl;
+  padding: $space-3 $space-4;
+  box-shadow: $shadow-md;
+  border: 1px solid $gray-200;
+  opacity: 0;
+  transform: scale(0.8);
+  animation: scaleIn 0.6s ease-out both;
+  animation-delay: var(--point-delay);
+  
+  &:nth-child(1) {
+    top: 10%;
+    left: -60px;
+  }
+  
+  &:nth-child(2) {
+    top: 50%;
+    right: -80px;
+  }
+  
+  &:nth-child(3) {
+    bottom: 30%;
+    left: -40px;
+  }
+  
+  .dataValue {
+    display: block;
+    font-family: $font-display;
+    font-size: $text-lg;
+    font-weight: $font-bold;
+    color: $primary-green;
+    line-height: 1;
+  }
+  
+  .dataLabel {
+    display: block;
+    font-family: $font-body;
+    font-size: $text-xs;
+    color: $gray-600;
+    margin-top: $space-1;
+  }
+}
+
+// Scroll Indicator
+.scrollIndicator {
+  position: absolute;
+  bottom: $space-8;
+  left: 50%;
+  transform: translateX(-50%);
+  text-align: center;
+  color: rgba($white, 0.7);
+  animation: bounce 2s infinite 2s;
+  cursor: pointer;
+  
+  &:hover {
+    color: $white;
+  }
+}
+
+.scrollText {
+  font-family: $font-body;
+  font-size: $text-sm;
+  margin-bottom: $space-2;
+}
+
+.scrollArrow {
+  font-size: $text-xl;
+  animation: bounce 2s infinite;
+}
+
+// Animations
+@keyframes parallaxSlow {
+  0%, 100% { transform: translateY(0) scale(1.05); }
+  50% { transform: translateY(-30px) scale(1.08); }
+}
+
+@keyframes float {
+  0%, 100% { 
+    transform: translateY(0) rotate(0deg); 
+    opacity: 0.15;
+  }
+  50% { 
+    transform: translateY(-30px) rotate(10deg); 
+    opacity: 0.25;
+  }
+}
+
+@keyframes expandLine {
+  from { width: 0; }
+  to { width: 100%; }
+}
+
+@keyframes growStem {
+  from { height: 0; }
+  to { height: 300px; }
+}
+
+@keyframes growLeaf {
+  from { 
+    opacity: 0;
+    transform: scale(0) rotate(var(--rotation, 0deg)); 
+  }
+  to { 
+    opacity: 1;
+    transform: scale(1) rotate(var(--rotation, 0deg)); 
+  }
+}
+
+@keyframes bloom {
+  from { 
+    opacity: 0;
+    transform: translateX(-50%) scale(0) rotate(-10deg); 
+  }
+  to { 
+    opacity: 1;
+    transform: translateX(-50%) scale(1) rotate(0deg); 
+  }
+}
+
+@keyframes growBar {
+  from { height: 0; }
+  to { height: var(--bar-height); }
+}
+
+@keyframes slideInRight {
+  from { 
+    opacity: 0;
+    transform: translateX(40px) translateY(-50%); 
+  }
+  to { 
+    opacity: 1;
+    transform: translateX(0) translateY(-50%); 
+  }
+}
+
+@keyframes bounce {
+  0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+  40% { transform: translateY(-10px); }
+  60% { transform: translateY(-5px); }
+}
+
+// Responsive Adjustments
+@include mobile-only {
+  .hero {
+    min-height: 100vh;
+    padding-top: 70px;
+  }
+  
+  .primaryCta,
+  .secondaryCta {
+    width: 100%;
+    justify-content: center;
+    
+    .ctaSubtext {
+      display: none;
+    }
+  }
+  
+  .statsCarousel {
+    height: 100px;
+  }
+  
+  .trustLogos {
+    gap: $space-3;
+  }
+  
+  .trustLogo {
+    font-size: $text-xs;
+    padding: $space-1 $space-3;
+  }
+}

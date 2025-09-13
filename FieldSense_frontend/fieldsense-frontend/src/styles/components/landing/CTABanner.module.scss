@@ -1,0 +1,508 @@
+// @import '../../variables.scss';
+// @import '../../mixins.scss';
+
+@import 'src/styles/variables.scss';
+@import 'src/styles/mixins.scss';
+
+
+.ctaBanner {
+  position: relative;
+  @include section-padding;
+  background: linear-gradient(135deg, $gray-900 0%, $gray-800 100%);
+  color: $white;
+  overflow: hidden;
+}
+
+.backgroundPattern {
+  position: absolute;
+  inset: 0;
+  opacity: 0.03;
+  z-index: 1;
+}
+
+.patternGrid {
+  position: absolute;
+  inset: 0;
+  background-image: 
+    linear-gradient(rgba($white, 0.1) 1px, transparent 1px),
+    linear-gradient(90deg, rgba($white, 0.1) 1px, transparent 1px);
+  background-size: 60px 60px;
+}
+
+.patternDots {
+  position: absolute;
+  inset: 0;
+  background-image: radial-gradient(circle at 30px 30px, rgba($white, 0.1) 2px, transparent 2px);
+  background-size: 60px 60px;
+}
+
+.container {
+  @include container;
+  position: relative;
+  z-index: 2;
+}
+
+// Header
+.header {
+  text-align: center;
+  margin-bottom: $space-16;
+  opacity: 0;
+  transform: translateY(40px);
+  transition: all 0.8s ease-out;
+  
+  &.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: $space-2;
+  background: rgba($primary-green, 0.1);
+  border: 1px solid rgba($primary-green, 0.3);
+  border-radius: $radius-full;
+  padding: $space-2 $space-6;
+  margin-bottom: $space-6;
+  color: $primary-green;
+  font-size: $text-sm;
+  font-weight: $font-medium;
+}
+
+.badgeIcon {
+  width: 16px;
+  height: 16px;
+}
+
+.title {
+  @include heading-2;
+  color: $white;
+  margin-bottom: $space-6;
+}
+
+.highlight {
+  background: linear-gradient(135deg, $accent-yellow, $yellow-400);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.subtitle {
+  @include body-large;
+  color: $gray-300;
+  max-width: 700px;
+  margin: 0 auto;
+}
+
+// CTA Grid
+.ctaGrid {
+  display: grid;
+  gap: $space-8;
+  margin-bottom: $space-16;
+  opacity: 0;
+  transform: translateY(40px);
+  transition: all 0.8s ease-out 0.2s;
+  
+  &.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  
+  @include tablet-up {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.ctaCard {
+  @include card-base;
+  position: relative;
+  background: rgba($white, 0.05);
+  border: 1px solid rgba($white, 0.1);
+  padding: $space-8;
+  text-align: center;
+  overflow: hidden;
+  transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  animation: cardAppear 0.8s ease-out both;
+  animation-delay: var(--delay);
+  
+  &:hover {
+    transform: translateY(-8px);
+    box-shadow: $shadow-2xl;
+    border-color: rgba($white, 0.2);
+  }
+  
+  // Color variants
+  &.green {
+    .cardIcon {
+      background: linear-gradient(135deg, $primary-green, $green-400);
+    }
+    
+    .cardCta {
+      background: $primary-green;
+      
+      &:hover {
+        background: $green-600;
+      }
+    }
+  }
+  
+  &.blue {
+    .cardIcon {
+      background: linear-gradient(135deg, $info, #60a5fa);
+    }
+    
+    .cardCta {
+      background: $info;
+      
+      &:hover {
+        background: #2563eb;
+      }
+    }
+  }
+  
+  &.purple {
+    .cardIcon {
+      background: linear-gradient(135deg, #8b5cf6, #a78bfa);
+    }
+    
+    .cardCta {
+      background: #8b5cf6;
+      
+      &:hover {
+        background: #7c3aed;
+      }
+    }
+  }
+}
+
+.cardBadge {
+  position: absolute;
+  top: $space-4;
+  right: $space-4;
+  background: rgba($accent-yellow, 0.9);
+  color: $gray-900;
+  padding: $space-1 $space-3;
+  border-radius: $radius-full;
+  font-size: $text-xs;
+  font-weight: $font-bold;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.cardIcon {
+  width: 80px;
+  height: 80px;
+  border-radius: $radius-2xl;
+  @include flex-center;
+  margin: 0 auto $space-6;
+  
+  .icon {
+    width: 40px;
+    height: 40px;
+    color: $white;
+  }
+}
+
+.cardContent {
+  margin-bottom: $space-8;
+}
+
+.cardTitle {
+  @include heading-3;
+  color: $white;
+  margin-bottom: $space-4;
+}
+
+.cardDescription {
+  @include body-base;
+  color: $gray-300;
+  margin-bottom: $space-6;
+}
+
+.featuresList {
+  display: flex;
+  flex-direction: column;
+  gap: $space-3;
+}
+
+.feature {
+  @include flex-center;
+  gap: $space-3;
+  justify-content: flex-start;
+}
+
+.featureIcon {
+  width: 16px;
+  height: 16px;
+  background: $primary-green;
+  border-radius: $radius-full;
+  @include flex-center;
+  font-size: $text-xs;
+  color: $white;
+}
+
+.featureText {
+  color: $gray-300;
+  font-size: $text-sm;
+}
+
+.cardCta {
+  @include button-base;
+  width: 100%;
+  padding: $space-4;
+  font-size: $text-base;
+  font-weight: $font-semibold;
+  text-decoration: none;
+  color: $white;
+  border-radius: $radius-lg;
+  
+  .ctaIcon {
+    width: 18px;
+    height: 18px;
+    transition: transform $transition-base;
+  }
+  
+  &:hover .ctaIcon {
+    transform: translateX(4px);
+  }
+}
+
+.hoverEffect {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(45deg, transparent 30%, rgba($white, 0.05) 50%, transparent 70%);
+  transform: translateX(-100%);
+  transition: transform 0.6s ease;
+  
+  .ctaCard:hover & {
+    transform: translateX(100%);
+  }
+}
+
+// Bottom Actions
+.bottomActions {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: $space-8;
+  text-align: center;
+  margin-bottom: $space-16;
+  opacity: 0;
+  transform: translateY(40px);
+  transition: all 0.8s ease-out 0.4s;
+  
+  &.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  
+  @include tablet-up {
+    flex-direction: row;
+    justify-content: space-between;
+    text-align: left;
+  }
+}
+
+.actionContent {
+  flex: 1;
+  
+  @include tablet-up {
+    max-width: 400px;
+  }
+}
+
+.actionTitle {
+  @include heading-3;
+  color: $white;
+  margin-bottom: $space-3;
+}
+
+.actionDescription {
+  @include body-base;
+  color: $gray-300;
+}
+
+.actionButtons {
+  display: flex;
+  gap: $space-4;
+  
+  @include mobile-only {
+    flex-direction: column;
+    width: 100%;
+  }
+}
+
+.primaryBtn {
+  @include button-primary;
+  text-decoration: none;
+}
+
+.secondaryBtn {
+  @include button-secondary;
+  text-decoration: none;
+  color: $white;
+  border-color: rgba($white, 0.3);
+  
+  &:hover {
+    background: rgba($white, 0.1);
+    border-color: rgba($white, 0.5);
+  }
+}
+
+// Trust Section
+.trustSection {
+  opacity: 0;
+  transform: translateY(40px);
+  transition: all 0.8s ease-out 0.6s;
+  
+  &.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.trustStats {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: $space-8;
+  margin-bottom: $space-12;
+  
+  @include tablet-up {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+.trustStat {
+  text-align: center;
+}
+
+.trustValue {
+  display: block;
+  font-family: $font-display;
+  font-size: $text-3xl;
+  font-weight: $font-extrabold;
+  color: $accent-yellow;
+  line-height: 1;
+  margin-bottom: $space-2;
+  
+  @include tablet-up {
+    font-size: $text-4xl;
+  }
+}
+
+.trustLabel {
+  display: block;
+  font-size: $text-sm;
+  color: $gray-400;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.trustLogos {
+  text-align: center;
+}
+
+.trustText {
+  font-size: $text-sm;
+  color: $gray-400;
+  margin-bottom: $space-4;
+}
+
+.logos {
+  display: flex;
+  justify-content: center;
+  gap: $space-6;
+  flex-wrap: wrap;
+}
+
+.logo {
+  padding: $space-3 $space-4;
+  background: rgba($white, 0.05);
+  border: 1px solid rgba($white, 0.1);
+  border-radius: $radius-lg;
+  font-size: $text-sm;
+  font-weight: $font-medium;
+  color: $gray-300;
+  transition: all $transition-base;
+  
+  &:hover {
+    background: rgba($white, 0.1);
+    color: $white;
+    transform: translateY(-2px);
+  }
+}
+
+// Final Message
+.finalMessage {
+  text-align: center;
+  padding-top: $space-8;
+  border-top: 1px solid rgba($white, 0.1);
+  opacity: 0;
+  transform: translateY(40px);
+  transition: all 0.8s ease-out 0.8s;
+  
+  &.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.messageContent {
+  max-width: 500px;
+  margin: 0 auto;
+}
+
+.messageTitle {
+  @include heading-4;
+  color: $white;
+  margin-bottom: $space-3;
+}
+
+.messageText {
+  @include body-base;
+  color: $gray-400;
+}
+
+// Animations
+@keyframes cardAppear {
+  from {
+    opacity: 0;
+    transform: translateY(40px) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+// Mobile adjustments
+@include mobile-only {
+  .ctaCard {
+    padding: $space-6;
+  }
+  
+  .cardIcon {
+    width: 60px;
+    height: 60px;
+    
+    .icon {
+      width: 30px;
+      height: 30px;
+    }
+  }
+  
+  .trustStats {
+    grid-template-columns: repeat(2, 1fr);
+    gap: $space-6;
+  }
+  
+  .logos {
+    gap: $space-4;
+  }
+  
+  .logo {
+    font-size: $text-xs;
+    padding: $space-2 $space-3;
+  }
+}

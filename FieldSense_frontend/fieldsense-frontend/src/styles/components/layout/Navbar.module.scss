@@ -1,0 +1,453 @@
+@import '../../variables.scss';
+@import '../../mixins.scss';
+
+.header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: $z-sticky;
+  background: rgba($white, 0.95);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border-bottom: 1px solid transparent;
+  transition: all $transition-base;
+  
+  &.scrolled {
+    background: rgba($white, 0.98);
+    border-bottom-color: $gray-200;
+    box-shadow: $shadow-sm;
+  }
+}
+
+.container {
+  @include container;
+  @include flex-between;
+  height: 80px;
+  
+  @include mobile-only {
+    height: 70px;
+  }
+}
+
+// Logo
+.logo {
+  @include flex-center;
+  gap: $space-3;
+  text-decoration: none;
+  transition: transform $transition-base;
+  
+  &:hover {
+    transform: scale(1.02);
+  }
+}
+
+.logoIcon {
+  @include flex-center;
+  width: 40px;
+  height: 40px;
+  background: $primary-green;
+  border-radius: $radius-xl;
+  transition: all $transition-base;
+  
+  .icon {
+    font-size: $text-xl;
+    filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.1));
+  }
+  
+  .logo:hover & {
+    background: $green-600;
+    transform: rotate(5deg);
+  }
+  
+  @include mobile-only {
+    width: 36px;
+    height: 36px;
+    
+    .icon {
+      font-size: $text-lg;
+    }
+  }
+}
+
+.logoText {
+  display: flex;
+  flex-direction: column;
+  
+  @include mobile-only {
+    display: none;
+  }
+  
+  @media (max-width: 900px) {
+    .logoTagline {
+      display: none;
+    }
+  }
+}
+
+.logoName {
+  font-family: $font-display;
+  font-size: $text-xl;
+  font-weight: $font-bold;
+  color: $gray-900;
+  line-height: 1;
+}
+
+.logoTagline {
+  font-family: $font-body;
+  font-size: $text-xs;
+  color: $gray-500;
+  line-height: 1;
+}
+
+// Navigation
+.nav {
+  display: none;
+  gap: $space-1;
+  
+  @include desktop-up {
+    display: flex;
+    align-items: center;
+  }
+}
+
+.navLink {
+  padding: $space-2 $space-4;
+  font-family: $font-body;
+  font-size: $text-sm;
+  font-weight: $font-medium;
+  color: $gray-600;
+  text-decoration: none;
+  border-radius: $radius-lg;
+  transition: all $transition-base;
+  position: relative;
+  
+  &:hover {
+    color: $primary-green;
+    background: rgba($primary-green, 0.05);
+  }
+  
+  &.active {
+    color: $primary-green;
+    font-weight: $font-semibold;
+    
+    &::after {
+      content: '';
+      position: absolute;
+      bottom: -2px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 20px;
+      height: 2px;
+      background: $primary-green;
+      border-radius: $radius-full;
+    }
+  }
+}
+
+.dashboardLink {
+  @extend .navLink;
+  background: rgba($primary-green, 0.1);
+  color: $primary-green;
+  font-weight: $font-semibold;
+  
+  &:hover {
+    background: rgba($primary-green, 0.15);
+  }
+}
+
+// Actions
+.actions {
+  @include flex-center;
+  gap: $space-4;
+}
+
+// Language Selector
+.langSelector {
+  position: relative;
+  display: none;
+  
+  @include desktop-up {
+    display: block;
+  }
+}
+
+.langButton {
+  @include flex-center;
+  gap: $space-2;
+  padding: $space-2 $space-3;
+  background: transparent;
+  border: 1px solid $gray-200;
+  border-radius: $radius-lg;
+  font-family: $font-body;
+  font-size: $text-sm;
+  color: $gray-600;
+  cursor: pointer;
+  transition: all $transition-base;
+  
+  &:hover {
+    border-color: $primary-green;
+    color: $primary-green;
+  }
+  
+  svg {
+    transition: transform $transition-base;
+    
+    &.rotated {
+      transform: rotate(180deg);
+    }
+  }
+}
+
+.langDropdown {
+  position: absolute;
+  top: calc(100% + $space-2);
+  right: 0;
+  min-width: 150px;
+  background: $white;
+  border: 1px solid $gray-200;
+  border-radius: $radius-xl;
+  box-shadow: $shadow-lg;
+  overflow: hidden;
+  z-index: $z-dropdown;
+  animation: slideUp 0.2s ease-out;
+}
+
+.langOption {
+  @include flex-center;
+  gap: $space-2;
+  width: 100%;
+  padding: $space-3 $space-4;
+  background: transparent;
+  border: none;
+  font-family: $font-body;
+  font-size: $text-sm;
+  color: $gray-600;
+  cursor: pointer;
+  transition: all $transition-base;
+  
+  &:hover {
+    background: $gray-50;
+    color: $gray-900;
+  }
+  
+  &.active {
+    background: rgba($primary-green, 0.1);
+    color: $primary-green;
+    font-weight: $font-medium;
+  }
+  
+  .flag {
+    font-size: $text-base;
+  }
+}
+
+// CTA Buttons
+.getStartedBtn {
+  @include button-primary('sm');
+  display: none;
+  
+  @include desktop-up {
+    display: inline-flex;
+  }
+}
+
+.loginBtn {
+  @include button-ghost('sm');
+  display: none;
+  
+  @include desktop-up {
+    display: inline-flex;
+  }
+}
+
+// Mobile Menu Button
+.mobileMenuBtn {
+  @include flex-center;
+  width: 44px;
+  height: 44px;
+  background: transparent;
+  border: 1px solid $gray-200;
+  border-radius: $radius-lg;
+  color: $gray-600;
+  cursor: pointer;
+  transition: all $transition-base;
+  
+  &:hover {
+    border-color: $primary-green;
+    color: $primary-green;
+  }
+  
+  @include desktop-up {
+    display: none;
+  }
+}
+
+// Mobile Menu
+.mobileMenu {
+  position: fixed;
+  top: 70px;
+  left: 0;
+  right: 0;
+  background: $white;
+  border-bottom: 1px solid $gray-200;
+  box-shadow: $shadow-lg;
+  transform: translateY(-100%);
+  opacity: 0;
+  visibility: hidden;
+  transition: all $transition-base;
+  z-index: $z-dropdown;
+  max-height: calc(100vh - 70px);
+  overflow-y: auto;
+  
+  &.open {
+    transform: translateY(0);
+    opacity: 1;
+    visibility: visible;
+  }
+  
+  @include desktop-up {
+    display: none;
+  }
+}
+
+.mobileMenuContent {
+  padding: $space-6 $space-4 $space-8;
+}
+
+.mobileNav {
+  margin-bottom: $space-8;
+}
+
+.mobileNavLink {
+  display: block;
+  padding: $space-4 $space-0;
+  font-family: $font-body;
+  font-size: $text-lg;
+  font-weight: $font-medium;
+  color: $gray-600;
+  text-decoration: none;
+  border-bottom: 1px solid $gray-100;
+  transition: all $transition-base;
+  
+  &:hover {
+    color: $primary-green;
+    padding-left: $space-4;
+  }
+  
+  &.active {
+    color: $primary-green;
+    font-weight: $font-semibold;
+  }
+  
+  &:last-child {
+    border-bottom: none;
+  }
+}
+
+.mobileDashboardLink {
+  @extend .mobileNavLink;
+  color: $primary-green;
+  font-weight: $font-semibold;
+  background: rgba($primary-green, 0.05);
+  border-radius: $radius-lg;
+  border-bottom: none;
+  margin-top: $space-4;
+  text-align: center;
+}
+
+.mobileActions {
+  display: flex;
+  flex-direction: column;
+  gap: $space-3;
+  margin-bottom: $space-8;
+}
+
+.mobileGetStarted {
+  @include button-primary;
+  justify-content: center;
+  text-decoration: none;
+}
+
+.mobileLogin {
+  @include button-ghost;
+  justify-content: center;
+  text-decoration: none;
+}
+
+// Mobile Language Selector
+.mobileLangSelector {
+  border-top: 1px solid $gray-200;
+  padding-top: $space-6;
+}
+
+.mobileLangTitle {
+  font-family: $font-body;
+  font-size: $text-sm;
+  font-weight: $font-medium;
+  color: $gray-500;
+  margin-bottom: $space-3;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.mobileLangOptions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: $space-2;
+}
+
+.mobileLangBtn {
+  @include flex-center;
+  gap: $space-2;
+  padding: $space-3;
+  background: transparent;
+  border: 1px solid $gray-200;
+  border-radius: $radius-lg;
+  font-family: $font-body;
+  font-size: $text-sm;
+  color: $gray-600;
+  cursor: pointer;
+  transition: all $transition-base;
+  
+  &:hover {
+    border-color: $primary-green;
+    color: $primary-green;
+  }
+  
+  &.active {
+    background: rgba($primary-green, 0.1);
+    border-color: $primary-green;
+    color: $primary-green;
+    font-weight: $font-medium;
+  }
+  
+  .flag {
+    font-size: $text-base;
+  }
+}
+
+// Mobile Menu Overlay
+.mobileMenuOverlay {
+  position: fixed;
+  inset: 0;
+  background: rgba($black, 0.3);
+  backdrop-filter: blur(4px);
+  z-index: $z-overlay - 10;
+  
+  @include desktop-up {
+    display: none;
+  }
+}
+
+// Animations
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
