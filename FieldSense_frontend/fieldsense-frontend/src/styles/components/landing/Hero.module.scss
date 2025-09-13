@@ -1,9 +1,5 @@
-// @import '../../variables.scss';
-// @import '../../mixins.scss';
-
 @import 'src/styles/variables.scss';
 @import 'src/styles/mixins.scss';
-
 
 .hero {
   position: relative;
@@ -11,7 +7,7 @@
   display: flex;
   align-items: center;
   overflow: hidden;
-  background: linear-gradient(135deg, $primary-green 0%, $green-600 100%);
+  background: linear-gradient(135deg, $primary-green 0%, darken($primary-green, 10%) 100%);
 }
 
 // Background
@@ -21,24 +17,13 @@
   z-index: 1;
 }
 
-.backgroundImage {
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(rgba($primary-green, 0.1), rgba($soil-brown, 0.2)),
-              url('/images/hero-farmland.jpg') center/cover no-repeat;
-  opacity: 0.4;
-  animation: parallaxSlow 30s ease-in-out infinite;
-}
-
 .backgroundOverlay {
   position: absolute;
   inset: 0;
-  background: linear-gradient(
-    135deg,
-    rgba($primary-green, 0.85) 0%,
-    rgba($primary-green, 0.7) 50%,
-    rgba($soil-brown, 0.75) 100%
-  );
+  background: 
+    radial-gradient(circle at 20% 50%, rgba($accent-yellow, 0.1) 0%, transparent 50%),
+    radial-gradient(circle at 80% 20%, rgba($primary-green, 0.2) 0%, transparent 50%),
+    linear-gradient(135deg, rgba($primary-green, 0.95) 0%, rgba(darken($primary-green, 15%), 0.9) 100%);
 }
 
 // Floating Elements
@@ -51,9 +36,8 @@
 
 .floatingElement {
   position: absolute;
-  color: rgba($white, 0.15);
-  font-size: $text-2xl;
-  animation: float 8s ease-in-out infinite;
+  color: rgba($white, 0.08);
+  animation: float 12s ease-in-out infinite;
   animation-delay: var(--delay);
   
   &:nth-child(1) {
@@ -68,22 +52,13 @@
   
   &:nth-child(3) {
     top: 65%;
-    left: 5%;
-  }
-  
-  &:nth-child(4) {
-    bottom: 40%;
-    right: 25%;
-  }
-  
-  &:nth-child(5) {
-    bottom: 20%;
-    left: 20%;
+    left: 8%;
   }
   
   .icon {
-    width: 32px;
-    height: 32px;
+    width: 28px;
+    height: 28px;
+    opacity: 0.6;
   }
 }
 
@@ -94,28 +69,29 @@
   z-index: 3;
   display: grid;
   grid-template-columns: 1fr;
-  gap: $space-12;
+  gap: $space-16;
   align-items: center;
   min-height: 100vh;
   padding-top: $space-20;
-  padding-bottom: $space-16;
+  padding-bottom: $space-20;
   
   @include desktop-up {
-    grid-template-columns: 1fr 450px;
-    gap: $space-16;
+    grid-template-columns: 1fr 500px;
+    gap: $space-20;
     padding-top: $space-16;
+    padding-bottom: $space-24;
   }
   
   @include large-up {
     max-width: 1400px;
-    grid-template-columns: 1fr 500px;
-    gap: $space-20;
+    grid-template-columns: 1fr 550px;
+    gap: $space-24;
   }
 }
 
 .content {
   opacity: 0;
-  transform: translateY(40px);
+  transform: translateY(30px);
   transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
   
   &.visible {
@@ -124,20 +100,24 @@
   }
 }
 
-// Headlines
-.headline {
-  margin-bottom: $space-10;
-}
-
+// Badge
 .badge {
   display: inline-flex;
   align-items: center;
-  background: rgba($white, 0.15);
+  gap: $space-2;
+  background: rgba($white, 0.12);
   border: 1px solid rgba($white, 0.2);
   border-radius: $radius-full;
-  padding: $space-2 $space-4;
-  margin-bottom: $space-6;
+  padding: $space-3 $space-5;
+  margin-bottom: $space-8;
   animation: slideUp 0.8s ease-out 0.2s both;
+  backdrop-filter: blur(10px);
+}
+
+.badgeIcon {
+  width: 16px;
+  height: 16px;
+  color: $accent-yellow;
 }
 
 .badgeText {
@@ -151,35 +131,44 @@
   }
 }
 
+// Headlines
+.headline {
+  margin-bottom: $space-10;
+}
+
 .title {
   @include heading-1;
   color: $white;
   margin-bottom: $space-6;
   display: flex;
   flex-direction: column;
-  gap: $space-2;
+  gap: $space-1;
 }
 
 .titleMain {
   display: block;
   animation: slideUp 0.8s ease-out 0.4s both;
+  font-size: clamp(2.5rem, 5vw, 4rem);
+  line-height: 1.1;
 }
 
 .titleSub {
   display: block;
   color: $accent-yellow;
   animation: slideUp 0.8s ease-out 0.6s both;
+  font-size: clamp(2rem, 4vw, 3.5rem);
+  line-height: 1.2;
   position: relative;
   
   &::after {
     content: '';
     position: absolute;
-    bottom: -4px;
+    bottom: -6px;
     left: 0;
     width: 0;
     height: 3px;
-    background: $accent-yellow;
-    animation: expandLine 1s ease-out 1.2s both;
+    background: linear-gradient(90deg, $accent-yellow, transparent);
+    animation: expandLine 1.2s ease-out 1.2s both;
   }
 }
 
@@ -188,14 +177,16 @@
   color: rgba($white, 0.9);
   margin-bottom: $space-4;
   animation: fadeIn 0.8s ease-out 0.8s both;
+  font-size: $text-xl;
 }
 
 .description {
   @include body-base;
   color: rgba($white, 0.8);
-  max-width: 550px;
+  max-width: 520px;
   animation: fadeIn 0.8s ease-out 1s both;
   line-height: $leading-relaxed;
+  font-size: $text-lg;
   
   strong {
     color: $accent-yellow;
@@ -206,9 +197,8 @@
 // Actions
 .actions {
   display: flex;
-  flex-wrap: wrap;
   gap: $space-4;
-  margin-bottom: $space-12;
+  margin-bottom: $space-10;
   animation: slideUp 0.8s ease-out 1.2s both;
   
   @include mobile-only {
@@ -218,27 +208,29 @@
 
 .primaryCta {
   @include button-base;
-  position: relative;
+  display: flex;
+  align-items: center;
+  gap: $space-3;
   padding: $space-4 $space-8;
-  background: $accent-yellow;
+  background: linear-gradient(45deg, $accent-yellow, lighten($accent-yellow, 10%));
   color: $gray-900;
   font-size: $text-lg;
   font-weight: $font-bold;
-  border-radius: $radius-xl;
+  border-radius: $radius-2xl;
   box-shadow: $shadow-lg;
+  position: relative;
   overflow: hidden;
   
   &::before {
     content: '';
     position: absolute;
     inset: 0;
-    background: linear-gradient(45deg, transparent 30%, rgba($white, 0.2) 50%, transparent 70%);
+    background: linear-gradient(45deg, transparent 30%, rgba($white, 0.3) 50%, transparent 70%);
     transform: translateX(-100%);
     transition: transform 0.6s ease;
   }
   
   &:hover {
-    background: lighten($accent-yellow, 5%);
     transform: translateY(-2px);
     box-shadow: $shadow-xl;
     
@@ -248,492 +240,603 @@
   }
   
   .ctaIcon {
-    width: 22px;
-    height: 22px;
-  }
-  
-  .ctaSubtext {
-    position: absolute;
-    bottom: -20px;
-    left: 50%;
-    transform: translateX(-50%);
-    font-size: $text-xs;
-    opacity: 0.7;
-    white-space: nowrap;
+    width: 20px;
+    height: 20px;
   }
 }
 
 .secondaryCta {
   @include button-base;
-  position: relative;
+  display: flex;
+  align-items: center;
+  gap: $space-3;
   padding: $space-4 $space-8;
   background: rgba($white, 0.1);
-  border: 2px solid rgba($white, 0.3);
+  border: 2px solid rgba($white, 0.25);
   color: $white;
   font-size: $text-lg;
-  border-radius: $radius-xl;
+  font-weight: $font-medium;
+  border-radius: $radius-2xl;
   text-decoration: none;
-  backdrop-filter: blur(10px);
+  backdrop-filter: blur(15px);
+  transition: all $transition-base;
   
   &:hover {
-    background: rgba($white, 0.2);
-    border-color: rgba($white, 0.5);
+    background: rgba($white, 0.15);
+    border-color: rgba($white, 0.4);
     transform: translateY(-1px);
     box-shadow: $shadow-md;
   }
   
   .ctaIcon {
-    width: 22px;
-    height: 22px;
+    width: 20px;
+    height: 20px;
     transition: transform $transition-base;
   }
   
   &:hover .ctaIcon {
     transform: translateX(4px);
   }
-  
-  .ctaSubtext {
-    position: absolute;
-    bottom: -20px;
-    left: 50%;
-    transform: translateX(-50%);
-    font-size: $text-xs;
-    opacity: 0.7;
-    white-space: nowrap;
-  }
 }
 
-// Stats Carousel
+// Compact Stats
 .statsContainer {
+  margin-bottom: $space-6;
   animation: fadeIn 0.8s ease-out 1.4s both;
 }
 
-.statsCarousel {
-  position: relative;
-  height: 80px;
-  overflow: hidden;
-  background: rgba($white, 0.1);
-  border-radius: $radius-2xl;
-  border: 1px solid rgba($white, 0.2);
-  backdrop-filter: blur(10px);
-}
-
-.stat {
-  @include absolute-center;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: $space-2;
-  color: $white;
-  opacity: 0;
-  transform: translateY(20px);
-  transition: all 0.5s ease;
-  
-  &.active {
-    opacity: 1;
-    transform: translateY(0);
-  }
-  
-  .statIcon {
-    font-size: $text-xl;
-  }
-  
-  .statNumber {
-    font-family: $font-display;
-    font-size: $text-2xl;
-    font-weight: $font-extrabold;
-    line-height: 1;
-    
-    @include tablet-up {
-      font-size: $text-3xl;
-    }
-  }
-  
-  .statLabel {
-    font-family: $font-body;
-    font-size: $text-sm;
-    opacity: 0.8;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-  }
-}
-
-.statsIndicators {
-  display: flex;
-  justify-content: center;
-  gap: $space-2;
-  margin-top: $space-4;
-}
-
-.indicator {
-  width: 8px;
-  height: 8px;
-  border-radius: $radius-full;
-  background: rgba($white, 0.3);
-  border: none;
-  cursor: pointer;
-  transition: all $transition-base;
-  
-  &.active {
-    background: $accent-yellow;
-    transform: scale(1.2);
-  }
-  
-  &:hover {
-    background: rgba($white, 0.6);
-  }
-}
-
-// Trust Indicators
-.trustIndicators {
-  text-align: center;
-  animation: fadeIn 0.8s ease-out 1.6s both;
-}
-
-.trustText {
-  display: block;
-  font-family: $font-body;
-  font-size: $text-sm;
-  color: rgba($white, 0.7);
-  margin-bottom: $space-4;
-}
-
-.trustLogos {
-  display: flex;
-  justify-content: center;
+.statsRow {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
   gap: $space-6;
-  flex-wrap: wrap;
+  
+  @include tablet-up {
+    grid-template-columns: repeat(4, 1fr);
+  }
 }
 
-.trustLogo {
-  padding: $space-2 $space-4;
-  background: rgba($white, 0.1);
-  border: 1px solid rgba($white, 0.2);
-  border-radius: $radius-lg;
-  font-family: $font-display;
-  font-size: $text-sm;
-  font-weight: $font-bold;
-  color: rgba($white, 0.8);
+.statItem {
+  display: flex;
+  align-items: center;
+  gap: $space-3;
+  background: rgba($white, 0.08);
+  border: 1px solid rgba($white, 0.15);
+  border-radius: $radius-2xl;
+  padding: $space-4;
+  backdrop-filter: blur(20px);
   transition: all $transition-base;
   
   &:hover {
-    background: rgba($white, 0.2);
-    color: $white;
+    background: rgba($white, 0.12);
     transform: translateY(-2px);
   }
 }
 
-// Hero Illustration
-.heroIllustration {
+.statIcon {
+  width: 24px;
+  height: 24px;
+  color: $accent-yellow;
+  flex-shrink: 0;
+}
+
+.statContent {
+  display: flex;
+  flex-direction: column;
+  gap: $space-1;
+}
+
+.statNumber {
+  font-family: $font-display;
+  font-size: $text-2xl;
+  font-weight: $font-black;
+  color: $white;
+  line-height: 1;
+  
+  @include mobile-only {
+    font-size: $text-xl;
+  }
+}
+
+.statLabel {
+  font-family: $font-body;
+  font-size: $text-xs;
+  color: rgba($white, 0.8);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  font-weight: $font-medium;
+}
+
+// Lottie Visualization Container
+.lottieVisualization {
   position: relative;
   display: none;
   
   @include desktop-up {
     display: block;
-    animation: fadeIn 1s ease-out 1.8s both;
+    animation: slideInRight 1s ease-out 2s both;
   }
 }
 
-.plantContainer {
+.lottieContainer {
   position: relative;
-  width: 400px;
-  height: 500px;
+  width: 500px;
+  height: 600px;
   margin: 0 auto;
   
   @include large-up {
-    width: 450px;
-    height: 550px;
+    width: 550px;
+    height: 650px;
   }
 }
 
-.plant {
+// Perfect Agricultural Color Blending Wrapper
+.lottieWrapper {
   position: relative;
   width: 100%;
   height: 100%;
-}
-
-.stem {
-  position: absolute;
-  bottom: 0;
-  left: 50%;
-  width: 8px;
-  height: 0;
-  background: linear-gradient(to top, $soil-brown, $primary-green);
-  border-radius: $radius-base;
-  transform: translateX(-50%);
-  animation: growStem 2s ease-out 2s both;
-}
-
-.leaf {
-  position: absolute;
-  width: 80px;
-  height: 60px;
-  background: $primary-green;
-  border-radius: 0 100% 0 100%;
-  opacity: 0;
-  transform: scale(0);
-  animation: growLeaf 1s ease-out both;
-  animation-delay: calc(2s + var(--leaf-delay));
+  z-index: 2;
+  border-radius: $radius-3xl;
+  overflow: hidden;
+  box-shadow: 
+    0 25px 50px rgba(0, 0, 0, 0.25),
+    0 0 0 1px rgba($white, 0.1),
+    inset 0 1px 0 rgba($white, 0.1);
+  backdrop-filter: blur(5px);
   
-  &:nth-child(2) {
-    bottom: 150px;
-    left: 35%;
-    transform: rotate(-25deg) scale(0);
-  }
-  
-  &:nth-child(3) {
-    bottom: 200px;
-    right: 35%;
-    transform: rotate(25deg) scale(0);
-  }
-  
-  &:nth-child(4) {
-    bottom: 250px;
-    left: 40%;
-    transform: rotate(-15deg) scale(0);
+  // Subtle agricultural tone overlay
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      135deg,
+      rgba($primary-green, 0.03) 0%,
+      rgba(#8B4513, 0.02) 30%, // Brown
+      rgba($primary-green, 0.04) 70%,
+      rgba(darken($primary-green, 10%), 0.02) 100%
+    );
+    border-radius: $radius-3xl;
+    z-index: 1;
+    pointer-events: none;
+    mix-blend-mode: multiply;
   }
 }
 
-.flower {
-  position: absolute;
-  top: 50px;
-  left: 50%;
-  transform: translateX(-50%) scale(0);
-  font-size: $text-4xl;
-  animation: bloom 1s ease-out 3.5s both;
-}
-
-// Data Overlay
-.dataOverlay {
-  position: absolute;
-  top: 20%;
-  right: -80px;
-  background: rgba($white, 0.95);
-  border-radius: $radius-2xl;
-  padding: $space-6;
-  box-shadow: $shadow-xl;
-  border: 1px solid $gray-200;
-  animation: slideInRight 1s ease-out 4s both;
+// Revolutionary Agricultural Color Transformation
+.smartAgricultureAnimation {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  position: relative;
+  z-index: 0;
   
-  @include large-up {
-    right: -100px;
+  // Perfect Blue → Green-Brown transformation
+  filter: 
+    // Step 1: Rotate blue (240°) to green (120°) = -120° or +240°
+    hue-rotate(-120deg)
+    // Step 2: Enhance earthly tones
+    contrast(1.15)
+    saturate(0.9) // Reduced saturation for natural look
+    brightness(1.05)
+    // Step 3: Add warmth with sepia
+    sepia(0.15)
+    // Step 4: Subtle drop shadow
+    drop-shadow(0 8px 25px rgba(0, 0, 0, 0.15));
+  
+  // Smooth transitions
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  
+  // Enhanced hover state
+  &:hover {
+    filter: 
+      hue-rotate(-115deg)
+      contrast(1.2)
+      saturate(0.95)
+      brightness(1.08)
+      sepia(0.18)
+      drop-shadow(0 12px 30px rgba(0, 0, 0, 0.2));
+    
+    transform: scale(1.01);
+  }
+  
+  // Responsive fine-tuning for different screens
+  @include mobile-only {
+    filter: 
+      hue-rotate(-125deg)
+      contrast(1.1)
+      saturate(0.85)
+      brightness(1.03)
+      sepia(0.12);
+  }
+  
+  @include tablet-up {
+    filter: 
+      hue-rotate(-118deg)
+      contrast(1.18)
+      saturate(0.92)
+      brightness(1.06)
+      sepia(0.16);
   }
 }
 
-.chartContainer {
-  width: 180px;
+// Alternative Agricultural Themes
+.lottieWrapper {
+  // For forest green themes
+  &.theme-forest-green {
+    .smartAgricultureAnimation {
+      filter: 
+        hue-rotate(-110deg)
+        contrast(1.2)
+        saturate(0.8)
+        brightness(0.95)
+        sepia(0.2);
+    }
+  }
+  
+  // For olive/brown themes
+  &.theme-olive-brown {
+    .smartAgricultureAnimation {
+      filter: 
+        hue-rotate(-140deg)
+        contrast(1.25)
+        saturate(0.7)
+        brightness(1.1)
+        sepia(0.3);
+    }
+  }
+  
+  // For natural earth tones
+  &.theme-earth-tones {
+    .smartAgricultureAnimation {
+      filter: 
+        hue-rotate(-130deg)
+        contrast(1.15)
+        saturate(0.75)
+        brightness(1.08)
+        sepia(0.25);
+    }
+  }
 }
 
-.chartTitle {
-  font-family: $font-display;
-  font-size: $text-sm;
-  font-weight: $font-semibold;
-  color: $gray-700;
-  margin-bottom: $space-3;
-  text-align: center;
-}
-
-.chartBars {
+// Enhanced Loading States
+.lottieLoader {
   display: flex;
-  align-items: end;
-  justify-content: space-between;
-  gap: $space-2;
-  height: 80px;
-  margin-bottom: $space-3;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  background: rgba($primary-green, 0.05);
+  border-radius: $radius-3xl;
+  backdrop-filter: blur(10px);
+  gap: $space-6;
 }
 
-.chartBar {
-  flex: 1;
-  background: linear-gradient(to top, $primary-green, $green-400);
-  border-radius: $radius-sm;
-  height: 0;
-  animation: growBar 0.8s ease-out both;
-  animation-delay: calc(4.2s + var(--bar-delay));
+.loadingSpinner {
+  width: 60px;
+  height: 60px;
+  border: 4px solid rgba($primary-green, 0.3);
+  border-top: 4px solid $primary-green;
+  border-radius: 50%;
+  animation: spin 1.2s linear infinite;
+  box-shadow: 0 0 20px rgba($primary-green, 0.3);
 }
 
-.chartFooter {
+.loadingText {
   font-family: $font-body;
-  font-size: $text-xs;
-  color: $gray-500;
+  font-size: $text-lg;
+  color: rgba($white, 0.9);
+  font-weight: $font-medium;
   text-align: center;
+}
+
+.lottieError {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  background: rgba($primary-green, 0.05);
+  border-radius: $radius-3xl;
+  backdrop-filter: blur(10px);
+  gap: $space-3;
+  
+  span {
+    font-family: $font-display;
+    font-size: $text-2xl;
+    color: rgba($white, 0.9);
+    font-weight: $font-bold;
+    text-align: center;
+  }
+}
+
+.errorSubtext {
+  font-family: $font-body;
+  font-size: $text-base !important;
+  color: rgba($white, 0.7) !important;
+  font-weight: $font-medium !important;
 }
 
 // Data Points
 .dataPoints {
   position: absolute;
   inset: 0;
+  pointer-events: none;
+  z-index: 3;
 }
 
 .dataPoint {
   position: absolute;
-  background: rgba($white, 0.9);
-  border-radius: $radius-xl;
-  padding: $space-3 $space-4;
-  box-shadow: $shadow-md;
-  border: 1px solid $gray-200;
   opacity: 0;
   transform: scale(0.8);
-  animation: scaleIn 0.6s ease-out both;
+  animation: scaleIn 0.8s ease-out both;
   animation-delay: var(--point-delay);
   
-  &:nth-child(1) {
-    top: 10%;
-    left: -60px;
+  &.position1 {
+    top: 20%;
+    left: -70px;
   }
   
-  &:nth-child(2) {
-    top: 50%;
+  &.position2 {
+    top: 45%;
     right: -80px;
   }
   
-  &:nth-child(3) {
-    bottom: 30%;
-    left: -40px;
-  }
-  
-  .dataValue {
-    display: block;
-    font-family: $font-display;
-    font-size: $text-lg;
-    font-weight: $font-bold;
-    color: $primary-green;
-    line-height: 1;
-  }
-  
-  .dataLabel {
-    display: block;
-    font-family: $font-body;
-    font-size: $text-xs;
-    color: $gray-600;
-    margin-top: $space-1;
+  &.position3 {
+    bottom: 35%;
+    left: -75px;
   }
 }
 
-// Scroll Indicator
+.dataCard {
+  display: flex;
+  align-items: center;
+  gap: $space-3;
+  background: rgba($white, 0.96);
+  border: 1px solid rgba($primary-green, 0.2);
+  border-radius: $radius-2xl;
+  padding: $space-4 $space-6;
+  box-shadow: 
+    0 10px 30px rgba(0, 0, 0, 0.15),
+    0 0 0 1px rgba($primary-green, 0.1);
+  backdrop-filter: blur(15px);
+  min-width: 150px;
+}
+
+.dataIcon {
+  width: 24px;
+  height: 24px;
+  color: $primary-green;
+  flex-shrink: 0;
+}
+
+.dataContent {
+  display: flex;
+  flex-direction: column;
+  gap: $space-1;
+}
+
+.dataValue {
+  font-family: $font-display;
+  font-size: $text-xl;
+  font-weight: $font-bold;
+  color: darken($primary-green, 20%);
+  line-height: 1;
+}
+
+.dataLabel {
+  font-family: $font-body;
+  font-size: $text-sm;
+  color: darken($primary-green, 10%);
+  font-weight: $font-medium;
+}
+
+// Perfect Scroll Indicator
 .scrollIndicator {
   position: absolute;
   bottom: $space-8;
   left: 50%;
   transform: translateX(-50%);
-  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: $space-2;
   color: rgba($white, 0.7);
-  animation: bounce 2s infinite 2s;
+  animation: subtleBounce 3s ease-in-out infinite 6s;
   cursor: pointer;
+  transition: all $transition-base;
+  z-index: 10;
+  margin-top: $space-8;
   
   &:hover {
-    color: $white;
+    color: rgba($white, 0.95);
+    transform: translateX(-50%) translateY(-3px);
+    
+    .scrollArrow {
+      background: rgba($white, 0.1);
+      border-color: rgba($white, 0.3);
+    }
+    
+    .scrollIcon {
+      opacity: 1;
+      transform: translateY(2px);
+    }
+  }
+  
+  &:active {
+    transform: translateX(-50%) translateY(-1px);
   }
 }
 
 .scrollText {
   font-family: $font-body;
   font-size: $text-sm;
-  margin-bottom: $space-2;
+  font-weight: $font-medium;
+  opacity: 0.9;
+  text-align: center;
 }
 
 .scrollArrow {
-  font-size: $text-xl;
-  animation: bounce 2s infinite;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border: 1px solid rgba($white, 0.2);
+  border-radius: 50%;
+  backdrop-filter: blur(10px);
+  background: rgba($white, 0.05);
+  transition: all $transition-base;
+}
+
+.scrollIcon {
+  width: 18px;
+  height: 18px;
+  opacity: 0.8;
+  transition: all $transition-base;
+  animation: chevronFloat 2s ease-in-out infinite 1s;
 }
 
 // Animations
-@keyframes parallaxSlow {
-  0%, 100% { transform: translateY(0) scale(1.05); }
-  50% { transform: translateY(-30px) scale(1.08); }
-}
-
 @keyframes float {
   0%, 100% { 
     transform: translateY(0) rotate(0deg); 
-    opacity: 0.15;
+    opacity: 0.3;
   }
   50% { 
-    transform: translateY(-30px) rotate(10deg); 
-    opacity: 0.25;
+    transform: translateY(-20px) rotate(5deg); 
+    opacity: 0.6;
   }
 }
 
 @keyframes expandLine {
   from { width: 0; }
-  to { width: 100%; }
+  to { width: 60%; }
 }
 
-@keyframes growStem {
-  from { height: 0; }
-  to { height: 300px; }
-}
-
-@keyframes growLeaf {
+@keyframes scaleIn {
   from { 
     opacity: 0;
-    transform: scale(0) rotate(var(--rotation, 0deg)); 
+    transform: scale(0.8); 
   }
   to { 
     opacity: 1;
-    transform: scale(1) rotate(var(--rotation, 0deg)); 
+    transform: scale(1); 
   }
-}
-
-@keyframes bloom {
-  from { 
-    opacity: 0;
-    transform: translateX(-50%) scale(0) rotate(-10deg); 
-  }
-  to { 
-    opacity: 1;
-    transform: translateX(-50%) scale(1) rotate(0deg); 
-  }
-}
-
-@keyframes growBar {
-  from { height: 0; }
-  to { height: var(--bar-height); }
 }
 
 @keyframes slideInRight {
   from { 
     opacity: 0;
-    transform: translateX(40px) translateY(-50%); 
+    transform: translateX(40px); 
   }
   to { 
     opacity: 1;
-    transform: translateX(0) translateY(-50%); 
+    transform: translateX(0); 
   }
 }
 
-@keyframes bounce {
-  0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
-  40% { transform: translateY(-10px); }
-  60% { transform: translateY(-5px); }
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+@keyframes subtleBounce {
+  0%, 20%, 50%, 80%, 100% { 
+    transform: translateX(-50%) translateY(0); 
+  }
+  40% { 
+    transform: translateX(-50%) translateY(-5px); 
+  }
+  60% { 
+    transform: translateX(-50%) translateY(-2px); 
+  }
+}
+
+@keyframes chevronFloat {
+  0%, 100% { 
+    transform: translateY(0); 
+    opacity: 0.8;
+  }
+  50% { 
+    transform: translateY(2px); 
+    opacity: 1;
+  }
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
 }
 
 // Responsive Adjustments
 @include mobile-only {
   .hero {
     min-height: 100vh;
-    padding-top: 70px;
+    padding-top: 80px;
   }
   
-  .primaryCta,
-  .secondaryCta {
+  .container {
+    padding-bottom: $space-16;
+  }
+  
+  .titleMain {
+    font-size: clamp(2rem, 8vw, 2.5rem);
+  }
+  
+  .titleSub {
+    font-size: clamp(1.75rem, 7vw, 2rem);
+  }
+  
+  .actions {
     width: 100%;
-    justify-content: center;
     
-    .ctaSubtext {
-      display: none;
+    .primaryCta,
+    .secondaryCta {
+      flex: 1;
+      justify-content: center;
+      min-height: 56px;
     }
   }
   
-  .statsCarousel {
-    height: 100px;
+  .statsRow {
+    grid-template-columns: 1fr;
+    gap: $space-4;
   }
   
-  .trustLogos {
-    gap: $space-3;
+  .scrollIndicator {
+    bottom: $space-6;
+    
+    .scrollText {
+      font-size: $text-xs;
+    }
+    
+    .scrollArrow {
+      width: 32px;
+      height: 32px;
+    }
+    
+    .scrollIcon {
+      width: 16px;
+      height: 16px;
+    }
   }
-  
-  .trustLogo {
-    font-size: $text-xs;
-    padding: $space-1 $space-3;
+}
+
+@include tablet-up {
+  .container {
+    padding-top: $space-24;
   }
 }

@@ -2,8 +2,27 @@
 
 import { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
-import { Play, ArrowRight, Satellite, TrendingUp, BarChart3 } from 'lucide-react';
+import { 
+  Play, 
+  ArrowRight, 
+  Satellite, 
+  TrendingUp, 
+  BarChart3, 
+  Thermometer,
+  Droplets,
+  Eye,
+  Users,
+  MapPin,
+  Target,
+  Clock,
+  Globe,
+  ChevronDown
+} from 'lucide-react';
+import dynamic from 'next/dynamic';
 import styles from '@/styles/components/landing/Hero.module.scss';
+
+// Dynamic import for Lottie to avoid SSR issues
+const Lottie = dynamic(() => import('lottie-react'), { ssr: false });
 
 interface HeroProps {
   onTryDemo: () => void;
@@ -11,14 +30,21 @@ interface HeroProps {
 
 const Hero = ({ onTryDemo }: HeroProps) => {
   const [isVisible, setIsVisible] = useState(false);
-  const [currentStat, setCurrentStat] = useState(0);
+  const [animationData, setAnimationData] = useState(null);
+  const [isLottieLoading, setIsLottieLoading] = useState(true);
   const heroRef = useRef<HTMLElement>(null);
 
   const stats = [
-    { number: "1000+", label: "Farmers", icon: "🌾" },
-    { number: "50+", label: "Districts", icon: "📍" },
-    { number: "95%", label: "Accuracy", icon: "🎯" },
-    { number: "24/7", label: "Monitoring", icon: "⏰" },
+    { number: "1000+", label: "Farmers", icon: Users },
+    { number: "50+", label: "Districts", icon: MapPin },
+    { number: "95%", label: "Accuracy", icon: Target },
+    { number: "24/7", label: "Monitoring", icon: Clock },
+  ];
+
+  const dataPoints = [
+    { value: "28°C", label: "Temperature", icon: Thermometer },
+    { value: "65%", label: "Humidity", icon: Droplets },
+    { value: "0.8", label: "NDVI", icon: Eye },
   ];
 
   useEffect(() => {
@@ -29,34 +55,54 @@ const Hero = ({ onTryDemo }: HeroProps) => {
     return () => clearTimeout(timer);
   }, []);
 
-  // Auto-cycle through stats
+  // Load Lottie animation data - FIXED PATH
   useEffect(() => {
-    const interval = setInterval(() => {
-      setCurrentStat((prev) => (prev + 1) % stats.length);
-    }, 3000);
-    
-    return () => clearInterval(interval);
-  }, [stats.length]);
-
-  // Parallax effect
-  useEffect(() => {
-    const handleScroll = () => {
-      if (heroRef.current) {
-        const scrolled = window.pageYOffset;
-        const parallax = scrolled * 0.5;
-        heroRef.current.style.transform = `translateY(${parallax}px)`;
+    const loadAnimation = async () => {
+      try {
+        setIsLottieLoading(true);
+        // Fixed path: /animation/ instead of /animations/
+        const response = await fetch('/animation/smart-agriculture.json');
+        const data = await response.json();
+        setAnimationData(data);
+      } catch (error) {
+        console.error('Failed to load Lottie animation:', error);
+      } finally {
+        setIsLottieLoading(false);
       }
     };
 
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
+    // Only load on client side
+    if (typeof window !== 'undefined') {
+      loadAnimation();
+    }
   }, []);
+
+  // Scroll to next section function
+  const scrollToNextSection = () => {
+    // Find next section after hero
+    const nextSection = document.querySelector('section:nth-of-type(2)') || 
+                       document.querySelector('#features') || 
+                       document.querySelector('#about') ||
+                       document.querySelector('main > *:nth-child(2)');
+    
+    if (nextSection) {
+      nextSection.scrollIntoView({
+        behavior: 'smooth',
+        block: 'start'
+      });
+    } else {
+      // Fallback: scroll down by viewport height
+      window.scrollTo({
+        top: window.innerHeight,
+        behavior: 'smooth'
+      });
+    }
+  };
 
   return (
     <section className={styles.hero} ref={heroRef}>
-      {/* Background with Parallax Effect */}
+      {/* Background Elements */}
       <div className={styles.background}>
-        <div className={styles.backgroundImage}></div>
         <div className={styles.backgroundOverlay}></div>
         
         {/* Floating Animation Elements */}
@@ -70,23 +116,20 @@ const Hero = ({ onTryDemo }: HeroProps) => {
           <div className={styles.floatingElement} style={{ '--delay': '4s' } as any}>
             <BarChart3 className={styles.icon} />
           </div>
-          <div className={styles.floatingElement} style={{ '--delay': '1s' } as any}>
-            🌱
-          </div>
-          <div className={styles.floatingElement} style={{ '--delay': '3s' } as any}>
-            🚜
-          </div>
         </div>
       </div>
 
       <div className={styles.container}>
+        {/* Main Content */}
         <div className={`${styles.content} ${isVisible ? styles.visible : ''}`}>
+          {/* Badge */}
+          <div className={styles.badge}>
+            <Globe className={styles.badgeIcon} />
+            <span className={styles.badgeText}>Made in India for Farmers of India</span>
+          </div>
+          
           {/* Main Headline */}
           <div className={styles.headline}>
-            <div className={styles.badge}>
-              <span className={styles.badgeText}>🇮🇳 Made in India for Farmers of India</span>
-            </div>
-            
             <h1 className={styles.title}>
               <span className={styles.titleMain}>AI-powered Insights</span>
               <span className={styles.titleSub}>for Indian Agriculture</span>
@@ -110,104 +153,91 @@ const Hero = ({ onTryDemo }: HeroProps) => {
               onClick={onTryDemo}
             >
               <Play className={styles.ctaIcon} />
-              Try Demo
-              <span className={styles.ctaSubtext}>Interactive Experience</span>
+              <span>Try Demo</span>
             </button>
             
             <Link href="/fpi" className={styles.secondaryCta}>
               <span>Access FPI</span>
               <ArrowRight className={styles.ctaIcon} />
-              <span className={styles.ctaSubtext}>API Documentation</span>
             </Link>
           </div>
 
-          {/* Quick Stats Carousel */}
+          {/* Compact Stats */}
           <div className={styles.statsContainer}>
-            <div className={styles.statsCarousel}>
-              {stats.map((stat, index) => (
-                <div
-                  key={index}
-                  className={`${styles.stat} ${index === currentStat ? styles.active : ''}`}
-                >
-                  <span className={styles.statIcon}>{stat.icon}</span>
-                  <span className={styles.statNumber}>{stat.number}</span>
-                  <span className={styles.statLabel}>{stat.label}</span>
-                </div>
-              ))}
-            </div>
-            
-            <div className={styles.statsIndicators}>
-              {stats.map((_, index) => (
-                <button
-                  key={index}
-                  className={`${styles.indicator} ${index === currentStat ? styles.active : ''}`}
-                  onClick={() => setCurrentStat(index)}
-                />
-              ))}
-            </div>
-          </div>
-
-          {/* Trust Indicators */}
-          <div className={styles.trustIndicators}>
-            <span className={styles.trustText}>Trusted by leading institutions</span>
-            <div className={styles.trustLogos}>
-              <div className={styles.trustLogo}>IIT</div>
-              <div className={styles.trustLogo}>ISRO</div>
-              <div className={styles.trustLogo}>ICAR</div>
-              <div className={styles.trustLogo}>MSP</div>
+            <div className={styles.statsRow}>
+              {stats.map((stat, index) => {
+                const IconComponent = stat.icon;
+                return (
+                  <div key={index} className={styles.statItem}>
+                    <IconComponent className={styles.statIcon} />
+                    <div className={styles.statContent}>
+                      <span className={styles.statNumber}>{stat.number}</span>
+                      <span className={styles.statLabel}>{stat.label}</span>
+                    </div>
+                  </div>
+                );
+              })}
             </div>
           </div>
         </div>
 
-        {/* Plant Growth Animation */}
-        <div className={styles.heroIllustration}>
-          <div className={styles.plantContainer}>
-            <div className={styles.plant}>
-              <div className={styles.stem}></div>
-              <div className={styles.leaf} style={{ '--leaf-delay': '0.5s' } as any}></div>
-              <div className={styles.leaf} style={{ '--leaf-delay': '0.8s' } as any}></div>
-              <div className={styles.leaf} style={{ '--leaf-delay': '1.1s' } as any}></div>
-              <div className={styles.flower}>🌸</div>
-            </div>
-            
-            {/* Data Visualization Overlay */}
-            <div className={styles.dataOverlay}>
-              <div className={styles.chartContainer}>
-                <div className={styles.chartTitle}>NDVI Analysis</div>
-                <div className={styles.chartBars}>
-                  <div className={styles.chartBar} style={{ '--bar-height': '30%', '--bar-delay': '0.2s' } as any}></div>
-                  <div className={styles.chartBar} style={{ '--bar-height': '60%', '--bar-delay': '0.4s' } as any}></div>
-                  <div className={styles.chartBar} style={{ '--bar-height': '90%', '--bar-delay': '0.6s' } as any}></div>
-                  <div className={styles.chartBar} style={{ '--bar-height': '75%', '--bar-delay': '0.8s' } as any}></div>
-                  <div className={styles.chartBar} style={{ '--bar-height': '85%', '--bar-delay': '1s' } as any}></div>
+        {/* Smart Agriculture Lottie Animation */}
+        <div className={styles.lottieVisualization}>
+          <div className={styles.lottieContainer}>
+            {/* Main Lottie Animation */}
+            <div className={styles.lottieWrapper}>
+              {isLottieLoading ? (
+                <div className={styles.lottieLoader}>
+                  <div className={styles.loadingSpinner}></div>
+                  <span className={styles.loadingText}>Loading Smart Agriculture...</span>
                 </div>
-                <div className={styles.chartFooter}>Real-time monitoring</div>
-              </div>
+              ) : animationData ? (
+                <Lottie
+                  animationData={animationData}
+                  loop={true}
+                  autoplay={true}
+                  className={styles.smartAgricultureAnimation}
+                  style={{ width: '100%', height: '100%' }}
+                />
+              ) : (
+                <div className={styles.lottieError}>
+                  <span>Smart Agriculture</span>
+                  <span className={styles.errorSubtext}>Preview Available</span>
+                </div>
+              )}
             </div>
-          </div>
-          
-          {/* Floating Data Points */}
-          <div className={styles.dataPoints}>
-            <div className={styles.dataPoint} style={{ '--point-delay': '1.5s' } as any}>
-              <span className={styles.dataValue}>28°C</span>
-              <span className={styles.dataLabel}>Temperature</span>
-            </div>
-            <div className={styles.dataPoint} style={{ '--point-delay': '2s' } as any}>
-              <span className={styles.dataValue}>65%</span>
-              <span className={styles.dataLabel}>Humidity</span>
-            </div>
-            <div className={styles.dataPoint} style={{ '--point-delay': '2.5s' } as any}>
-              <span className={styles.dataValue}>0.8</span>
-              <span className={styles.dataLabel}>NDVI</span>
+
+            {/* Data Points Overlay */}
+            <div className={styles.dataPoints}>
+              {dataPoints.map((point, index) => {
+                const IconComponent = point.icon;
+                return (
+                  <div
+                    key={index}
+                    className={`${styles.dataPoint} ${styles[`position${index + 1}`]}`}
+                    style={{ '--point-delay': `${8 + index * 0.5}s` } as any}
+                  >
+                    <div className={styles.dataCard}>
+                      <IconComponent className={styles.dataIcon} />
+                      <div className={styles.dataContent}>
+                        <span className={styles.dataValue}>{point.value}</span>
+                        <span className={styles.dataLabel}>{point.label}</span>
+                      </div>
+                    </div>
+                  </div>
+                );
+              })}
             </div>
           </div>
         </div>
       </div>
 
-      {/* Scroll Indicator */}
-      <div className={styles.scrollIndicator}>
+      {/* Fixed Scroll Indicator with Click Handler */}
+      <div className={styles.scrollIndicator} onClick={scrollToNextSection}>
         <div className={styles.scrollText}>Discover More</div>
-        <div className={styles.scrollArrow}>↓</div>
+        <div className={styles.scrollArrow}>
+          <ChevronDown className={styles.scrollIcon} />
+        </div>
       </div>
     </section>
   );
