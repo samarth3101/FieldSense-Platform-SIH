@@ -1,0 +1,1 @@
+curl -o public/images/placeholder-avatar.jpg "https://via.placeholder.com/150x150/2F9D46/ffffff?text=User"

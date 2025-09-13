@@ -17,10 +17,9 @@ export default function Home() {
   const [showDemo, setShowDemo] = useState(false);
 
   useEffect(() => {
-    // Simulate loading completion - adjust timing as needed
     const timer = setTimeout(() => {
       setIsLoading(false);
-    }, 2500);
+    }, 1500);
     
     return () => clearTimeout(timer);
   }, []);
@@ -34,45 +33,39 @@ export default function Home() {
   };
 
   if (isLoading) {
-    return (
-      <LoaderScreen>
-        {/* You can put a loading message or spinner here if needed */}
-        {/* Empty fragment to satisfy required children prop */}
-        <></>
-      </LoaderScreen>
-    );
+    return <LoaderScreen><></></LoaderScreen>;
   }
 
   return (
-    <div className="landing-page">
-      {/* Hero Section */}
-      <Hero onTryDemo={handleTryDemo} />
+    <div className="pt-20">
+      <section id="home">
+        <Hero onTryDemo={handleTryDemo} />
+      </section>
       
-      {/* About Section - 4-step flow */}
-      <AboutSection />
+      <section id="about">
+        <AboutSection />
+      </section>
       
-      {/* Features Grid - Persona tabs */}
-      <FeaturesGrid />
+      <section id="features">
+        <FeaturesGrid />
+      </section>
       
-      {/* KrishiMitra Section - The AI brain */}
-      <KrishiMitraSection onTryDemo={handleTryDemo} />
+      <section id="ai">
+        <KrishiMitraSection onTryDemo={handleTryDemo} />
+      </section>
       
-      {/* FPI Spotlight */}
-      <FPISpotlight />
+      <section id="fpi">
+        <FPISpotlight />
+      </section>
       
-      {/* How It Works - Vertical stepper */}
       <HowItWorks />
-      
-      {/* Impact Stats */}
       <ImpactStats />
-      
-      {/* Testimonials */}
       <Testimonials />
       
-      {/* Final CTA Banner */}
-      <CTABanner />
+      <section id="contact">
+        <CTABanner />
+      </section>
       
-      {/* Demo Modal */}
       {showDemo && (
         <div 
           className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4"
@@ -90,9 +83,7 @@ export default function Home() {
                 onClick={handleCloseDemo}
                 className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
               >
-                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                </svg>
+                ✕
               </button>
             </div>
             
