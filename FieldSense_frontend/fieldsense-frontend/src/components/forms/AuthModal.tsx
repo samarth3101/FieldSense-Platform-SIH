@@ -184,7 +184,7 @@ export default function AuthModal({ onClose }: AuthModalProps) {
           </button>
         </div>
 
-        {/* Enhanced Social Auth Container */}
+        {/* Enhanced Social Auth Container - WITH ANIMATION */}
         <div 
           className={styles.socialAuthContainer}
           style={{ 
@@ -193,18 +193,17 @@ export default function AuthModal({ onClose }: AuthModalProps) {
           }}
         >
           <div className={styles.socialAuth} ref={socialAuthRef}>
-            {/* Mobile: Icons only in one row */}
-            <div className={styles.socialButtonsContainer}>
+            {/* Horizontal Social Buttons - Icons Only */}
+            <div className={styles.socialButtonsRow}>
               <button 
                 className={styles.socialBtn}
                 onClick={() => handleSocialAuth("github")}
                 type="button"
                 title="Continue with GitHub"
               >
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
                   <path d="M12 2C6.477 2 2 6.484 2 12.017C2 16.624 5.865 20.462 10.839 21.74C11.339 21.835 11.521 21.521 11.521 21.252C11.521 21.017 11.521 20.624 11.521 20.062C7.726 20.748 7.121 18.435 7.121 18.435C6.696 17.318 6.026 17.018 6.026 17.018C5.121 16.412 6.097 16.412 6.097 16.412C7.097 16.482 7.621 17.435 7.621 17.435C8.521 18.935 9.97 18.482 11.097 18.018C11.182 17.348 11.436 16.895 11.715 16.624C8.1 16.353 4.34 15.018 4.34 10.624C4.34 9.435 4.765 8.482 7.097 7.435C6.996 7.165 6.621 6.018 7.198 4.435C7.198 4.435 8.026 4.165 11.521 6.435C12.339 6.201 13.182 6.084 14.021 6.084C14.859 6.084 15.703 6.201 16.521 6.435C20.016 4.165 20.844 4.435 20.844 4.435C21.421 6.018 21.046 7.165 20.945 7.435C23.277 8.482 23.702 9.435 23.702 10.624C23.702 15.018 19.942 16.353 16.327 16.624C16.702 16.935 17.021 17.556 17.021 18.488C17.021 19.838 17.021 20.918 17.021 21.252C17.021 21.521 17.203 21.835 17.703 21.74C22.677 20.462 26.542 16.624 26.542 12.017C26.542 6.484 22.065 2 16.542 2H12Z" fill="currentColor"/>
                 </svg>
-                <span className={styles.socialText}>Continue with GitHub</span>
               </button>
               
               <button 
@@ -213,13 +212,12 @@ export default function AuthModal({ onClose }: AuthModalProps) {
                 type="button"
                 title="Continue with Google"
               >
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
                   <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
                   <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/>
                   <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/>
                   <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/>
                 </svg>
-                <span className={styles.socialText}>Continue with Google</span>
               </button>
               
               <button 
@@ -228,13 +226,12 @@ export default function AuthModal({ onClose }: AuthModalProps) {
                 type="button"
                 title="Continue with Microsoft"
               >
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
                   <path d="M2 2H11V11H2V2Z" fill="#F25022"/>
                   <path d="M13 2H22V11H13V2Z" fill="#7FBA00"/>
                   <path d="M2 13H11V22H2V13Z" fill="#00A4EF"/>
                   <path d="M13 13H22V22H13V13Z" fill="#FFB900"/>
                 </svg>
-                <span className={styles.socialText}>Continue with Microsoft</span>
               </button>
             </div>
             

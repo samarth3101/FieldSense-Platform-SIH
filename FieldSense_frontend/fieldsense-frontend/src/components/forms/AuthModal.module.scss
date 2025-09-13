@@ -1,9 +1,8 @@
-// 🎚️ MANUAL HEIGHT CONTROLS FOR DESKTOP - INCREASED HEIGHT
-// Adjust these values to control desktop modal size:
-$desktop-modal-width: 400px;          // Reduced from 420px for tighter fit
-$desktop-modal-max-height: 95vh;      // INCREASED from 90vh to 95vh for more space
-$desktop-modal-padding: 1.875rem;     // INCREASED from 1.75rem for better spacing
-$desktop-content-gaps: 1.125rem;      // INCREASED from 1rem for better breathing room
+// 🎚️ MANUAL HEIGHT CONTROLS FOR DESKTOP
+$desktop-modal-width: 400px;
+$desktop-modal-max-height: 90vh;
+$desktop-modal-padding: 1.875rem;
+$desktop-content-gaps: 1.125rem;
 
 .overlay {
   position: fixed;
@@ -18,13 +17,13 @@ $desktop-content-gaps: 1.125rem;      // INCREASED from 1rem for better breathin
   opacity: 0;
   animation: overlayAppear 0.3s ease-out forwards;
   
-  // Reverse animation for closing
   &.overlayClosing {
     animation: overlayDisappear 0.3s ease-in forwards;
   }
   
   @media (min-width: 769px) {
     align-items: center;
+    padding-top: 8vh; // Move modal slightly down
   }
 }
 
@@ -44,10 +43,10 @@ $desktop-content-gaps: 1.125rem;      // INCREASED from 1rem for better breathin
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
   
-  // 📱 MOBILE: AUTO HEIGHT - FIX FOR PROPER SIZING
+  // 📱 MOBILE: AUTO HEIGHT
   height: auto;
-  max-height: 90vh;
-  min-height: 60vh; // Ensure minimum height but not full screen
+  max-height: 85vh;
+  min-height: 50vh;
   
   // PWA safe area handling
   padding-bottom: max(2rem, env(safe-area-inset-bottom));
@@ -56,41 +55,37 @@ $desktop-content-gaps: 1.125rem;      // INCREASED from 1rem for better breathin
     transform: translateY(0) scale(0.999);
   }
   
-  // 🔄 REVERSE ANIMATION FOR MOBILE CLOSE
   &.modalClosing {
     animation: modalSlideDown 0.4s cubic-bezier(0.4, 0, 0.2, 1) forwards;
   }
   
-  // 📏 SIGNUP MODE: Reserve space for terms text
   &.signupMode {
     .termsContainer {
-      min-height: 40px; // Reserve space for terms
+      min-height: 40px;
     }
   }
   
-  // 🖥️ DESKTOP STYLES - INCREASED HEIGHT
+  // 🖥️ DESKTOP STYLES
   @media (min-width: 769px) {
     border-radius: 16px;
-    width: $desktop-modal-width;          // 🎚️ Control width here
+    width: $desktop-modal-width;
     max-width: 90vw;
     height: auto;
     min-height: auto;
-    max-height: $desktop-modal-max-height; // 🎚️ INCREASED Control height here
-    padding: $desktop-modal-padding;       // 🎚️ INCREASED Control padding here
+    max-height: $desktop-modal-max-height;
+    padding: $desktop-modal-padding;
     transform: translateY(10px);
     animation: modalSlideIn 0.3s ease-out forwards;
     border: 1px solid #e5e7eb;
     box-shadow: 
       0 20px 25px -5px rgba(0, 0, 0, 0.1),
       0 10px 10px -5px rgba(0, 0, 0, 0.04);
-    overflow-y: visible; // 🚫 NO SCROLL ON DESKTOP
+    overflow-y: visible;
     
-    // 🔄 REVERSE ANIMATION FOR DESKTOP CLOSE
     &.modalClosing {
       animation: modalSlideOut 0.3s ease-in forwards;
     }
     
-    // 📏 SIGNUP MODE: Reserve space for terms text on desktop too
     &.signupMode {
       .termsContainer {
         min-height: 35px;
@@ -99,7 +94,7 @@ $desktop-content-gaps: 1.125rem;      // INCREASED from 1rem for better breathin
   }
 }
 
-// Mobile handle indicator - clickable
+// Mobile handle indicator
 .modalHandle {
   width: 36px;
   height: 4px;
@@ -135,11 +130,6 @@ $desktop-content-gaps: 1.125rem;      // INCREASED from 1rem for better breathin
   transition: all 0.25s ease;
   z-index: 10;
   
-  // Better touch target
-  -webkit-touch-callout: none;
-  -webkit-user-select: none;
-  user-select: none;
-  
   &:hover, &:active {
     background: #f3f4f6;
     color: #374151;
@@ -149,7 +139,7 @@ $desktop-content-gaps: 1.125rem;      // INCREASED from 1rem for better breathin
 
 .header {
   text-align: center;
-  margin-bottom: $desktop-content-gaps; // 🎚️ Control spacing here
+  margin-bottom: $desktop-content-gaps;
   
   .logoContainer {
     display: flex;
@@ -174,7 +164,6 @@ $desktop-content-gaps: 1.125rem;      // INCREASED from 1rem for better breathin
           height: 28px;
         }
         
-        // 🖥️ Desktop icon
         @media (min-width: 769px) {
           width: 24px;
           height: 24px;
@@ -197,7 +186,6 @@ $desktop-content-gaps: 1.125rem;      // INCREASED from 1rem for better breathin
         font-size: 2rem;
       }
       
-      // 🖥️ Desktop title
       @media (min-width: 769px) {
         font-size: 1.75rem;
       }
@@ -216,7 +204,6 @@ $desktop-content-gaps: 1.125rem;      // INCREASED from 1rem for better breathin
       padding: 0 1rem;
     }
     
-    // 🖥️ Desktop subtitle
     @media (min-width: 769px) {
       font-size: 0.875rem;
     }
@@ -226,7 +213,7 @@ $desktop-content-gaps: 1.125rem;      // INCREASED from 1rem for better breathin
 .roleToggle {
   display: flex;
   gap: 0.5rem;
-  margin-bottom: $desktop-content-gaps; // 🎚️ Control spacing here
+  margin-bottom: $desktop-content-gaps;
   background: #f9fafb;
   border-radius: 14px;
   padding: 0.375rem;
@@ -251,12 +238,7 @@ $desktop-content-gaps: 1.125rem;      // INCREASED from 1rem for better breathin
   border-radius: 10px;
   transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
   position: relative;
-  
-  // Enhanced touch target
   min-height: 48px;
-  -webkit-touch-callout: none;
-  -webkit-user-select: none;
-  user-select: none;
   
   .roleContent {
     display: flex;
@@ -327,7 +309,7 @@ $desktop-content-gaps: 1.125rem;      // INCREASED from 1rem for better breathin
   }
 }
 
-// Enhanced Social Auth Container
+// Enhanced Social Auth Container - KEEPS ANIMATION
 .socialAuthContainer {
   overflow: hidden;
   transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
@@ -338,7 +320,7 @@ $desktop-content-gaps: 1.125rem;      // INCREASED from 1rem for better breathin
   }
   
   &:not([style*="height: 0"]) {
-    margin-bottom: $desktop-content-gaps; // 🎚️ Control spacing here
+    margin-bottom: $desktop-content-gaps;
   }
 }
 
@@ -359,94 +341,77 @@ $desktop-content-gaps: 1.125rem;      // INCREASED from 1rem for better breathin
   }
 }
 
-// MOBILE: Horizontal social buttons container
-.socialButtonsContainer {
+// 🔥 HORIZONTAL SOCIAL BUTTONS ROW - ICONS ONLY (REDUCED HEIGHT)
+.socialButtonsRow {
   display: flex;
-  flex-direction: column;
-  gap: 0.875rem;
+  justify-content: center;
+  gap: 1rem;
   
-  @media (max-width: 768px) {
-    flex-direction: row;
-    gap: 0.6rem;
-    justify-content: center;
+  @media (max-width: 480px) {
+    gap: 0.875rem;
   }
   
   @media (min-width: 769px) {
-    gap: 0.75rem;
+    gap: 1.25rem;
   }
 }
 
 .socialBtn {
-  border: none;
-  background: #ffffff;
-  border: 1.5px solid #e5e7eb;
-  border-radius: 12px;
-  cursor: pointer;
-  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
-  position: relative;
+  // ✅ REDUCED HEIGHT - NO HOVER EFFECTS
   display: flex;
   align-items: center;
   justify-content: center;
+  width: 48px;           // 🔧 Reduced from 56px
+  height: 48px;          // 🔧 Reduced from 56px
+  border: 1.5px solid #e5e7eb;
+  background: #ffffff;
+  border-radius: 14px;   // 🔧 Reduced border radius
+  cursor: pointer;
+  transition: border-color 0.2s ease;  // 🚫 Only border color transition
+  position: relative;
   
   // Enhanced touch target
-  min-height: 48px;
   -webkit-touch-callout: none;
   -webkit-user-select: none;
   user-select: none;
   
-  // Desktop: Full width with text
-  @media (min-width: 769px) {
-    width: 100%;
-    min-height: 44px;
-    
-    svg {
-      width: 19px;
-      height: 19px;
-      transition: transform 0.2s ease;
-      flex-shrink: 0;
-    }
-    
-    .socialText {
-      font-size: 0.85rem;
-      font-weight: 500;
-      color: #374151;
-      white-space: nowrap;
-      margin-left: 0.65rem;
-    }
+  svg {
+    width: 20px;         // 🔧 Reduced from 24px
+    height: 20px;        // 🔧 Reduced from 24px
+    flex-shrink: 0;
   }
   
-  // Mobile: Icons only, circular
-  @media (max-width: 768px) {
-    width: 52px;
-    height: 52px;
-    border-radius: 14px;
-    flex: 1;
-    max-width: 70px;
-    
-    svg {
-      width: 22px;
-      height: 22px;
-      transition: transform 0.2s ease;
-    }
-    
-    .socialText {
-      display: none;
-    }
-  }
-  
+  // 🚫 REMOVED: All hover transform and box-shadow effects
   &:hover {
-    background: #f9fafb;
-    border-color: #d1d5db;
-    transform: translateY(-1px);
-    box-shadow: 0 4px 12px -4px rgba(0, 0, 0, 0.1);
-    
-    svg {
-      transform: scale(1.05);
-    }
+    border-color: #d1d5db;  // Only subtle border color change
   }
   
   &:active {
-    transform: scale(0.96);
+    transform: scale(0.98);  // Keep subtle press feedback
+  }
+  
+  // 📱 MOBILE: Smaller
+  @media (max-width: 480px) {
+    width: 44px;         // 🔧 Reduced from 52px
+    height: 44px;        // 🔧 Reduced from 52px
+    border-radius: 12px;
+    
+    svg {
+      width: 18px;       // 🔧 Reduced from 22px
+      height: 18px;      // 🔧 Reduced from 22px
+    }
+  }
+  
+  // 🖥️ DESKTOP: Consistent with mobile reduction
+  @media (min-width: 769px) {
+    width: 50px;         // 🔧 Reduced from 60px
+    height: 50px;        // 🔧 Reduced from 60px
+    border-radius: 15px;
+    
+    svg {
+      width: 22px;       // 🔧 Reduced from 26px
+      height: 22px;      // 🔧 Reduced from 26px
+    }
   }
 }
 
@@ -454,7 +419,7 @@ $desktop-content-gaps: 1.125rem;      // INCREASED from 1rem for better breathin
 .divider {
   position: relative;
   text-align: center;
-  margin: 1.25rem 0 0 0;
+  margin: 1rem 0 0 0;
   width: 100%;
   
   &::before {
@@ -489,7 +454,7 @@ $desktop-content-gaps: 1.125rem;      // INCREASED from 1rem for better breathin
   display: flex;
   flex-direction: column;
   gap: 1rem;
-  margin-bottom: $desktop-content-gaps; // 🎚️ Control spacing here
+  margin-bottom: $desktop-content-gaps;
   transition: transform 0.3s ease;
   
   @media (max-width: 480px) {
@@ -516,7 +481,6 @@ $desktop-content-gaps: 1.125rem;      // INCREASED from 1rem for better breathin
     transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
     box-sizing: border-box;
     
-    // Better mobile input handling
     -webkit-appearance: none;
     -moz-appearance: none;
     appearance: none;
@@ -596,11 +560,6 @@ $desktop-content-gaps: 1.125rem;      // INCREASED from 1rem for better breathin
   min-height: 48px;
   transform: translateY(0);
   
-  // Enhanced touch feedback
-  -webkit-touch-callout: none;
-  -webkit-user-select: none;
-  user-select: none;
-  
   &:hover:not(:disabled) {
     background: #047857;
     transform: translateY(-1px);
@@ -637,7 +596,6 @@ $desktop-content-gaps: 1.125rem;      // INCREASED from 1rem for better breathin
   animation: spin 0.8s linear infinite;
 }
 
-// 🚀 ENHANCED FOOTER - PREVENTS SHIFTS
 .footer {
   text-align: center;
   padding-top: 0.75rem;
@@ -673,8 +631,6 @@ $desktop-content-gaps: 1.125rem;      // INCREASED from 1rem for better breathin
   font-weight: 600;
   text-decoration: none;
   transition: all 0.2s ease;
-  
-  // Better touch target
   padding: 0.25rem 0.5rem;
   border-radius: 6px;
   margin: 0 -0.5rem;
@@ -686,9 +642,8 @@ $desktop-content-gaps: 1.125rem;      // INCREASED from 1rem for better breathin
   }
 }
 
-// 🚀 TERMS CONTAINER - PREVENTS HEIGHT SHIFTS
 .termsContainer {
-  min-height: 32px; // Reserve space to prevent shifts
+  min-height: 32px;
   display: flex;
   align-items: flex-end;
   justify-content: center;
@@ -729,7 +684,7 @@ $desktop-content-gaps: 1.125rem;      // INCREASED from 1rem for better breathin
   }
 }
 
-// 🎬 ENHANCED ANIMATIONS WITH REVERSE
+// 🎬 ENHANCED ANIMATIONS - ALL INTACT
 @keyframes overlayAppear {
   0% { opacity: 0; }
   100% { opacity: 1; }
