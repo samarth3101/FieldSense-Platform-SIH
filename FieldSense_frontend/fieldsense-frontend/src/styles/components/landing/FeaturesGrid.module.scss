@@ -1,9 +1,5 @@
-// @import '../../variables.scss';
-// @import '../../mixins.scss';
-
 @import 'src/styles/variables.scss';
 @import 'src/styles/mixins.scss';
-
 
 .featuresSection {
   @include section-padding;
@@ -130,10 +126,10 @@
   white-space: nowrap;
 }
 
-// Features Grid
+// Features Grid - Reduced Size
 .featuresGrid {
   display: grid;
-  gap: $space-8;
+  gap: $space-6;
   opacity: 0;
   transform: translateY(40px);
   transition: all 0.8s ease-out 0.4s;
@@ -145,22 +141,27 @@
   
   @include tablet-up {
     grid-template-columns: repeat(2, 1fr);
+    gap: $space-8;
   }
   
   @include desktop-up {
     grid-template-columns: repeat(2, 1fr);
-    gap: $space-12;
+    gap: $space-10;
   }
 }
 
 .featureCard {
   @include card-base;
-  padding: $space-8;
+  padding: $space-6;
   display: flex;
   flex-direction: column;
   transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
   animation: cardSlideUp 0.8s ease-out both;
   animation-delay: var(--delay);
+  
+  @include tablet-up {
+    padding: $space-7;
+  }
   
   &:hover {
     transform: translateY(-4px);
@@ -169,41 +170,66 @@
   }
 }
 
+// Smaller Icon without hover effects
 .featureIcon {
-  width: 60px;
-  height: 60px;
+  width: 50px;
+  height: 50px;
   background: linear-gradient(135deg, $primary-green, $green-400);
   border-radius: $radius-xl;
   @include flex-center;
-  margin-bottom: $space-6;
-  transition: transform $transition-base;
+  margin-bottom: $space-5;
+  
+  @include tablet-up {
+    width: 56px;
+    height: 56px;
+    margin-bottom: $space-6;
+  }
   
   .icon {
-    width: 30px;
-    height: 30px;
+    width: 26px;
+    height: 26px;
     color: $white;
+    
+    @include tablet-up {
+      width: 28px;
+      height: 28px;
+    }
   }
   
-  .featureCard:hover & {
-    transform: scale(1.1) rotate(5deg);
-  }
+  // Removed hover scale and rotate effects
 }
 
 .featureContent {
   flex: 1;
-  margin-bottom: $space-6;
+  margin-bottom: $space-5;
+  
+  @include tablet-up {
+    margin-bottom: $space-6;
+  }
 }
 
 .featureTitle {
   @include heading-4;
   margin-bottom: $space-3;
   color: $gray-900;
+  font-size: $text-lg;
+  
+  @include tablet-up {
+    font-size: $text-xl;
+  }
 }
 
 .featureDescription {
   @include body-base;
   color: $gray-600;
   margin-bottom: $space-4;
+  font-size: $text-sm;
+  line-height: 1.5;
+  
+  @include tablet-up {
+    font-size: $text-base;
+    line-height: 1.6;
+  }
 }
 
 .featureList {
@@ -232,6 +258,11 @@
   text-decoration: none;
   font-weight: $font-semibold;
   transition: all $transition-base;
+  font-size: $text-sm;
+  
+  @include tablet-up {
+    font-size: $text-base;
+  }
   
   &:hover {
     color: $green-600;
@@ -246,15 +277,15 @@
   }
 }
 
-// Bottom CTA
+// Bottom CTA - Slightly Reduced
 .bottomCta {
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: $space-8;
   text-align: center;
-  margin-top: $space-20;
-  padding: $space-12;
+  margin-top: $space-16;
+  padding: $space-10;
   background: linear-gradient(135deg, $gray-50, $gray-100);
   border-radius: $radius-2xl;
   opacity: 0;
@@ -270,6 +301,8 @@
     flex-direction: row;
     justify-content: space-between;
     text-align: left;
+    margin-top: $space-20;
+    padding: $space-12;
   }
 }
 
@@ -320,28 +353,43 @@
   }
 }
 
-// Mobile adjustments
+// Mobile adjustments - Further Reduced
 @include mobile-only {
   .featuresGrid {
-    gap: $space-6;
+    gap: $space-5;
   }
   
   .featureCard {
-    padding: $space-6;
+    padding: $space-5;
   }
   
   .featureIcon {
-    width: 50px;
-    height: 50px;
+    width: 44px;
+    height: 44px;
+    margin-bottom: $space-4;
     
     .icon {
-      width: 25px;
-      height: 25px;
+      width: 22px;
+      height: 22px;
     }
+  }
+  
+  .featureContent {
+    margin-bottom: $space-4;
+  }
+  
+  .featureTitle {
+    font-size: $text-base;
+    margin-bottom: $space-2;
+  }
+  
+  .featureDescription {
+    font-size: $text-sm;
+    margin-bottom: $space-3;
   }
   
   .bottomCta {
     padding: $space-8;
-    margin-top: $space-16;
+    margin-top: $space-12;
   }
 }
