@@ -6,9 +6,8 @@ import AboutSection from '@/components/landings/AboutSection';
 import FeaturesGrid from '@/components/landings/FeaturesGrid';
 import KrishiMitraSection from '@/components/landings/KrishiMitraSection';
 import FPISpotlight from '@/components/landings/FPISpotlight';
-import HowItWorks from '@/components/landings/HowItWorks';
-import ImpactStats from '@/components/landings/ImpactStats';
-import Testimonials from '@/components/landings/Testimonials';
+
+
 import CTABanner from '@/components/landings/CTABanner';
 import LoaderScreen from '@/components/ui/LoaderScreen';
 
@@ -57,10 +56,7 @@ export default function Home() {
       <section id="fpi">
         <FPISpotlight />
       </section>
-      
-      <HowItWorks />
-      <ImpactStats />
-      <Testimonials />
+
       
       <section id="contact">
         <CTABanner />
