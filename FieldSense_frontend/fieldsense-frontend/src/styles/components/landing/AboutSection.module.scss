@@ -1,33 +1,105 @@
-// Remove the imports - they'll be global now
-
 .aboutSection {
-  padding-top: 4rem;
-  padding-bottom: 4rem;
-  background: #f9fafb;
   position: relative;
   overflow: hidden;
+}
+
+// Neutral Hero Banner with Light Background
+.heroBanner {
+  position: relative;
+  height: 35vh;
+  min-height: 280px;
+  max-height: 350px;
+  background: linear-gradient(135deg, rgba(249, 250, 251, 0.95), rgba(243, 244, 246, 0.9)),
+              url('https://images.unsplash.com/photo-1574323347407-f5e1ad6d020b?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80') center/cover;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   
   @media (min-width: 768px) {
-    padding-top: 5rem;
-    padding-bottom: 5rem;
-  }
-  
-  @media (min-width: 1024px) {
-    padding-top: 6rem;
-    padding-bottom: 6rem;
-  }
-  
-  &::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 1px;
-    background: linear-gradient(90deg, transparent, #e5e7eb 50%, transparent);
+    height: 40vh;
+    min-height: 320px;
+    max-height: 400px;
   }
 }
 
+.heroOverlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.92) 0%,
+    rgba(249, 250, 251, 0.88) 30%,
+    rgba(243, 244, 246, 0.85) 70%,
+    rgba(229, 231, 235, 0.9) 100%
+  );
+  backdrop-filter: blur(2px);
+}
+
+.heroContent {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 1rem;
+  
+  @media (min-width: 768px) {
+    padding: 0 1.5rem;
+  }
+}
+
+.heroText {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+  
+  &.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.heroTitle {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-size: 1.75rem;
+  font-weight: 700;
+  line-height: 1.2;
+  color: #111827;
+  margin-bottom: 1rem;
+  letter-spacing: -0.025em;
+  
+  @media (min-width: 768px) {
+    font-size: 2.25rem;
+    margin-bottom: 1.25rem;
+  }
+  
+  @media (min-width: 1024px) {
+    font-size: 2.75rem;
+    margin-bottom: 1.5rem;
+  }
+}
+
+.heroSubtitle {
+  font-family: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-size: 0.9375rem;
+  line-height: 1.6;
+  color: #6b7280;
+  max-width: 580px;
+  margin: 0 auto;
+  font-weight: 400;
+  
+  @media (min-width: 768px) {
+    font-size: 1.0625rem;
+    line-height: 1.7;
+  }
+  
+  @media (min-width: 1024px) {
+    font-size: 1.125rem;
+    max-width: 650px;
+  }
+}
+
+// Container
 .container {
   width: 100%;
   max-width: 1280px;
@@ -43,329 +115,163 @@
   }
 }
 
-// Header
-.header {
-  text-align: center;
-  margin-bottom: 4rem;
+// Smaller Info Cards Section
+.infoCardsSection {
+  padding-top: 2.5rem;
+  padding-bottom: 2.5rem;
   opacity: 0;
   transform: translateY(30px);
-  transition: all 0.8s ease-out;
+  transition: all 0.8s ease-out 0.3s;
   
   &.visible {
     opacity: 1;
     transform: translateY(0);
   }
-}
-
-.title {
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-  font-size: 1.5rem;
-  font-weight: 700;
-  line-height: 1.3;
-  color: #111827;
-  letter-spacing: -0.025em;
-  margin-bottom: 1rem;
-  position: relative;
   
   @media (min-width: 768px) {
-    font-size: 2.25rem;
-  }
-  
-  &::after {
-    content: '';
-    position: absolute;
-    bottom: -8px;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 60px;
-    height: 3px;
-    background: #2F9D46;
-    border-radius: 9999px;
+    padding-top: 3rem;
+    padding-bottom: 3rem;
   }
 }
 
-.subtitle {
-  font-family: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-  font-size: 1.125rem;
-  line-height: 1.625;
-  color: #6b7280;
-  max-width: 600px;
-  margin: 0 auto;
+.cardsGrid {
+  display: grid;
+  gap: 1.25rem;
   
   @media (min-width: 768px) {
-    font-size: 1.25rem;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.75rem;
   }
-}
-
-// Steps Flow
-.stepsContainer {
-  margin-bottom: 5rem;
-  opacity: 0;
-  transform: translateY(40px);
-  transition: all 0.8s ease-out 0.2s;
   
-  &.visible {
-    opacity: 1;
-    transform: translateY(0);
+  @media (min-width: 1024px) {
+    gap: 2rem;
   }
 }
 
-.stepsFlow {
-  display: flex;
-  flex-direction: column;
-  gap: 2rem;
-  
-  @media (min-width: 768px) {
-    flex-direction: row;
-    align-items: center;
-    justify-content: space-between;
-    gap: 1rem;
-  }
-}
-
-.stepWrapper {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  
-  @media (min-width: 768px) {
-    flex: 1;
-    align-items: stretch;
-  }
-}
-
-.step {
+.infoCard {
   background: #ffffff;
   border-radius: 1rem;
-  box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05);
-  border: 1px solid #e5e7eb;
-  transition: all 0.2s ease;
-  overflow: hidden;
-  position: relative;
-  padding: 2rem;
+  padding: 1.5rem 1.25rem;
   text-align: center;
-  background: #ffffff;
   border: 2px solid transparent;
+  box-shadow: 0 2px 4px -1px rgb(0 0 0 / 0.06), 0 1px 2px -1px rgb(0 0 0 / 0.06);
   transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
   opacity: 0;
-  transform: translateY(30px) scale(0.95);
-  animation: stepAppear 0.8s ease-out both;
+  transform: translateY(25px) scale(0.95);
+  animation: cardAppear 0.6s ease-out both;
   animation-delay: var(--delay);
   
+  @media (min-width: 768px) {
+    padding: 1.75rem 1.5rem;
+  }
+  
   &:hover {
-    transform: translateY(-8px) scale(1.02);
-    box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+    transform: translateY(-4px) scale(1.01);
+    box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
   }
   
   // Color variants
   &.green {
     border-color: #2F9D46;
     
-    .stepIcon {
+    .cardIcon {
       background: linear-gradient(135deg, #2F9D46, #4ade80);
     }
     
     &:hover {
       border-color: #4ade80;
-      background: linear-gradient(135deg, rgba(#2F9D46, 0.02), rgba(#4ade80, 0.05));
+      background: linear-gradient(135deg, rgba(47, 157, 70, 0.02), rgba(74, 222, 128, 0.05));
     }
   }
   
   &.blue {
     border-color: #3b82f6;
     
-    .stepIcon {
+    .cardIcon {
       background: linear-gradient(135deg, #3b82f6, #60a5fa);
     }
     
     &:hover {
       border-color: #60a5fa;
-      background: linear-gradient(135deg, rgba(#3b82f6, 0.02), rgba(#60a5fa, 0.05));
-    }
-  }
-  
-  &.purple {
-    border-color: #8b5cf6;
-    
-    .stepIcon {
-      background: linear-gradient(135deg, #8b5cf6, #a78bfa);
-    }
-    
-    &:hover {
-      border-color: #a78bfa;
-      background: linear-gradient(135deg, rgba(#8b5cf6, 0.02), rgba(#a78bfa, 0.05));
+      background: linear-gradient(135deg, rgba(59, 130, 246, 0.02), rgba(96, 165, 250, 0.05));
     }
   }
   
   &.yellow {
     border-color: #F6C84C;
     
-    .stepIcon {
+    .cardIcon {
       background: linear-gradient(135deg, #F6C84C, #fbbf24);
     }
     
     &:hover {
       border-color: #fbbf24;
-      background: linear-gradient(135deg, rgba(#F6C84C, 0.02), rgba(#fbbf24, 0.05));
+      background: linear-gradient(135deg, rgba(246, 200, 76, 0.02), rgba(251, 191, 36, 0.05));
     }
   }
 }
 
-.stepIcon {
-  width: 80px;
-  height: 80px;
-  border-radius: 1.5rem;
+.cardIcon {
+  width: 60px;
+  height: 60px;
+  border-radius: 1rem;
   display: flex;
   align-items: center;
   justify-content: center;
-  margin: 0 auto 1.5rem;
-  position: relative;
+  margin: 0 auto 1rem;
+  
+  @media (min-width: 768px) {
+    width: 70px;
+    height: 70px;
+    margin-bottom: 1.25rem;
+  }
   
   .icon {
-    width: 36px;
-    height: 36px;
+    width: 30px;
+    height: 30px;
     color: #ffffff;
-    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
+    filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.1));
+    
+    @media (min-width: 768px) {
+      width: 36px;
+      height: 36px;
+    }
+  }
+}
+
+.cardContent {
+  .cardTitle {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    font-size: 1.125rem;
+    font-weight: 600;
+    line-height: 1.3;
+    color: #111827;
+    margin-bottom: 0.625rem;
+    
+    @media (min-width: 768px) {
+      font-size: 1.25rem;
+      margin-bottom: 0.75rem;
+    }
   }
   
-  &::before {
-    content: '';
-    position: absolute;
-    inset: -4px;
-    border-radius: 1.5rem;
-    background: linear-gradient(45deg, transparent 30%, rgba(#ffffff, 0.3) 50%, transparent 70%);
-    opacity: 0;
-    transition: opacity 0.3s ease;
+  .cardDescription {
+    font-family: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    font-size: 0.8125rem;
+    line-height: 1.5;
+    color: #6b7280;
+    
+    @media (min-width: 768px) {
+      font-size: 0.875rem;
+      line-height: 1.6;
+    }
   }
-  
-  .step:hover &::before {
-    opacity: 1;
-    animation: shimmer 1.5s ease-in-out;
-  }
-}
-
-.stepContent {
-  margin-bottom: 1.5rem;
-}
-
-.stepTitle {
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-  font-size: 1.25rem;
-  font-weight: 600;
-  line-height: 1.4;
-  color: #111827;
-  margin-bottom: 0.75rem;
-  
-  @media (min-width: 768px) {
-    font-size: 1.5rem;
-  }
-}
-
-.stepDescription {
-  font-family: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-  font-size: 1rem;
-  line-height: 1.6;
-  color: #6b7280;
-  line-height: 1.625;
-}
-
-.stepNumber {
-  position: absolute;
-  top: 1rem;
-  right: 1rem;
-  width: 32px;
-  height: 32px;
-  background: rgba(#f3f4f6, 0.8);
-  color: #6b7280;
-  border-radius: 9999px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-  font-size: 0.875rem;
-  font-weight: 700;
-  transition: all 0.3s ease;
-  
-  .step:hover & {
-    background: rgba(#2F9D46, 0.1);
-    color: #2F9D46;
-    transform: scale(1.1);
-  }
-}
-
-// Continue with rest of styles using plain CSS instead of mixins...
-// Benefits
-.benefits {
-  opacity: 0;
-  transform: translateY(40px);
-  transition: all 0.8s ease-out 0.4s;
-  
-  &.visible {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-.benefitsGrid {
-  display: grid;
-  gap: 2rem;
-  
-  @media (min-width: 768px) {
-    grid-template-columns: repeat(3, 1fr);
-    gap: 3rem;
-  }
-}
-
-.benefit {
-  text-align: center;
-  padding: 1.5rem;
-  border-radius: 1.5rem;
-  background: #ffffff;
-  border: 1px solid #e5e7eb;
-  transition: all 0.3s ease;
-  
-  &:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
-    border-color: #2F9D46;
-  }
-}
-
-.benefitIcon {
-  font-size: 2.25rem;
-  margin-bottom: 1rem;
-  display: block;
-  
-  @media (min-width: 768px) {
-    font-size: 3rem;
-  }
-}
-
-.benefitTitle {
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-  font-size: 1.25rem;
-  font-weight: 600;
-  line-height: 1.4;
-  color: #111827;
-  margin-bottom: 0.75rem;
-  
-  @media (min-width: 768px) {
-    font-size: 1.5rem;
-  }
-}
-
-.benefitDescription {
-  font-family: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-  font-size: 1rem;
-  line-height: 1.6;
-  color: #6b7280;
 }
 
 // Animations
-@keyframes stepAppear {
+@keyframes cardAppear {
   from {
     opacity: 0;
-    transform: translateY(40px) scale(0.9);
+    transform: translateY(25px) scale(0.9);
   }
   to {
     opacity: 1;
@@ -373,7 +279,36 @@
   }
 }
 
-@keyframes shimmer {
-  0% { transform: translateX(-100%) rotate(45deg); }
-  100% { transform: translateX(300%) rotate(45deg); }
+// Responsive Adjustments
+@media (max-width: 767px) {
+  .heroTitle {
+    font-size: 1.5rem;
+  }
+  
+  .heroSubtitle {
+    font-size: 0.875rem;
+  }
+  
+  .infoCardsSection {
+    padding-top: 2rem;
+    padding-bottom: 2rem;
+  }
+  
+  .cardsGrid {
+    gap: 1rem;
+  }
+  
+  .infoCard {
+    padding: 1.25rem 1rem;
+  }
+  
+  .cardIcon {
+    width: 56px;
+    height: 56px;
+    
+    .icon {
+      width: 28px;
+      height: 28px;
+    }
+  }
 }

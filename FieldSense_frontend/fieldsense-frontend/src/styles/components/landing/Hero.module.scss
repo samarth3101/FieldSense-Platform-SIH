@@ -133,7 +133,11 @@
 
 // Headlines
 .headline {
-  margin-bottom: $space-10;
+  margin-bottom: $space-12;
+  
+  @include desktop-up {
+    margin-bottom: $space-16;
+  }
 }
 
 .title {
@@ -143,6 +147,10 @@
   display: flex;
   flex-direction: column;
   gap: $space-1;
+  
+  @include desktop-up {
+    margin-bottom: $space-8;
+  }
 }
 
 .titleMain {
@@ -178,6 +186,10 @@
   margin-bottom: $space-4;
   animation: fadeIn 0.8s ease-out 0.8s both;
   font-size: $text-xl;
+  
+  @include desktop-up {
+    margin-bottom: $space-6;
+  }
 }
 
 .description {
@@ -187,6 +199,12 @@
   animation: fadeIn 0.8s ease-out 1s both;
   line-height: $leading-relaxed;
   font-size: $text-lg;
+  
+  @include desktop-up {
+    max-width: 600px;
+    font-size: $text-xl;
+    line-height: $leading-loose;
+  }
   
   strong {
     color: $accent-yellow;
@@ -198,11 +216,15 @@
 .actions {
   display: flex;
   gap: $space-4;
-  margin-bottom: $space-10;
   animation: slideUp 0.8s ease-out 1.2s both;
   
   @include mobile-only {
     flex-direction: column;
+  }
+  
+  @include desktop-up {
+    gap: $space-6;
+    margin-bottom: $space-4;
   }
 }
 
@@ -220,6 +242,11 @@
   box-shadow: $shadow-lg;
   position: relative;
   overflow: hidden;
+  
+  @include desktop-up {
+    padding: $space-5 $space-10;
+    font-size: $text-xl;
+  }
   
   &::before {
     content: '';
@@ -242,6 +269,11 @@
   .ctaIcon {
     width: 20px;
     height: 20px;
+    
+    @include desktop-up {
+      width: 24px;
+      height: 24px;
+    }
   }
 }
 
@@ -261,6 +293,11 @@
   backdrop-filter: blur(15px);
   transition: all $transition-base;
   
+  @include desktop-up {
+    padding: $space-5 $space-10;
+    font-size: $text-xl;
+  }
+  
   &:hover {
     background: rgba($white, 0.15);
     border-color: rgba($white, 0.4);
@@ -272,6 +309,11 @@
     width: 20px;
     height: 20px;
     transition: transform $transition-base;
+    
+    @include desktop-up {
+      width: 24px;
+      height: 24px;
+    }
   }
   
   &:hover .ctaIcon {
@@ -279,81 +321,14 @@
   }
 }
 
-// Compact Stats
-.statsContainer {
-  margin-bottom: $space-6;
-  animation: fadeIn 0.8s ease-out 1.4s both;
-}
-
-.statsRow {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: $space-6;
-  
-  @include tablet-up {
-    grid-template-columns: repeat(4, 1fr);
-  }
-}
-
-.statItem {
-  display: flex;
-  align-items: center;
-  gap: $space-3;
-  background: rgba($white, 0.08);
-  border: 1px solid rgba($white, 0.15);
-  border-radius: $radius-2xl;
-  padding: $space-4;
-  backdrop-filter: blur(20px);
-  transition: all $transition-base;
-  
-  &:hover {
-    background: rgba($white, 0.12);
-    transform: translateY(-2px);
-  }
-}
-
-.statIcon {
-  width: 24px;
-  height: 24px;
-  color: $accent-yellow;
-  flex-shrink: 0;
-}
-
-.statContent {
-  display: flex;
-  flex-direction: column;
-  gap: $space-1;
-}
-
-.statNumber {
-  font-family: $font-display;
-  font-size: $text-2xl;
-  font-weight: $font-black;
-  color: $white;
-  line-height: 1;
-  
-  @include mobile-only {
-    font-size: $text-xl;
-  }
-}
-
-.statLabel {
-  font-family: $font-body;
-  font-size: $text-xs;
-  color: rgba($white, 0.8);
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
-  font-weight: $font-medium;
-}
-
-// Lottie Visualization Container
+// Clean Lottie Visualization Container
 .lottieVisualization {
   position: relative;
   display: none;
   
   @include desktop-up {
     display: block;
-    animation: slideInRight 1s ease-out 2s both;
+    animation: slideInRight 1s ease-out 1.6s both;
   }
 }
 
@@ -459,45 +434,6 @@
   }
 }
 
-// Alternative Agricultural Themes
-.lottieWrapper {
-  // For forest green themes
-  &.theme-forest-green {
-    .smartAgricultureAnimation {
-      filter: 
-        hue-rotate(-110deg)
-        contrast(1.2)
-        saturate(0.8)
-        brightness(0.95)
-        sepia(0.2);
-    }
-  }
-  
-  // For olive/brown themes
-  &.theme-olive-brown {
-    .smartAgricultureAnimation {
-      filter: 
-        hue-rotate(-140deg)
-        contrast(1.25)
-        saturate(0.7)
-        brightness(1.1)
-        sepia(0.3);
-    }
-  }
-  
-  // For natural earth tones
-  &.theme-earth-tones {
-    .smartAgricultureAnimation {
-      filter: 
-        hue-rotate(-130deg)
-        contrast(1.15)
-        saturate(0.75)
-        brightness(1.08)
-        sepia(0.25);
-    }
-  }
-}
-
 // Enhanced Loading States
 .lottieLoader {
   display: flex;
@@ -558,80 +494,6 @@
   font-weight: $font-medium !important;
 }
 
-// Data Points
-.dataPoints {
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  z-index: 3;
-}
-
-.dataPoint {
-  position: absolute;
-  opacity: 0;
-  transform: scale(0.8);
-  animation: scaleIn 0.8s ease-out both;
-  animation-delay: var(--point-delay);
-  
-  &.position1 {
-    top: 20%;
-    left: -70px;
-  }
-  
-  &.position2 {
-    top: 45%;
-    right: -80px;
-  }
-  
-  &.position3 {
-    bottom: 35%;
-    left: -75px;
-  }
-}
-
-.dataCard {
-  display: flex;
-  align-items: center;
-  gap: $space-3;
-  background: rgba($white, 0.96);
-  border: 1px solid rgba($primary-green, 0.2);
-  border-radius: $radius-2xl;
-  padding: $space-4 $space-6;
-  box-shadow: 
-    0 10px 30px rgba(0, 0, 0, 0.15),
-    0 0 0 1px rgba($primary-green, 0.1);
-  backdrop-filter: blur(15px);
-  min-width: 150px;
-}
-
-.dataIcon {
-  width: 24px;
-  height: 24px;
-  color: $primary-green;
-  flex-shrink: 0;
-}
-
-.dataContent {
-  display: flex;
-  flex-direction: column;
-  gap: $space-1;
-}
-
-.dataValue {
-  font-family: $font-display;
-  font-size: $text-xl;
-  font-weight: $font-bold;
-  color: darken($primary-green, 20%);
-  line-height: 1;
-}
-
-.dataLabel {
-  font-family: $font-body;
-  font-size: $text-sm;
-  color: darken($primary-green, 10%);
-  font-weight: $font-medium;
-}
-
 // Perfect Scroll Indicator
 .scrollIndicator {
   position: absolute;
@@ -643,11 +505,10 @@
   align-items: center;
   gap: $space-2;
   color: rgba($white, 0.7);
-  animation: subtleBounce 3s ease-in-out infinite 6s;
+  animation: subtleBounce 3s ease-in-out infinite 4s;
   cursor: pointer;
   transition: all $transition-base;
   z-index: 10;
-  margin-top: $space-8;
   
   &:hover {
     color: rgba($white, 0.95);
@@ -713,17 +574,6 @@
 @keyframes expandLine {
   from { width: 0; }
   to { width: 60%; }
-}
-
-@keyframes scaleIn {
-  from { 
-    opacity: 0;
-    transform: scale(0.8); 
-  }
-  to { 
-    opacity: 1;
-    transform: scale(1); 
-  }
 }
 
 @keyframes slideInRight {
@@ -809,11 +659,6 @@
       justify-content: center;
       min-height: 56px;
     }
-  }
-  
-  .statsRow {
-    grid-template-columns: 1fr;
-    gap: $space-4;
   }
   
   .scrollIndicator {

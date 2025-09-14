@@ -8,13 +8,6 @@ import {
   Satellite, 
   TrendingUp, 
   BarChart3, 
-  Thermometer,
-  Droplets,
-  Eye,
-  Users,
-  MapPin,
-  Target,
-  Clock,
   Globe,
   ChevronDown
 } from 'lucide-react';
@@ -34,19 +27,6 @@ const Hero = ({ onTryDemo }: HeroProps) => {
   const [isLottieLoading, setIsLottieLoading] = useState(true);
   const heroRef = useRef<HTMLElement>(null);
 
-  const stats = [
-    { number: "1000+", label: "Farmers", icon: Users },
-    { number: "50+", label: "Districts", icon: MapPin },
-    { number: "95%", label: "Accuracy", icon: Target },
-    { number: "24/7", label: "Monitoring", icon: Clock },
-  ];
-
-  const dataPoints = [
-    { value: "28°C", label: "Temperature", icon: Thermometer },
-    { value: "65%", label: "Humidity", icon: Droplets },
-    { value: "0.8", label: "NDVI", icon: Eye },
-  ];
-
   useEffect(() => {
     const timer = setTimeout(() => {
       setIsVisible(true);
@@ -55,12 +35,11 @@ const Hero = ({ onTryDemo }: HeroProps) => {
     return () => clearTimeout(timer);
   }, []);
 
-  // Load Lottie animation data - FIXED PATH
+  // Load Lottie animation data
   useEffect(() => {
     const loadAnimation = async () => {
       try {
         setIsLottieLoading(true);
-        // Fixed path: /animation/ instead of /animations/
         const response = await fetch('/animation/smart-agriculture.json');
         const data = await response.json();
         setAnimationData(data);
@@ -161,27 +140,9 @@ const Hero = ({ onTryDemo }: HeroProps) => {
               <ArrowRight className={styles.ctaIcon} />
             </Link>
           </div>
-
-          {/* Compact Stats */}
-          <div className={styles.statsContainer}>
-            <div className={styles.statsRow}>
-              {stats.map((stat, index) => {
-                const IconComponent = stat.icon;
-                return (
-                  <div key={index} className={styles.statItem}>
-                    <IconComponent className={styles.statIcon} />
-                    <div className={styles.statContent}>
-                      <span className={styles.statNumber}>{stat.number}</span>
-                      <span className={styles.statLabel}>{stat.label}</span>
-                    </div>
-                  </div>
-                );
-              })}
-            </div>
-          </div>
         </div>
 
-        {/* Smart Agriculture Lottie Animation */}
+        {/* Clean Smart Agriculture Lottie Animation */}
         <div className={styles.lottieVisualization}>
           <div className={styles.lottieContainer}>
             {/* Main Lottie Animation */}
@@ -206,33 +167,11 @@ const Hero = ({ onTryDemo }: HeroProps) => {
                 </div>
               )}
             </div>
-
-            {/* Data Points Overlay */}
-            <div className={styles.dataPoints}>
-              {dataPoints.map((point, index) => {
-                const IconComponent = point.icon;
-                return (
-                  <div
-                    key={index}
-                    className={`${styles.dataPoint} ${styles[`position${index + 1}`]}`}
-                    style={{ '--point-delay': `${8 + index * 0.5}s` } as any}
-                  >
-                    <div className={styles.dataCard}>
-                      <IconComponent className={styles.dataIcon} />
-                      <div className={styles.dataContent}>
-                        <span className={styles.dataValue}>{point.value}</span>
-                        <span className={styles.dataLabel}>{point.label}</span>
-                      </div>
-                    </div>
-                  </div>
-                );
-              })}
-            </div>
           </div>
         </div>
       </div>
 
-      {/* Fixed Scroll Indicator with Click Handler */}
+      {/* Scroll Indicator */}
       <div className={styles.scrollIndicator} onClick={scrollToNextSection}>
         <div className={styles.scrollText}>Discover More</div>
         <div className={styles.scrollArrow}>
