@@ -45,26 +45,22 @@ print(f"NPK: {result['nutrients']}")`;
     {
       method: 'POST',
       path: '/v1/analyze/soil',
-      description: 'Analyze soil composition and health',
-      response: '200 OK - Soil analysis results'
+      description: 'Analyze soil composition and health'
     },
     {
       method: 'POST',
-      path: '/v1/analyze/crop',
-      description: 'Crop health and growth analysis',
-      response: '200 OK - Crop health metrics'
+      path: '/v1/analyze/crop', 
+      description: 'Crop health and growth analysis'
     },
     {
       method: 'GET',
       path: '/v1/weather/{location}',
-      description: 'Real-time weather and forecast data',
-      response: '200 OK - Weather information'
+      description: 'Real-time weather and forecast data'
     },
     {
       method: 'GET',
       path: '/v1/satellite/{coords}',
-      description: 'Satellite imagery and NDVI data',
-      response: '200 OK - Satellite data'
+      description: 'Satellite imagery and NDVI data'
     }
   ];
 
@@ -72,26 +68,20 @@ print(f"NPK: {result['nutrients']}")`;
     {
       icon: Database,
       title: 'Comprehensive Data',
-      description: 'Access satellite imagery, weather data, soil analytics, and crop insights',
+      description: 'Access satellite imagery, weather data, and crop insights',
       color: 'blue'
     },
     {
       icon: Zap,
       title: 'Real-time Processing',
-      description: 'Get instant results with our high-performance AI infrastructure',
+      description: 'Get instant results with high-performance AI infrastructure',
       color: 'yellow'
     },
     {
       icon: Shield,
       title: 'Enterprise Security',
-      description: 'Bank-level security with encrypted data transmission and storage',
+      description: 'Bank-level security with encrypted data transmission',
       color: 'green'
-    },
-    {
-      icon: Globe,
-      title: 'Global Coverage',
-      description: 'Support for agricultural regions worldwide with localized insights',
-      color: 'purple'
     }
   ];
 
@@ -147,7 +137,7 @@ print(f"NPK: {result['nutrients']}")`;
           
           <p className={styles.subtitle}>
             Integrate agricultural AI into your applications with our comprehensive API. 
-            From soil analysis to crop monitoring, access the same technology that powers FieldSense.
+            Access the same technology that powers FieldSense.
           </p>
         </div>
 
@@ -198,9 +188,6 @@ print(f"NPK: {result['nutrients']}")`;
                     <div className={styles.endpointDescription}>
                       {endpoint.description}
                     </div>
-                    <div className={styles.endpointResponse}>
-                      {endpoint.response}
-                    </div>
                   </div>
                 ))}
               </div>
@@ -217,7 +204,6 @@ print(f"NPK: {result['nutrients']}")`;
                   <div 
                     key={index} 
                     className={`${styles.feature} ${styles[feature.color]}`}
-                    style={{ '--delay': `${index * 0.1}s` } as any}
                   >
                     <div className={styles.featureIcon}>
                       <feature.icon className={styles.icon} />
@@ -238,17 +224,15 @@ print(f"NPK: {result['nutrients']}")`;
                 <div>
                   <h4 className={styles.apiKeyTitle}>Get Your API Key</h4>
                   <p className={styles.apiKeyDescription}>
-                    Start building with 1,000 free API calls per month
+                    Start with 1,000 free API calls per month
                   </p>
                 </div>
               </div>
 
-              <div className={styles.apiKeyDemo}>
-                <div className={styles.keyPreview}>
-                  <span className={styles.keyPrefix}>fpi_</span>
-                  <span className={styles.keyValue}>live_sk_...</span>
-                  <span className={styles.keyStatus}>Ready</span>
-                </div>
+              <div className={styles.keyPreview}>
+                <span className={styles.keyPrefix}>fpi_</span>
+                <span className={styles.keyValue}>live_sk_...</span>
+                <span className={styles.keyStatus}>Ready</span>
               </div>
 
               <Link href="/fpi" className={styles.getKeyBtn}>
@@ -257,32 +241,21 @@ print(f"NPK: {result['nutrients']}")`;
               </Link>
             </div>
 
-            {/* Stats */}
-            <div className={styles.stats}>
-              <div className={styles.stat}>
-                <span className={styles.statValue}>99.9%</span>
-                <span className={styles.statLabel}>Uptime</span>
+            {/* Stats & Documentation */}
+            <div className={styles.bottomSection}>
+              <div className={styles.stats}>
+                <div className={styles.stat}>
+                  <span className={styles.statValue}>99.9%</span>
+                  <span className={styles.statLabel}>Uptime</span>
+                </div>
+                <div className={styles.stat}>
+                  <span className={styles.statValue}>&lt;500ms</span>
+                  <span className={styles.statLabel}>Response</span>
+                </div>
               </div>
-              <div className={styles.stat}>
-                <span className={styles.statValue}> 500ms</span>
-                <span className={styles.statLabel}>Response Time</span>
-              </div>
-              <div className={styles.stat}>
-                <span className={styles.statValue}>10M+</span>
-                <span className={styles.statLabel}>API Calls/Month</span>
-              </div>
-            </div>
 
-            {/* Documentation Link */}
-            <div className={styles.documentation}>
-              <div className={styles.docHeader}>
-                <h4 className={styles.docTitle}>Complete Documentation</h4>
-                <p className={styles.docDescription}>
-                  Comprehensive guides, examples, and API reference
-                </p>
-              </div>
               <Link href="/fpi" className={styles.docBtn}>
-                Explore FPI Docs
+                View Documentation
                 <ExternalLink className={styles.btnIcon} />
               </Link>
             </div>
