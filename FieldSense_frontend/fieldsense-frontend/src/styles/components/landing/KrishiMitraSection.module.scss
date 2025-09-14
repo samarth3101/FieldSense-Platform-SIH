@@ -1,35 +1,43 @@
-// @import '../../variables.scss';
-// @import '../../mixins.scss';
-
 @import 'src/styles/variables.scss';
 @import 'src/styles/mixins.scss';
 
-
 .krishiMitraSection {
-  @include section-padding;
-  background: linear-gradient(135deg, $gray-50 0%, $gray-100 100%);
+  padding-top: 2.5rem;
+  padding-bottom: 2.5rem;
+  background: linear-gradient(135deg, rgba(249, 250, 251, 0.8) 0%, rgba(243, 244, 246, 0.9) 100%);
   position: relative;
+  
+  @media (min-width: 768px) {
+    padding-top: 3.5rem;
+    padding-bottom: 3.5rem;
+  }
+  
+  @media (min-width: 1024px) {
+    padding-top: 4rem;
+    padding-bottom: 4rem;
+  }
 }
 
 .container {
-  @include container;
-}
-
-.layout {
-  display: grid;
-  gap: $space-16;
-  align-items: center;
+  width: 100%;
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 1rem;
   
-  @include desktop-up {
-    grid-template-columns: 1fr 500px;
-    gap: $space-20;
+  @media (min-width: 768px) {
+    padding: 0 1.5rem;
+  }
+  
+  @media (min-width: 1024px) {
+    padding: 0 2rem;
   }
 }
 
 .content {
+  text-align: center;
   opacity: 0;
-  transform: translateY(40px);
-  transition: all 0.8s ease-out;
+  transform: translateY(30px);
+  transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
   
   &.visible {
     opacity: 1;
@@ -37,21 +45,27 @@
   }
 }
 
+// Header - Slightly reduced spacing
 .header {
-  margin-bottom: $space-12;
+  margin-bottom: 2.5rem;
+  
+  @media (min-width: 768px) {
+    margin-bottom: 3rem;
+  }
 }
 
 .badge {
-  @include flex-center;
-  gap: $space-2;
-  background: rgba($primary-green, 0.1);
-  color: $primary-green;
-  padding: $space-2 $space-4;
-  border-radius: $radius-full;
-  font-size: $text-sm;
-  font-weight: $font-medium;
-  margin-bottom: $space-6;
-  width: fit-content;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: rgba(47, 157, 70, 0.1);
+  color: #2F9D46;
+  padding: 0.5rem 1rem;
+  border-radius: 9999px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  margin-bottom: 1.25rem;
+  border: 1px solid rgba(47, 157, 70, 0.2);
 }
 
 .badgeIcon {
@@ -60,21 +74,349 @@
 }
 
 .title {
-  @include heading-2;
-  margin-bottom: $space-6;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-size: 1.875rem;
+  font-weight: 700;
+  line-height: 1.2;
+  color: #111827;
+  margin-bottom: 0.875rem;
+  
+  @media (min-width: 768px) {
+    font-size: 2.5rem;
+    margin-bottom: 1.25rem;
+  }
+  
+  @media (min-width: 1024px) {
+    font-size: 3rem;
+  }
 }
 
 .highlight {
-  background: linear-gradient(135deg, $primary-green, $green-400);
+  background: linear-gradient(135deg, #2F9D46, #4ade80);
   background-clip: text;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
+  display: inline-block;
 }
 
 .description {
-  @include body-large;
-  color: $gray-600;
+  font-family: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-size: 1rem;
+  line-height: 1.6;
+  color: #6b7280;
+  max-width: 700px;
+  margin: 0 auto;
+  
+  @media (min-width: 768px) {
+    font-size: 1.125rem;
+    line-height: 1.7;
+  }
 }
 
-// Add remaining styles...
-// This is a condensed version - you can expand based on the component structure
+// Features Grid - Slightly reduced spacing
+.featuresGrid {
+  display: grid;
+  gap: 1rem;
+  margin-bottom: 2.5rem;
+  
+  @media (min-width: 768px) {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.25rem;
+  }
+  
+  @media (min-width: 1024px) {
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1.25rem;
+    margin-bottom: 3rem;
+  }
+}
+
+.featureCard {
+  position: relative;
+  background: #ffffff;
+  border: 2px solid transparent;
+  border-radius: 1rem;
+  padding: 1.25rem 1rem;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 2px 4px -1px rgb(0 0 0 / 0.06);
+  overflow: hidden;
+  
+  @media (min-width: 768px) {
+    padding: 1.75rem 1.25rem;
+  }
+  
+  &:hover, &.active {
+    transform: translateY(-4px) scale(1.02);
+    box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.15);
+  }
+  
+  // Color variants
+  &.green {
+    &:hover, &.active {
+      border-color: #2F9D46;
+      background: linear-gradient(135deg, rgba(47, 157, 70, 0.02), rgba(74, 222, 128, 0.05));
+    }
+    
+    .cardIcon {
+      background: linear-gradient(135deg, #2F9D46, #4ade80);
+    }
+    
+    .activeIndicator {
+      background: #2F9D46;
+    }
+  }
+  
+  &.blue {
+    &:hover, &.active {
+      border-color: #3b82f6;
+      background: linear-gradient(135deg, rgba(59, 130, 246, 0.02), rgba(96, 165, 250, 0.05));
+    }
+    
+    .cardIcon {
+      background: linear-gradient(135deg, #3b82f6, #60a5fa);
+    }
+    
+    .activeIndicator {
+      background: #3b82f6;
+    }
+  }
+  
+  &.red {
+    &:hover, &.active {
+      border-color: #ef4444;
+      background: linear-gradient(135deg, rgba(239, 68, 68, 0.02), rgba(248, 113, 113, 0.05));
+    }
+    
+    .cardIcon {
+      background: linear-gradient(135deg, #ef4444, #f87171);
+    }
+    
+    .activeIndicator {
+      background: #ef4444;
+    }
+  }
+  
+  &.purple {
+    &:hover, &.active {
+      border-color: #8b5cf6;
+      background: linear-gradient(135deg, rgba(139, 92, 246, 0.02), rgba(167, 139, 250, 0.05));
+    }
+    
+    .cardIcon {
+      background: linear-gradient(135deg, #8b5cf6, #a78bfa);
+    }
+    
+    .activeIndicator {
+      background: #8b5cf6;
+    }
+  }
+}
+
+.cardIcon {
+  width: 52px;
+  height: 52px;
+  border-radius: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 0.875rem;
+  
+  @media (min-width: 768px) {
+    width: 60px;
+    height: 60px;
+    margin-bottom: 1rem;
+  }
+  
+  .icon {
+    width: 26px;
+    height: 26px;
+    color: #ffffff;
+    
+    @media (min-width: 768px) {
+      width: 30px;
+      height: 30px;
+    }
+  }
+}
+
+.cardContent {
+  .cardTitle {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    font-size: 1rem;
+    font-weight: 600;
+    color: #111827;
+    margin-bottom: 0.5rem;
+    
+    @media (min-width: 768px) {
+      font-size: 1.125rem;
+      margin-bottom: 0.625rem;
+    }
+  }
+  
+  .cardDescription {
+    font-family: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    font-size: 0.8125rem;
+    line-height: 1.5;
+    color: #6b7280;
+    
+    @media (min-width: 768px) {
+      font-size: 0.875rem;
+      line-height: 1.6;
+    }
+  }
+}
+
+.activeIndicator {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  border-radius: 0 0 1rem 1rem;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  
+  .featureCard:hover &, .featureCard.active & {
+    opacity: 1;
+  }
+}
+
+// Bottom Section - Slightly reduced spacing
+.bottomSection {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.75rem;
+  
+  @media (min-width: 768px) {
+    flex-direction: row;
+    justify-content: space-between;
+    gap: 2.5rem;
+  }
+}
+
+.stats {
+  display: flex;
+  gap: 1.75rem;
+  
+  @media (min-width: 768px) {
+    gap: 2.5rem;
+  }
+}
+
+.stat {
+  text-align: center;
+}
+
+.statValue {
+  display: block;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: #111827;
+  line-height: 1;
+  
+  @media (min-width: 768px) {
+    font-size: 2rem;
+  }
+}
+
+.statLabel {
+  display: block;
+  font-size: 0.75rem;
+  color: #6b7280;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-top: 0.25rem;
+  
+  @media (min-width: 768px) {
+    font-size: 0.875rem;
+  }
+}
+
+.demoBtn {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  background: linear-gradient(135deg, #2F9D46, #4ade80);
+  color: #ffffff;
+  border: none;
+  border-radius: 1rem;
+  padding: 0.875rem 1.75rem;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+  
+  @media (min-width: 768px) {
+    padding: 1.125rem 2.25rem;
+    font-size: 1.125rem;
+  }
+  
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 20px 25px -5px rgba(47, 157, 70, 0.4);
+  }
+  
+  &:active {
+    transform: translateY(0);
+  }
+}
+
+.playIcon {
+  width: 18px;
+  height: 18px;
+  
+  @media (min-width: 768px) {
+    width: 20px;
+    height: 20px;
+  }
+}
+
+// Responsive Adjustments
+@media (max-width: 767px) {
+  .title {
+    font-size: 1.625rem;
+  }
+  
+  .description {
+    font-size: 0.9375rem;
+  }
+  
+  .featuresGrid {
+    gap: 0.875rem;
+    margin-bottom: 2rem;
+  }
+  
+  .featureCard {
+    padding: 1.125rem 0.875rem;
+  }
+  
+  .cardIcon {
+    width: 48px;
+    height: 48px;
+    margin-bottom: 0.75rem;
+    
+    .icon {
+      width: 24px;
+      height: 24px;
+    }
+  }
+  
+  .stats {
+    gap: 1.5rem;
+  }
+  
+  .bottomSection {
+    gap: 1.5rem;
+  }
+  
+  .header {
+    margin-bottom: 2rem;
+  }
+}
