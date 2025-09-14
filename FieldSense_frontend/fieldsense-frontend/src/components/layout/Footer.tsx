@@ -47,17 +47,8 @@ const Footer = () => {
         { name: 'Blog', href: '/blog' },
         { name: 'Research Papers', href: '/research' }
       ]
-    },
-    {
-      title: 'Company',
-      links: [
-        { name: 'About Us', href: '/about' },
-        { name: 'Careers', href: '/careers' },
-        { name: 'Press Kit', href: '/press' },
-        { name: 'Contact', href: '/contact' },
-        { name: 'Partners', href: '/partners' }
-      ]
     }
+    // Company section removed
   ];
 
   const socialLinks = [
@@ -104,26 +95,26 @@ const Footer = () => {
               data-driven decisions for sustainable farming.
             </p>
 
-            {/* Contact Info */}
+            {/* Updated Contact Info */}
             <div className={styles.contactInfo}>
               <div className={styles.contactItem}>
                 <Mail className={styles.contactIcon} />
-                <a href="mailto:contact@fieldsense.ai" className={styles.contactLink}>
-                  contact@fieldsense.ai
+                <a href="mailto:samarth.patil3101@gmail.com" className={styles.contactLink}>
+                  samarth.patil3101@gmail.com
                 </a>
               </div>
               
               <div className={styles.contactItem}>
                 <Phone className={styles.contactIcon} />
-                <a href="tel:+911800123456" className={styles.contactLink}>
-                  1800-123-456 (Toll Free)
+                <a href="tel:+918766794922" className={styles.contactLink}>
+                  +91 8766794922
                 </a>
               </div>
               
               <div className={styles.contactItem}>
                 <MapPin className={styles.contactIcon} />
                 <span className={styles.contactText}>
-                  Bangalore, Karnataka, India
+                  Pune, Maharashtra, India 411033
                 </span>
               </div>
             </div>
@@ -145,7 +136,7 @@ const Footer = () => {
             </div>
           </div>
 
-          {/* Footer Links */}
+          {/* Footer Links - Now 3 columns instead of 4 */}
           <div className={styles.linksSection}>
             {footerSections.map((section) => (
               <div key={section.title} className={styles.linkColumn}>
