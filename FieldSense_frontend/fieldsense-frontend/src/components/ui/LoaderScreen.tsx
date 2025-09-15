@@ -1,8 +1,12 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useEffect, useState, ReactNode } from "react";
 import styles from "./LoaderScreen.module.scss";
 
-export default function LoaderScreen({ children }: { children: React.ReactNode }) {
+interface LoaderScreenProps {
+  children?: ReactNode; // 👈 children is optional
+}
+
+export default function LoaderScreen({ children }: LoaderScreenProps) {
   const [showLoader, setShowLoader] = useState(true);
   const [fadeOut, setFadeOut] = useState(false);
 
@@ -24,15 +28,13 @@ export default function LoaderScreen({ children }: { children: React.ReactNode }
 
   if (showLoader) {
     return (
-      <div className={`${styles.loaderWrapper} ${fadeOut ? styles.fadeOut : ''}`}>
+      <div className={`${styles.loaderWrapper} ${fadeOut ? styles.fadeOut : ""}`}>
         <div className={styles.loaderContent}>
           <div className={styles.iconContainer}>
-            <div className={styles.leafIcon}>
-              🌱
-            </div>
+            <div className={styles.leafIcon}>🌱</div>
             <div className={styles.pulseRing}></div>
           </div>
-          
+
           <div className={styles.textContainer}>
             <h1 className={styles.brandName}>FieldSense</h1>
             <p className={styles.tagline}>AI-powered Agriculture Assistant</p>

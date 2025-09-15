@@ -1,5 +1,7 @@
-@import '../../variables.scss';
-@import '../../mixins.scss';
+@use "src/styles/index" as *;
+@use "sass:color";
+
+
 
 .header {
   position: fixed;

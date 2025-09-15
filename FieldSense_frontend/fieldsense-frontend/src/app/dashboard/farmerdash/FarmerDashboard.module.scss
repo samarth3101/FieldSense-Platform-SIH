@@ -1,0 +1,995 @@
+@import 'src/styles/variables.scss';
+@import 'src/styles/mixins.scss';
+
+.dashboard {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+// Header
+.header {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: #ffffff;
+  border-bottom: 1px solid #e2e8f0;
+  box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1);
+}
+
+.headerContent {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.logoIcon {
+  font-size: 1.5rem;
+}
+
+.logoText {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #2F9D46;
+}
+
+.headerActions {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.languageToggle {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: #f1f5f9;
+  border-radius: 0.5rem;
+  padding: 0.5rem;
+}
+
+.toggleIcon {
+  width: 16px;
+  height: 16px;
+  color: #64748b;
+}
+
+.languageSelect {
+  background: transparent;
+  border: none;
+  font-size: 0.875rem;
+  color: #475569;
+  cursor: pointer;
+  
+  &:focus {
+    outline: none;
+  }
+}
+
+.profileBtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  background: #2F9D46;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  
+  &:hover {
+    transform: scale(1.05);
+  }
+}
+
+// Main Content
+.main {
+  padding: 1rem;
+  padding-bottom: 5rem; // Space for bottom nav
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+// Home Content
+.homeContent {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.summaryGrid {
+  display: grid;
+  gap: 1rem;
+  
+  @media (min-width: 768px) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  
+  @media (min-width: 1024px) {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+.summaryCard {
+  background: white;
+  border-radius: 1rem;
+  padding: 1.5rem;
+  box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1);
+  transition: all 0.2s ease;
+  
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+  }
+}
+
+.cardHeader {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+}
+
+.cardIcon {
+  width: 20px;
+  height: 20px;
+  color: #2F9D46;
+}
+
+.cardTitle {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #475569;
+}
+
+.cardValue {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #1e293b;
+  margin-bottom: 0.5rem;
+}
+
+.cardStatus {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.875rem;
+  color: #2F9D46;
+}
+
+.cardSubtext {
+  font-size: 0.875rem;
+  color: #64748b;
+}
+
+.statusIcon {
+  width: 16px;
+  height: 16px;
+}
+
+// Weather Info
+.weatherInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.weatherMain {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.weatherIcon {
+  width: 18px;
+  height: 18px;
+  color: #2F9D46;
+}
+
+.temperature {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #1e293b;
+}
+
+.weatherDetails {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.weatherItem {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.8125rem;
+  color: #64748b;
+}
+
+// FPI Score
+.scoreContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.scoreCircle {
+  position: relative;
+  width: 80px;
+  height: 80px;
+}
+
+.progressRing {
+  width: 100%;
+  height: 100%;
+  transform: rotate(-90deg);
+}
+
+.progressRingBg {
+  fill: none;
+  stroke: #e2e8f0;
+  stroke-width: 6;
+}
+
+.progressRingFill {
+  fill: none;
+  stroke: #2F9D46;
+  stroke-width: 6;
+  stroke-linecap: round;
+  transition: stroke-dashoffset 0.5s ease;
+}
+
+.scoreText {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+}
+
+.scoreValue {
+  display: block;
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #1e293b;
+}
+
+.scoreLabel {
+  font-size: 0.75rem;
+  color: #2F9D46;
+}
+
+// Quick Actions
+.quickActions, .recentActivity {
+  background: white;
+  border-radius: 1rem;
+  padding: 1.5rem;
+  box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1);
+}
+
+.sectionTitle {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: #1e293b;
+  margin-bottom: 1rem;
+}
+
+.actionGrid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
+  
+  @media (min-width: 768px) {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+.actionBtn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 1rem;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 0.75rem;
+  color: #475569;
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  
+  &:hover {
+    background: #2F9D46;
+    color: white;
+    transform: translateY(-2px);
+  }
+}
+
+.actionIcon {
+  width: 24px;
+  height: 24px;
+}
+
+// Activity List
+.activityList {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.activityItem {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.75rem;
+  background: #f8fafc;
+  border-radius: 0.5rem;
+}
+
+.activityIcon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  background: #e2e8f0;
+  border-radius: 0.5rem;
+  color: #64748b;
+  
+  svg {
+    width: 20px;
+    height: 20px;
+  }
+}
+
+.activityContent {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.activityTitle {
+  font-weight: 500;
+  color: #1e293b;
+}
+
+.activityTime {
+  font-size: 0.8125rem;
+  color: #64748b;
+}
+
+// Page Titles
+.pageTitle {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #1e293b;
+  margin-bottom: 1.5rem;
+}
+
+// Upload Content
+.uploadsContent {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.uploadOptions {
+  display: grid;
+  gap: 1rem;
+  
+  @media (min-width: 768px) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.uploadCard {
+  background: white;
+  border-radius: 1rem;
+  padding: 2rem;
+  text-align: center;
+  box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1);
+  border: 2px dashed #e2e8f0;
+  transition: all 0.2s ease;
+  
+  &:hover {
+    border-color: #2F9D46;
+  }
+}
+
+.uploadIcon {
+  width: 48px;
+  height: 48px;
+  color: #2F9D46;
+  margin-bottom: 1rem;
+}
+
+.uploadTitle {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: #1e293b;
+  margin-bottom: 0.5rem;
+}
+
+.uploadDescription {
+  font-size: 0.875rem;
+  color: #64748b;
+  margin-bottom: 1.5rem;
+}
+
+.uploadBtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  width: 100%;
+  padding: 0.75rem;
+  background: #2F9D46;
+  color: white;
+  border: none;
+  border-radius: 0.5rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  
+  &:hover {
+    background: #16a34a;
+    transform: translateY(-1px);
+  }
+}
+
+// Upload History
+.uploadHistory {
+  background: white;
+  border-radius: 1rem;
+  padding: 1.5rem;
+  box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1);
+}
+
+.historyList {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.historyItem {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.75rem;
+  background: #f8fafc;
+  border-radius: 0.5rem;
+}
+
+.historyIcon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  background: #2F9D46;
+  color: white;
+  border-radius: 0.5rem;
+  
+  svg {
+    width: 20px;
+    height: 20px;
+  }
+}
+
+.historyContent {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.historyTitle {
+  font-weight: 500;
+  color: #1e293b;
+}
+
+.historyDate {
+  font-size: 0.8125rem;
+  color: #64748b;
+}
+
+.historyStatus {
+  display: flex;
+  align-items: center;
+}
+
+.statusSuccess {
+  width: 20px;
+  height: 20px;
+  color: #22c55e;
+}
+
+// Analysis Content
+.analysisContent {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.analysisGrid {
+  display: grid;
+  gap: 1rem;
+  
+  @media (min-width: 768px) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  
+  @media (min-width: 1024px) {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.analysisCard {
+  background: white;
+  border-radius: 1rem;
+  padding: 1.5rem;
+  box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1);
+  
+  .cardTitle {
+    font-size: 1.125rem;
+    font-weight: 600;
+    color: #1e293b;
+    margin-bottom: 1rem;
+  }
+}
+
+// Nutrient Bars
+.nutrientBars {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.nutrientItem {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  font-size: 0.875rem;
+  
+  span:first-child {
+    min-width: 80px;
+    font-weight: 500;
+    color: #475569;
+  }
+  
+  span:last-child {
+    min-width: 40px;
+    font-weight: 600;
+    color: #2F9D46;
+  }
+}
+
+.progressBar {
+  flex: 1;
+  height: 8px;
+  background: #e2e8f0;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.progress {
+  height: 100%;
+  background: linear-gradient(90deg, #2F9D46, #4ade80);
+  transition: width 0.5s ease;
+}
+
+// Yield Gauge
+.yieldGauge {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 150px;
+}
+
+.gaugeContainer {
+  text-align: center;
+  padding: 2rem;
+  background: linear-gradient(135deg, #f0fdf4, #dcfce7);
+  border-radius: 1rem;
+}
+
+.gaugeValue {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: #2F9D46;
+}
+
+.gaugeUnit {
+  font-size: 0.875rem;
+  color: #64748b;
+  font-weight: 500;
+}
+
+// Risk Indicators
+.riskIndicators {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100px;
+}
+
+.riskItem {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.riskLevel {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  
+  &[data-level="low"] {
+    background: #dcfce7;
+    color: #22c55e;
+  }
+  
+  &[data-level="medium"] {
+    background: #fef3c7;
+    color: #f59e0b;
+  }
+  
+  &[data-level="high"] {
+    background: #fee2e2;
+    color: #ef4444;
+  }
+  
+  svg {
+    width: 30px;
+    height: 30px;
+  }
+}
+
+// Advisory Content
+.advisoryContent {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.advisoryCards {
+  display: grid;
+  gap: 1rem;
+  
+  @media (min-width: 768px) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  
+  @media (min-width: 1024px) {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.advisoryCard {
+  background: white;
+  border-radius: 1rem;
+  padding: 1.5rem;
+  box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1);
+  border-left: 4px solid #2F9D46;
+}
+
+.advisoryHeader {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+  
+  h3 {
+    font-size: 1.125rem;
+    font-weight: 600;
+    color: #1e293b;
+  }
+}
+
+.advisoryIcon {
+  width: 24px;
+  height: 24px;
+  color: #2F9D46;
+}
+
+.advisoryText {
+  color: #475569;
+  line-height: 1.6;
+}
+
+.downloadBtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  width: fit-content;
+  padding: 0.75rem 1.5rem;
+  background: #2F9D46;
+  color: white;
+  border: none;
+  border-radius: 0.5rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  
+  &:hover {
+    background: #16a34a;
+    transform: translateY(-1px);
+  }
+}
+
+// Farms Content
+.farmsContent {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.farmsHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.addFarmBtn {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1rem;
+  background: #2F9D46;
+  color: white;
+  border: none;
+  border-radius: 0.5rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  
+  &:hover {
+    background: #16a34a;
+  }
+}
+
+.farmsList {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.farmCard {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: white;
+  border-radius: 1rem;
+  padding: 1.5rem;
+  box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1);
+}
+
+.farmInfo {
+  flex: 1;
+}
+
+.farmName {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: #1e293b;
+  margin-bottom: 0.5rem;
+}
+
+.farmDetails {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  color: #64748b;
+  font-size: 0.875rem;
+}
+
+.farmLocation {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  
+  svg {
+    width: 14px;
+    height: 14px;
+  }
+}
+
+.farmActions {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.farmActionBtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  background: #f1f5f9;
+  border: none;
+  border-radius: 0.5rem;
+  color: #64748b;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  
+  &:hover {
+    background: #2F9D46;
+    color: white;
+  }
+}
+
+// Profile Content
+.profileContent {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.profileCard {
+  background: white;
+  border-radius: 1rem;
+  padding: 2rem;
+  box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1);
+}
+
+.profileHeader {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 2rem;
+  padding-bottom: 1.5rem;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.profileAvatar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 80px;
+  height: 80px;
+  background: #2F9D46;
+  color: white;
+  border-radius: 50%;
+  
+  svg {
+    width: 40px;
+    height: 40px;
+  }
+}
+
+.profileInfo {
+  flex: 1;
+}
+
+.profileName {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #1e293b;
+  margin-bottom: 0.25rem;
+}
+
+.profilePhone {
+  color: #64748b;
+}
+
+.profileDetails {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.profileRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.75rem 0;
+  border-bottom: 1px solid #f1f5f9;
+}
+
+.profileLabel {
+  font-weight: 500;
+  color: #64748b;
+}
+
+.profileValue {
+  font-weight: 500;
+  color: #1e293b;
+}
+
+// Bottom Navigation
+.bottomNav {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: white;
+  border-top: 1px solid #e2e8f0;
+  padding: 0.5rem;
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  z-index: 50;
+}
+
+.navTab {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0.5rem;
+  background: transparent;
+  border: none;
+  color: #64748b;
+  font-size: 0.75rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  
+  &.active {
+    color: #2F9D46;
+    
+    .navIcon {
+      transform: scale(1.1);
+    }
+  }
+}
+
+.navIcon {
+  width: 20px;
+  height: 20px;
+  transition: transform 0.2s ease;
+}
+
+.navLabel {
+  font-weight: 500;
+}
+
+// Mobile Responsive
+@media (max-width: 767px) {
+  .headerContent {
+    padding: 0.75rem;
+  }
+  
+  .main {
+    padding: 0.75rem;
+  }
+  
+  .summaryGrid {
+    grid-template-columns: 1fr;
+  }
+  
+  .actionGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  
+  .uploadOptions,
+  .analysisGrid,
+  .advisoryCards {
+    grid-template-columns: 1fr;
+  }
+  
+  .farmCard {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+  
+  .farmActions {
+    width: 100%;
+    justify-content: flex-end;
+  }
+}
