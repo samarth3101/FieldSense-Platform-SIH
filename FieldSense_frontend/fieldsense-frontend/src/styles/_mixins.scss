@@ -1,4 +1,4 @@
-@import './variables.scss';
+@use "variables";
 
 // Responsive Breakpoints
 @mixin mobile-only {
@@ -43,14 +43,14 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: $space-2;
-  font-family: $font-body;
-  font-weight: $font-semibold;
+  gap: variables.$space-2;
+  font-family: variables.$font-body;
+  font-weight: variables.$font-semibold;
   text-decoration: none;
   border: none;
-  border-radius: $radius-lg;
+  border-radius: variables.$radius-lg;
   cursor: pointer;
-  transition: all $transition-base;
+  transition: all variables.$transition-base;
   white-space: nowrap;
   user-select: none;
   
