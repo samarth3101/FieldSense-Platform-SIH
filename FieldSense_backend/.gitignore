@@ -1,0 +1,35 @@
+# Node.js
+node_modules/
+dist/
+build/
+
+# Python
+venv/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.sqlite3
+
+# System files
+.DS_Store
+
+# IDEs
+.vscode/
+.idea/
+
+
+# Python
+FieldSense_backend/venv/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.sqlite3
+
+# System
+.DS_Store
+
+# IDEs
+.vscode/
+.idea/
