@@ -1,26 +1,22 @@
-const API_BASE = "http://127.0.0.1:8000"; // FastAPI server
+// src/lib/api/auth.ts
+const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://127.0.0.1:8000";
 
-export interface LoginResponse {
-  access_token: string;
-  token_type: string;
-}
-
-export async function login(email: string, password: string) {
-  const res = await fetch(`${API_BASE}/auth/login`, {
+export async function signup(data: { email: string; password: string }) {
+  const res = await fetch(`${API_URL}/auth/signup`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ email, password }),
-  });
-  if (!res.ok) throw new Error("Login failed");
-  return (await res.json()) as LoginResponse;
-}
-
-export async function signup(name: string, email: string, password: string) {
-  const res = await fetch(`${API_BASE}/auth/signup`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ name, email, password }),
+    body: JSON.stringify(data),
   });
   if (!res.ok) throw new Error("Signup failed");
-  return await res.json();
+  return res.json();
+}
+
+export async function login(data: { email: string; password: string }) {
+  const res = await fetch(`${API_URL}/auth/login`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(data),
+  });
+  if (!res.ok) throw new Error("Login failed");
+  return res.json(); // this will include { access_token, token_type }
 }

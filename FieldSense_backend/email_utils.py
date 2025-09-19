@@ -19,31 +19,28 @@ def send_verification_email(to_email, token):
         server.login(SMTP_USERNAME, SMTP_PASSWORD)
         server.sendmail(SMTP_USERNAME, to_email, msg.as_string())
 
-
 def send_welcome_email(to_email, name):
     subject = "🎉 Welcome to FieldSense!"
     body = f"""
     Hi {name},
 
-    🌱 Welcome to the FieldSense world!  
-    Our team warmly welcomes you.  
+    🌱 Welcome to the FieldSense world!
+    Our team warmly welcomes you.
 
-    ✅ Here's your welcome guide attached as a PDF.  
-    📘 Please go through it to understand more about us.  
+    ✅ Here's your welcome guide attached as a PDF.
+    📘 Please go through it to understand more about us.
 
     We're here to help you always. 💚
 
-    Best regards,  
+    Best regards,
     Team FieldSense
     """
-
     msg = MIMEMultipart()
     msg["From"] = SMTP_USERNAME
     msg["To"] = to_email
     msg["Subject"] = subject
     msg.attach(MIMEText(body, "plain"))
 
-    # Attach PDF (if you have a ready file like welcome_guide.pdf)
     try:
         with open("welcome_guide.pdf", "rb") as f:
             pdf = MIMEApplication(f.read(), _subtype="pdf")
