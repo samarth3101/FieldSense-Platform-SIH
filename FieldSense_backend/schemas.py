@@ -1,4 +1,5 @@
 from pydantic import BaseModel, EmailStr
+
 try:
     # Pydantic v2 style
     from pydantic import ConfigDict
@@ -11,6 +12,7 @@ class UserCreate(BaseModel):
     email: EmailStr
     mobile: str
     password: str
+    role: str  # "farmer" | "researcher"
 
 if V2:
     class UserOut(BaseModel):
@@ -19,12 +21,14 @@ if V2:
         email: EmailStr
         mobile: str
         is_verified: bool
+        role: str
 else:
     class UserOut(BaseModel):
         name: str
         email: EmailStr
         mobile: str
         is_verified: bool
+        role: str
 
         class Config:
             orm_mode = True

@@ -9,11 +9,13 @@ interface AuthModalProps {
   onClose: () => void;
 }
 
+type Mode = "login" | "signup" | "signup-success";
+
 export default function AuthModal({ onClose }: AuthModalProps) {
   const router = useRouter();
 
   // UI state
-  const [isLogin, setIsLogin] = useState(true);
+  const [mode, setMode] = useState<Mode>("login");
   const [role, setRole] = useState<Role>("farmer");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -21,12 +23,9 @@ export default function AuthModal({ onClose }: AuthModalProps) {
   const [mobile, setMobile] = useState("");  // signup only
 
   const [isLoading, setIsLoading] = useState(false);
-  const [socialAuthHeight, setSocialAuthHeight] = useState(0);
-  const [isTransitioning, setIsTransitioning] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
   const [isClosing, setIsClosing] = useState(false);
 
-  const socialAuthRef = useRef<HTMLDivElement>(null);
   const modalRef = useRef<HTMLDivElement>(null);
 
   // Detect mobile
@@ -36,24 +35,6 @@ export default function AuthModal({ onClose }: AuthModalProps) {
     window.addEventListener("resize", checkMobile);
     return () => window.removeEventListener("resize", checkMobile);
   }, []);
-
-  // Animate social container height for researcher role
-  useEffect(() => {
-    if (role === "researcher") {
-      setIsTransitioning(true);
-      const t = setTimeout(() => {
-        if (socialAuthRef.current) {
-          setSocialAuthHeight(socialAuthRef.current.scrollHeight);
-        }
-        setTimeout(() => setIsTransitioning(false), 350);
-      }, 50);
-      return () => clearTimeout(t);
-    } else {
-      setIsTransitioning(true);
-      setSocialAuthHeight(0);
-      setTimeout(() => setIsTransitioning(false), 350);
-    }
-  }, [role]);
 
   const handleClose = () => {
     setIsClosing(true);
@@ -68,17 +49,12 @@ export default function AuthModal({ onClose }: AuthModalProps) {
     }
   };
 
-  const handleSocialAuth = (provider: string) => {
-    if ("vibrate" in navigator) navigator.vibrate(30);
-    console.log("Social auth:", provider);
-  };
-
   // Backend wiring
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
     try {
-      if (isLogin) {
+      if (mode === "login") {
         await loginAPI({ email, password });
         if (role === "farmer") {
           router.push("/dashboard/farmerdash");
@@ -86,13 +62,13 @@ export default function AuthModal({ onClose }: AuthModalProps) {
           router.push("/dashboard/researchdash");
         }
         handleClose();
-      } else {
+      } else if (mode === "signup") {
         await registerAPI({ name, email, mobile, password, role });
-        alert("Registration successful. Check email to verify.");
-        // Optionally switch to login tab:
-        // setIsLogin(true);
+        // Inline success state instead of alert
+        setMode("signup-success");
       }
     } catch (err: any) {
+      // Simple inline error; can replace with toast if desired
       alert(err.message || "Action failed");
     } finally {
       setIsLoading(false);
@@ -103,17 +79,14 @@ export default function AuthModal({ onClose }: AuthModalProps) {
     if (e.target === e.currentTarget) handleClose();
   };
 
-  const handleHandleClick = () => {
-    if (isMobile) handleClose();
-  };
-
   return (
     <div className={`${styles.overlay} ${isClosing ? styles.overlayClosing : ""}`} onClick={handleOverlayClick}>
       <div
-        className={`${styles.modal} ${isTransitioning ? styles.transitioning : ""} ${isMobile ? styles.mobile : ""} ${isClosing ? styles.modalClosing : ""} ${!isLogin ? styles.signupMode : ""}`}
+        className={`${styles.modal} ${isMobile ? styles.mobile : ""} ${isClosing ? styles.modalClosing : ""} ${mode === "signup" ? styles.signupMode : ""}`}
         ref={modalRef}
       >
-        <div className={styles.modalHandle} onClick={handleHandleClick} />
+        {/* Mobile handle */}
+        <div className={styles.modalHandle} onClick={() => isMobile && handleClose()} />
 
         {/* Desktop close */}
         {!isMobile && (
@@ -136,116 +109,114 @@ export default function AuthModal({ onClose }: AuthModalProps) {
             <h2 className={styles.title}>FieldSense</h2>
           </div>
           <p className={styles.subtitle}>
-            {isLogin ? "Welcome back to your dashboard" : "Join the future of agriculture"}
+            {mode === "login" ? "Welcome back to your dashboard" : mode === "signup" ? "Join the future of agriculture" : "Check email to verify"}
           </p>
         </div>
 
-        {/* Role toggle */}
+        {/* Role toggle (kept in all modes so user sees intended destination) */}
         <div className={styles.roleToggle}>
           <button className={`${styles.roleBtn} ${role === "farmer" ? styles.active : ""}`} onClick={() => handleRoleChange("farmer")} type="button">
-            <div className={styles.roleContent}>
-              <span>👩‍🌾</span><span>Farmer</span>
-            </div>
+            <div className={styles.roleContent}><span>👩‍🌾</span><span>Farmer</span></div>
           </button>
           <button className={`${styles.roleBtn} ${role === "researcher" ? styles.active : ""}`} onClick={() => handleRoleChange("researcher")} type="button">
-            <div className={styles.roleContent}>
-              <span>🔬</span><span>Researcher</span>
-            </div>
+            <div className={styles.roleContent}><span>🔬</span><span>Researcher</span></div>
           </button>
         </div>
 
-        {/* Social auth area (animated for researcher) */}
-        <div
-          className={styles.socialAuthContainer}
-          style={{ height: socialAuthHeight, opacity: role === "researcher" ? 1 : 0 }}
-        >
-          <div className={styles.socialAuth} ref={socialAuthRef}>
-            <div className={styles.socialButtonsRow}>
-              <button className={styles.socialBtn} onClick={() => handleSocialAuth("github")} type="button" title="Continue with GitHub">🐙</button>
-              <button className={styles.socialBtn} onClick={() => handleSocialAuth("google")} type="button" title="Continue with Google">🟦</button>
-              <button className={styles.socialBtn} onClick={() => handleSocialAuth("microsoft")} type="button" title="Continue with Microsoft">🟨</button>
+        {/* Success pane */}
+        {mode === "signup-success" ? (
+          <div className={styles.successPane}>
+            <div className={styles.successIcon}>✅</div>
+            <h3 className={styles.successTitle}>Verification email sent</h3>
+            <p className={styles.successText}>
+              Open the inbox and click Verify to activate the account. Then continue to the {role === "farmer" ? "Farmer" : "Researcher"} dashboard.
+            </p>
+            <div className={styles.successRow}>
+              <a className={styles.btn} href="https://mail.google.com" target="_blank" rel="noreferrer">Open Gmail</a>
+              <button className={styles.btnSecondary} onClick={() => setMode("login")}>Go to Login</button>
             </div>
-            <div className={styles.divider}><span>or continue with email</span></div>
           </div>
-        </div>
+        ) : (
+          <>
+            {/* Email/password form */}
+            <form onSubmit={handleSubmit} className={styles.form}>
+              {mode === "signup" && (
+                <>
+                  <div className={styles.inputGroup}>
+                    <input
+                      type="text"
+                      placeholder="Full name"
+                      value={name}
+                      onChange={(e) => setName(e.target.value)}
+                      required
+                      className={styles.input}
+                      autoComplete="name"
+                    />
+                  </div>
+                  <div className={styles.inputGroup}>
+                    <input
+                      type="tel"
+                      placeholder="Mobile number"
+                      value={mobile}
+                      onChange={(e) => setMobile(e.target.value)}
+                      required
+                      className={styles.input}
+                      autoComplete="tel"
+                    />
+                  </div>
+                </>
+              )}
 
-        {/* Email/password form */}
-        <form onSubmit={handleSubmit} className={styles.form}>
-          {!isLogin && (
-            <>
               <div className={styles.inputGroup}>
                 <input
-                  type="text"
-                  placeholder="Full name"
-                  value={name}
-                  onChange={(e) => setName(e.target.value)}
+                  type="email"
+                  placeholder="Enter your email address"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
                   required
                   className={styles.input}
-                  autoComplete="name"
+                  autoComplete="email"
                 />
               </div>
+
               <div className={styles.inputGroup}>
                 <input
-                  type="tel"
-                  placeholder="Mobile number"
-                  value={mobile}
-                  onChange={(e) => setMobile(e.target.value)}
+                  type="password"
+                  placeholder={mode === "login" ? "Enter your password" : "Create a password"}
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
                   required
                   className={styles.input}
-                  autoComplete="tel"
+                  autoComplete={mode === "login" ? "current-password" : "new-password"}
                 />
               </div>
-            </>
-          )}
 
-          <div className={styles.inputGroup}>
-            <input
-              type="email"
-              placeholder="Enter your email address"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              required
-              className={styles.input}
-              autoComplete="email"
-            />
-          </div>
+              <button type="submit" className={`${styles.submitBtn} ${isLoading ? styles.loading : ""}`} disabled={isLoading}>
+                {isLoading ? <div className={styles.spinner} /> : <span>{mode === "login" ? "Sign In" : "Create Account"}</span>}
+              </button>
+            </form>
 
-          <div className={styles.inputGroup}>
-            <input
-              type="password"
-              placeholder="Enter your password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              required
-              className={styles.input}
-              autoComplete={isLogin ? "current-password" : "new-password"}
-            />
-          </div>
-
-          <button type="submit" className={`${styles.submitBtn} ${isLoading ? styles.loading : ""}`} disabled={isLoading}>
-            {isLoading ? <div className={styles.spinner} /> : <span>{isLogin ? "Sign In" : "Create Account"}</span>}
-          </button>
-        </form>
-
-        <div className={styles.footer}>
-          <p className={styles.toggleText}>
-            {isLogin ? "New to FieldSense?" : "Already have an account?"}
-            <br />
-            <button type="button" className={styles.toggleLink} onClick={() => setIsLogin(!isLogin)}>
-              {isLogin ? "Create an account" : "Sign in instead"}
-            </button>
-          </p>
-
-          <div className={styles.termsContainer}>
-            {!isLogin && (
-              <p className={styles.termsText}>
-                By creating an account, you agree to our{" "}
-                <a href="#" className={styles.link}>Terms of Service</a> and{" "}
-                <a href="#" className={styles.link}>Privacy Policy</a>
+            {/* Footer toggle */}
+            <div className={styles.footer}>
+              <p className={styles.toggleText}>
+                {mode === "login" ? "New to FieldSense?" : "Already have an account?"}
+                <br />
+                <button type="button" className={styles.toggleLink} onClick={() => setMode(mode === "login" ? "signup" : "login")}>
+                  {mode === "login" ? "Create an account" : "Sign in instead"}
+                </button>
               </p>
-            )}
-          </div>
-        </div>
+              <div className={styles.termsContainer}>
+                {mode === "signup" && (
+                  <p className={styles.termsText}>
+                    By creating an account, you agree to our{" "}
+                    <a href="#" className={styles.link}>Terms of Service</a> and{" "}
+                    <a href="#" className={styles.link}>Privacy Policy</a>
+                  </p>
+                )}
+              </div>
+            </div>
+          </>
+        )}
       </div>
     </div>
   );
