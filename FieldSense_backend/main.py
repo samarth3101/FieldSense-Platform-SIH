@@ -4,7 +4,7 @@ from sqlalchemy.orm import Session
 from database import SessionLocal, engine, Base
 from models import User
 from schemas import UserCreate, UserOut
-from auth import hash_password, create_verification_token
+from auth import hash_password, create_verification_token, verify_password
 from email_utils import send_verification_email, send_welcome_email
 from fastapi.middleware.cors import CORSMiddleware
 
@@ -14,9 +14,8 @@ app = FastAPI(title="FieldSense API")
 origins = [
     "http://localhost:3000",
     "http://127.0.0.1:3000",
-    "https://hoppscotch.io", 
+    "https://hoppscotch.io",
 ]
-
 app.add_middleware(
     CORSMiddleware,
     allow_origins=origins,
@@ -40,12 +39,15 @@ def get_db():
 def health():
     return {"ok": True}
 
+# --------------------
+# Auth: Register
+# --------------------
 @app.post("/register", response_model=UserOut)
 def register(user: UserCreate, db: Session = Depends(get_db)):
     # Check if email exists
     if db.query(User).filter(User.email == user.email).first():
         raise HTTPException(status_code=400, detail="Email already registered")
-    
+
     # Hash password and create token
     hashed_pw = hash_password(user.password)
     token = create_verification_token()
@@ -57,7 +59,6 @@ def register(user: UserCreate, db: Session = Depends(get_db)):
         hashed_password=hashed_pw,
         verification_token=token
     )
-
     db.add(db_user)
     db.commit()
     db.refresh(db_user)
@@ -70,12 +71,55 @@ def register(user: UserCreate, db: Session = Depends(get_db)):
 
     return db_user
 
+# --------------------
+# Auth: Login (simple)
+# --------------------
+from pydantic import BaseModel, EmailStr
+
+class LoginInput(BaseModel):
+    email: EmailStr
+    password: str
+
+@app.post("/login")
+def login(payload: LoginInput, db: Session = Depends(get_db)):
+    user = db.query(User).filter(User.email == payload.email).first()
+    if not user:
+        raise HTTPException(status_code=400, detail="Invalid credentials")
+    if not verify_password(payload.password, user.hashed_password):
+        raise HTTPException(status_code=400, detail="Invalid credentials")
+    if not user.is_verified:
+        raise HTTPException(status_code=403, detail="Email not verified")
+    return {"message": "login successful", "name": user.name, "email": user.email}
+
+# --------------------
+# Verify
+# --------------------
 @app.get("/verify/{token}", response_class=HTMLResponse)
 def verify_email(token: str, db: Session = Depends(get_db)):
     user = db.query(User).filter(User.verification_token == token).first()
     if not user:
         return HTMLResponse(
-            content="<h2 style='color:red; text-align:center; margin-top:20%;'>Invalid or expired verification link.</h2>",
+            content="""
+            <html lang="en">
+              <head>
+                <meta charset="UTF-8" />
+                <title>FieldSense • Verification Failed</title>
+                <style>
+                  body {
+                    font-family: system-ui;
+                    background: linear-gradient(135deg, #1a3d2e 0%, #2d5a4a 50%, #4a7c59 100%);
+                    color: white; text-align: center; padding: 20%; margin: 0;
+                  }
+                  .icon { font-size: 48px; margin-bottom: 20px; }
+                </style>
+              </head>
+              <body>
+                <div class="icon">🌱</div>
+                <h2>Invalid or expired verification link</h2>
+                <p>Please request a new verification email or contact support.</p>
+              </body>
+            </html>
+            """,
             status_code=400
         )
 
@@ -89,7 +133,7 @@ def verify_email(token: str, db: Session = Depends(get_db)):
     except Exception as e:
         print(f"Welcome email send error: {e}")
 
-    # Polished verification page with redirect + auto-close
+    # Green, farm-themed verification page; no auto-close
     html_content = """
     <html lang="en">
       <head>
@@ -99,148 +143,84 @@ def verify_email(token: str, db: Session = Depends(get_db)):
         <meta http-equiv="Cache-Control" content="no-store" />
         <style>
           :root {
-            --bg1: #0f1420;
-            --bg2: #151b2b;
-            --card: #0b0f19;
-            --accent: #28a745;
-            --muted: #9aa4b2;
-            --text: #e6eef8;
-            --border: rgba(255,255,255,0.08);
-            --glow: 0 10px 30px rgba(40, 167, 69, 0.25);
+            --forest-dark: #1a3d2e;
+            --forest-mid: #2d5a4a;
+            --sage-green: #4a7c59;
+            --mint-fresh: #7fb069;
+            --leaf-bright: #a7d18c;
+            --cream-white: #f8fffe;
+            --border: #d7e9dd;
           }
           * { box-sizing: border-box; }
           html, body {
             height: 100%;
             margin: 0;
-            font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";
-            color: var(--text);
-            background: radial-gradient(1000px 600px at 20% -10%, #1b2438 0%, transparent 60%),
-                        radial-gradient(900px 500px at 100% 10%, #172032 0%, transparent 60%),
-                        linear-gradient(180deg, var(--bg1), var(--bg2));
+            font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
+            color: var(--forest-dark);
+            background: linear-gradient(135deg, var(--cream-white) 0%, #eef8f1 35%, #e7f4eb 100%);
           }
-          .wrap {
-            height: 100%;
-            display: grid;
-            place-items: center;
-            padding: 24px;
-          }
+          .wrap { min-height: 100%; display: grid; place-items: center; padding: 24px; }
           .card {
-            width: 100%;
-            max-width: 560px;
-            background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
-            border: 1px solid var(--border);
-            border-radius: 16px;
-            padding: 28px;
-            backdrop-filter: blur(8px);
-            box-shadow: 0 8px 30px rgba(0,0,0,0.28);
+            width: 100%; max-width: 640px; background: #fff;
+            border: 1px solid var(--border); border-radius: 16px; padding: 28px;
+            box-shadow: 0 12px 36px rgba(26, 61, 46, 0.12);
           }
-          .head {
-            display: flex;
-            align-items: center;
-            gap: 14px;
-            margin-bottom: 12px;
+          .head { display: flex; gap: 14px; align-items: center; margin-bottom: 8px; }
+          .badge {
+            width: 44px; height: 44px; border-radius: 12px; display: grid; place-items: center;
+            background: linear-gradient(180deg, #ecf8f0, #e3f3e9);
+            color: var(--sage-green); border: 1px solid #d4ecdb; font-weight: 800;
           }
-          .tick {
-            width: 42px;
-            height: 42px;
-            border-radius: 10px;
-            display: grid;
-            place-items: center;
-            background: rgba(40, 167, 69, 0.12);
-            color: var(--accent);
-            border: 1px solid rgba(40, 167, 69, 0.32);
-            box-shadow: var(--glow);
-            font-weight: 700;
-          }
-          h1 {
-            margin: 0;
-            font-size: 22px;
-            letter-spacing: 0.2px;
-          }
-          p {
-            margin: 8px 0 0;
-            color: var(--muted);
-            line-height: 1.5;
-          }
-          .hr {
-            height: 1px;
-            background: var(--border);
-            margin: 18px 0;
-          }
-          .row {
-            display: flex;
-            gap: 12px;
-            flex-wrap: wrap;
-            margin-top: 12px;
-          }
+          h1 { margin: 0; font-size: 24px; letter-spacing: .2px; color: var(--forest-dark); }
+          p { margin: 8px 0 0; color: var(--forest-mid); line-height: 1.55; }
+          .hr { height: 1px; background: var(--border); margin: 18px 0; }
+          .row { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 12px; }
           .btn {
-            appearance: none;
-            border: 1px solid var(--border);
-            background: linear-gradient(180deg, #0f1524, #0d1220);
-            color: var(--text);
-            padding: 10px 14px;
-            border-radius: 10px;
-            cursor: pointer;
+            appearance: none; border: 1px solid var(--border); background: #fff; color: var(--forest-dark);
+            padding: 10px 14px; border-radius: 10px; cursor: pointer;
             transition: transform .15s ease, border-color .15s ease, box-shadow .15s ease;
           }
-          .btn:hover { transform: translateY(-1px); border-color: rgba(255,255,255,0.16); }
+          .btn:hover { transform: translateY(-1px); border-color: #cfe1d5; }
           .btn.primary {
-            background: linear-gradient(180deg, #1f9d49, #158a3d);
-            border-color: rgba(40, 167, 69, 0.5);
-            box-shadow: var(--glow);
+            background: linear-gradient(135deg, var(--mint-fresh), var(--sage-green));
+            color: #fff; border-color: #1a8a5a; box-shadow: 0 10px 24px rgba(34,160,107,.25);
           }
-          .note {
-            margin-top: 10px;
-            font-size: 13px;
-            color: var(--muted);
-          }
-          .footer {
-            margin-top: 10px;
-            font-size: 12px;
-            color: var(--muted);
-            opacity: 0.9;
-          }
+          .note { margin-top: 10px; font-size: 13px; color: var(--forest-mid); }
         </style>
       </head>
       <body>
         <div class="wrap">
           <div class="card">
             <div class="head">
-              <div class="tick">✓</div>
+              <div class="badge">✓</div>
               <div>
-                <h1>Email verified</h1>
-                <p>The account is now active — welcome to FieldSense.</p>
+                <h1>You're verified</h1>
+                <p>The account is active — welcome to FieldSense.</p>
               </div>
             </div>
 
             <div class="hr"></div>
 
-            <p>Head back to the app to sign in and explore the dashboard.</p>
+            <p>Choose an option below to continue.</p>
             <div class="row">
-              <button class="btn primary" onclick="goToApp()">Open FieldSense</button>
-              <button class="btn" onclick="window.close()">Close now</button>
+              <button class="btn primary" onclick="goToApp()">Go to Home</button>
+              <button class="btn" onclick="window.close()">Close Window</button>
             </div>
-            <p class="note">This tab will auto‑close in a few seconds.</p>
-            <p class="footer">If it doesn’t close automatically, it’s safe to close it manually.</p>
+            <p class="note">This tab will remain open until closed manually.</p>
           </div>
         </div>
 
         <script>
           function goToApp(){
-            window.location.href = "http://localhost:3000/verified?status=success";
+            // If Hero is at a different route, update below, e.g., "/#hero" or "/landing"
+            window.location.href = "http://localhost:3000/";
           }
-          // Auto-close after 4s; some browsers only allow this if script opened the tab.
-          setTimeout(() => {
-            try { window.close(); } catch(e) {}
-          }, 4000);
         </script>
       </body>
     </html>
     """
-
     return HTMLResponse(content=html_content)
 
 @app.get("/")
 def root():
     return {"message": "FieldSense backend is running!"}
-#perfecrt working
