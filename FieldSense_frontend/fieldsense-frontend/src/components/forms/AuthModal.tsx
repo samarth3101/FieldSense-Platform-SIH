@@ -55,20 +55,34 @@ export default function AuthModal({ onClose }: AuthModalProps) {
     setIsLoading(true);
     try {
       if (mode === "login") {
-        await loginAPI({ email, password });
-        if (role === "farmer") {
-          router.push("/dashboard/farmerdash");
-        } else {
-          router.push("/dashboard/researchdash");
+        const res = await loginAPI({ email, password }); // { message, name, email, roles }
+        const rolesCsv = res.roles || "";
+        const roles = rolesCsv.split(",").map((r) => r.trim()).filter(Boolean);
+
+        // Require the selected role to be enabled
+        if (!roles.includes(role)) {
+          alert(`${role === "farmer" ? "Farmer" : "Researcher"} access not enabled for this account. Use Sign up to add it.`);
+          setMode("signup");
+          setIsLoading(false);
+          return;
         }
-        handleClose();
+
+        // Route to exact pages
+        const target = role === "farmer"
+          ? "/dashboard/farmerdash"
+          : "/dashboard/researchdash";
+
+        // Small delay to ensure modal animation does not cancel navigation
+        setTimeout(() => {
+          router.push(target);
+          handleClose();
+        }, 50);
+        return;
       } else if (mode === "signup") {
-        await registerAPI({ name, email, mobile, password, role });
-        // Inline success state instead of alert
+        await registerAPI({ name, email, mobile, password, requested_role: role });
         setMode("signup-success");
       }
     } catch (err: any) {
-      // Simple inline error; can replace with toast if desired
       alert(err.message || "Action failed");
     } finally {
       setIsLoading(false);
@@ -113,7 +127,7 @@ export default function AuthModal({ onClose }: AuthModalProps) {
           </p>
         </div>
 
-        {/* Role toggle (kept in all modes so user sees intended destination) */}
+        {/* Role toggle */}
         <div className={styles.roleToggle}>
           <button className={`${styles.roleBtn} ${role === "farmer" ? styles.active : ""}`} onClick={() => handleRoleChange("farmer")} type="button">
             <div className={styles.roleContent}><span>👩‍🌾</span><span>Farmer</span></div>
@@ -138,7 +152,6 @@ export default function AuthModal({ onClose }: AuthModalProps) {
           </div>
         ) : (
           <>
-            {/* Email/password form */}
             <form onSubmit={handleSubmit} className={styles.form}>
               {mode === "signup" && (
                 <>
@@ -196,7 +209,6 @@ export default function AuthModal({ onClose }: AuthModalProps) {
               </button>
             </form>
 
-            {/* Footer toggle */}
             <div className={styles.footer}>
               <p className={styles.toggleText}>
                 {mode === "login" ? "New to FieldSense?" : "Already have an account?"}

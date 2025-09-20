@@ -12,6 +12,5 @@ class User(Base):
     is_verified = Column(Boolean, default=False)
     verification_token = Column(String, unique=True, nullable=True)
 
-    # New: role for routing and email customization
-    # values: "farmer" or "researcher"
-    role = Column(String, nullable=False, default="farmer")
+    # New: roles as a CSV string, e.g., "farmer" or "farmer,researcher"
+    roles = Column(String, nullable=False, default="farmer")

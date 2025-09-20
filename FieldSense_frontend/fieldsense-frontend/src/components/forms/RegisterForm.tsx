@@ -17,7 +17,7 @@ export default function RegisterForm() {
     setLoading(true);
     setMsg(null);
     try {
-      await registerAPI({ name, email, mobile, password, role });
+      await registerAPI({ name, email, mobile, password, requested_role: role });
       setMsg("Registration successful. Check email to verify.");
       if ("vibrate" in navigator) navigator.vibrate(40);
     } catch (err: any) {

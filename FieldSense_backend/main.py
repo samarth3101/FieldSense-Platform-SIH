@@ -1,4 +1,4 @@
-from fastapi import FastAPI, Depends, HTTPException
+from fastapi import FastAPI, Depends, HTTPException, Request
 from fastapi.responses import HTMLResponse
 from sqlalchemy.orm import Session
 from database import SessionLocal, engine, Base
@@ -38,38 +38,62 @@ def health():
     return {"ok": True}
 
 # --------------------
-# Register (now with role)
+# Register (multi-role)
 # --------------------
 @app.post("/register", response_model=UserOut)
 def register(user: UserCreate, db: Session = Depends(get_db)):
-    if db.query(User).filter(User.email == user.email).first():
-        raise HTTPException(status_code=400, detail="Email already registered")
+    requested = (user.requested_role or "farmer").lower()
+    if requested not in ("farmer", "researcher"):
+        raise HTTPException(status_code=400, detail="Invalid role")
 
+    existing = db.query(User).filter(User.email == user.email).first()
+    if existing:
+        current_roles = [r.strip() for r in (existing.roles or "").split(",") if r.strip()]
+        if requested in current_roles:
+            return existing
+
+        # Append the new role and send a fresh role-themed verification link
+        current_roles.append(requested)
+        existing.roles = ",".join(sorted(set(current_roles)))
+        token = create_verification_token()
+        existing.verification_token = token
+        db.commit()
+        try:
+            # include the role hint in the verify URL (handled inside email_utils)
+            send_verification_email(
+                to_email=existing.email,
+                token=token,
+                role=requested,
+                name=existing.name,
+            )
+        except Exception as e:
+            print(f"Email send error (append role): {e}")
+        return existing
+
+    # New user path
     hashed_pw = hash_password(user.password)
     token = create_verification_token()
-
     db_user = User(
         name=user.name,
         email=user.email,
         mobile=user.mobile,
         hashed_password=hashed_pw,
         verification_token=token,
-        role=user.role.lower() if user.role else "farmer",
+        roles=requested,
     )
     db.add(db_user)
     db.commit()
     db.refresh(db_user)
 
     try:
-        # role-aware verification email
-        send_verification_email(to_email=user.email, token=token, role=db_user.role, name=user.name)
+        send_verification_email(to_email=user.email, token=token, role=requested, name=user.name)
     except Exception as e:
         print(f"Email send error: {e}")
 
     return db_user
 
 # --------------------
-# Login (simple)
+# Login (returns roles CSV)
 # --------------------
 class LoginInput(BaseModel):
     email: EmailStr
@@ -82,7 +106,7 @@ def login(payload: LoginInput, db: Session = Depends(get_db)):
         raise HTTPException(status_code=400, detail="Invalid credentials")
     if not user.is_verified:
         raise HTTPException(status_code=403, detail="Email not verified")
-    return {"message": "login successful", "name": user.name, "email": user.email, "role": user.role}
+    return {"message": "login successful", "name": user.name, "email": user.email, "roles": user.roles}
 
 # --------------------
 # Resend verification
@@ -100,41 +124,22 @@ def resend_verification(payload: ResendInput, db: Session = Depends(get_db)):
     token = create_verification_token()
     user.verification_token = token
     db.commit()
+    first_role = (user.roles or "farmer").split(",")[0].strip() or "farmer"
     try:
-        send_verification_email(to_email=user.email, token=token, role=user.role, name=user.name)
+        send_verification_email(to_email=user.email, token=token, role=first_role, name=user.name)
     except Exception as e:
         print(f"Resend email error: {e}")
     return {"message": "Verification email resent"}
 
 # --------------------
-# Verify (role-aware)
+# Verify (role hint via ?r=)
 # --------------------
 @app.get("/verify/{token}", response_class=HTMLResponse)
-def verify_email(token: str, db: Session = Depends(get_db)):
+def verify_email(token: str, request: Request, db: Session = Depends(get_db)):
     user = db.query(User).filter(User.verification_token == token).first()
     if not user:
         return HTMLResponse(
-            content="""
-            <html lang="en">
-              <head>
-                <meta charset="UTF-8" />
-                <title>FieldSense • Verification Failed</title>
-                <style>
-                  body {
-                    font-family: system-ui;
-                    background: linear-gradient(135deg, #1a3d2e 0%, #2d5a4a 50%, #4a7c59 100%);
-                    color: white; text-align: center; padding: 20%; margin: 0;
-                  }
-                  .icon { font-size: 48px; margin-bottom: 20px; }
-                </style>
-              </head>
-              <body>
-                <div class="icon">🌱</div>
-                <h2>Invalid or expired verification link</h2>
-                <p>Please request a new verification email or contact support.</p>
-              </body>
-            </html>
-            """,
+            content="<h2 style='color:red;text-align:center;margin-top:20%'>Invalid or expired verification link.</h2>",
             status_code=400
         )
 
@@ -142,105 +147,37 @@ def verify_email(token: str, db: Session = Depends(get_db)):
     user.verification_token = None
     db.commit()
 
+    roles_list = [r.strip() for r in (user.roles or "").split(",") if r.strip()]
+    hint = (request.query_params.get("r") or "").lower()
+    effective_role = hint if hint in roles_list else (roles_list[0] if roles_list else "farmer")
+
     try:
-        # role-aware welcome email
-        send_welcome_email(to_email=user.email, name=user.name, role=user.role)
+        send_welcome_email(to_email=user.email, name=user.name, role=effective_role)
     except Exception as e:
         print(f"Welcome email send error: {e}")
 
-    # Choose destination by role
-    if user.role == "researcher":
+    if effective_role == "researcher":
         target = "http://localhost:3000/dashboard/researchdash"
-        role_label = "Researcher"
-        emoji = "🔬"
+        role_label = "Researcher"; emoji = "🔬"
     else:
         target = "http://localhost:3000/dashboard/farmerdash"
-        role_label = "Farmer"
-        emoji = "🌾"
+        role_label = "Farmer"; emoji = "🌾"
 
-    html_content = f"""
-    <html lang="en">
-      <head>
-        <meta charset="UTF-8" />
-        <title>FieldSense • Email Verified</title>
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <meta http-equiv="Cache-Control" content="no-store" />
-        <style>
-          :root {{
-            --forest-dark: #1a3d2e;
-            --forest-mid: #2d5a4a;
-            --sage-green: #4a7c59;
-            --mint-fresh: #7fb069;
-            --cream-white: #f8fffe;
-            --border: #d7e9dd;
-          }}
-          * {{ box-sizing: border-box; }}
-          html, body {{
-            height: 100%;
-            margin: 0;
-            font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
-            color: var(--forest-dark);
-            background: linear-gradient(135deg, var(--cream-white) 0%, #eef8f1 35%, #e7f4eb 100%);
-          }}
-          .wrap {{ min-height: 100%; display: grid; place-items: center; padding: 24px; }}
-          .card {{
-            width: 100%; max-width: 640px; background: #fff;
-            border: 1px solid var(--border); border-radius: 16px; padding: 28px;
-            box-shadow: 0 12px 36px rgba(26, 61, 46, 0.12);
-          }}
-          .head {{ display: flex; gap: 14px; align-items: center; margin-bottom: 8px; }}
-          .badge {{
-            width: 44px; height: 44px; border-radius: 12px; display: grid; place-items: center;
-            background: linear-gradient(180deg, #ecf8f0, #e3f3e9);
-            color: var(--sage-green); border: 1px solid #d4ecdb; font-weight: 800;
-          }}
-          h1 {{ margin: 0; font-size: 24px; letter-spacing: .2px; color: var(--forest-dark); }}
-          p {{ margin: 8px 0 0; color: var(--forest-mid); line-height: 1.55; }}
-          .hr {{ height: 1px; background: var(--border); margin: 18px 0; }}
-          .row {{ display: flex; gap: 12px; flex-wrap: wrap; margin-top: 12px; }}
-          .btn {{
-            appearance: none; border: 1px solid var(--border); background: #fff; color: var(--forest-dark);
-            padding: 10px 14px; border-radius: 10px; cursor: pointer;
-            transition: transform .15s ease, border-color .15s ease, box-shadow .15s ease;
-          }}
-          .btn:hover {{ transform: translateY(-1px); border-color: #cfe1d5; }}
-          .btn.primary {{
-            background: linear-gradient(135deg, var(--mint-fresh), var(--sage-green));
-            color: #fff; border-color: #1a8a5a; box-shadow: 0 10px 24px rgba(34,160,107,.25);
-          }}
-          .note {{ margin-top: 10px; font-size: 13px; color: var(--forest-mid); }}
-        </style>
-      </head>
-      <body>
-        <div class="wrap">
-          <div class="card">
-            <div class="head">
-              <div class="badge">✓</div>
-              <div>
-                <h1>You're verified</h1>
-                <p>Welcome, {role_label} {emoji} — the account is active.</p>
-              </div>
-            </div>
-
-            <div class="hr"></div>
-
-            <p>Continue to the {role_label} dashboard.</p>
-            <div class="row">
-              <button class="btn primary" onclick="goToApp()">Open {role_label} Dashboard</button>
-              <button class="btn" onclick="window.close()">Close Window</button>
-            </div>
-            <p class="note">This tab will remain open until closed manually.</p>
-          </div>
+    html_content = f"""<!DOCTYPE html><html lang='en'><head><meta charset='UTF-8'/>
+      <title>FieldSense • Email Verified</title><meta name='viewport' content='width=device-width, initial-scale=1'/>
+      <style>body{{margin:0;font-family:ui-sans-serif;background:linear-gradient(135deg,#f8fffe 0%,#eef8f1 35%,#e7f4eb 100%);color:#1a3d2e}}
+      .wrap{{min-height:100vh;display:grid;place-items:center;padding:24px}}
+      .card{{max-width:640px;width:100%;background:#fff;border:1px solid #d7e9dd;border-radius:16px;padding:28px;box-shadow:0 12px 36px rgba(26,61,46,.12)}}
+      .badge{{width:44px;height:44px;border:1px solid #d4ecdb;border-radius:12px;display:grid;place-items:center;background:linear-gradient(180deg,#ecf8f0,#e3f3e9);color:#4a7c59;font-weight:800;margin-right:12px;display:inline-grid}}
+      .row{{display:flex;gap:12px;flex-wrap:wrap;margin-top:12px}}</style></head>
+      <body><div class='wrap'><div class='card'>
+        <div><span class='badge'>✓</span><strong>Welcome, {role_label} {emoji}</strong></div>
+        <p style='margin-top:10px;color:#2d5a4a'>The account is active. Continue to the {role_label} dashboard.</p>
+        <div class='row'>
+          <button onclick="window.location.href='{target}'" style="padding:10px 14px;border-radius:10px;color:#fff;background:linear-gradient(135deg,#7fb069,#4a7c59);border:1px solid #1a8a5a;cursor:pointer">Open {role_label} Dashboard</button>
+          <button onclick="window.close()" style="padding:10px 14px;border-radius:10px;border:1px solid #d7e9dd;background:#fff;cursor:pointer">Close Window</button>
         </div>
-
-        <script>
-          function goToApp(){{
-            window.location.href = "{target}";
-          }}
-        </script>
-      </body>
-    </html>
-    """
+      </div></div></body></html>"""
     return HTMLResponse(content=html_content)
 
 @app.get("/")

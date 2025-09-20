@@ -1,7 +1,6 @@
 from pydantic import BaseModel, EmailStr
 
 try:
-    # Pydantic v2 style
     from pydantic import ConfigDict
     V2 = True
 except Exception:
@@ -12,7 +11,7 @@ class UserCreate(BaseModel):
     email: EmailStr
     mobile: str
     password: str
-    role: str  # "farmer" | "researcher"
+    requested_role: str  # "farmer" | "researcher" — role to add/enable
 
 if V2:
     class UserOut(BaseModel):
@@ -21,14 +20,14 @@ if V2:
         email: EmailStr
         mobile: str
         is_verified: bool
-        role: str
+        roles: str  # CSV string in this quick implementation
 else:
     class UserOut(BaseModel):
         name: str
         email: EmailStr
         mobile: str
         is_verified: bool
-        role: str
+        roles: str
 
         class Config:
             orm_mode = True

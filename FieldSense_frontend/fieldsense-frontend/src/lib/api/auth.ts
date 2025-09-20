@@ -8,7 +8,7 @@ export interface RegisterPayload {
   email: string;
   mobile: string;
   password: string;
-  role?: Role; // optional if backend doesn’t persist yet
+  requested_role: Role;
 }
 
 export async function registerAPI(payload: RegisterPayload) {
@@ -21,7 +21,8 @@ export async function registerAPI(payload: RegisterPayload) {
     const e = await res.json().catch(() => ({}));
     throw new Error(e.detail || "Registration failed");
   }
-  return res.json() as Promise<{ name: string; email: string; mobile: string; is_verified: boolean }>;
+  // Backend returns UserOut; roles is a CSV string in current backend
+  return res.json() as Promise<{ name: string; email: string; mobile: string; is_verified: boolean; roles: string }>;
 }
 
 export interface LoginPayload {
@@ -39,5 +40,6 @@ export async function loginAPI(payload: LoginPayload) {
     const e = await res.json().catch(() => ({}));
     throw new Error(e.detail || "Login failed");
   }
-  return res.json() as Promise<{ message: string; name: string; email: string }>;
+  // returns { message, name, email, roles }
+  return res.json() as Promise<{ message: string; name: string; email: string; roles: string }>;
 }

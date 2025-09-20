@@ -35,7 +35,8 @@ def _send_email(to_email: str, subject: str, html_body: str, text_body: str, att
         server.send_message(msg)
 
 def send_verification_email(to_email: str, token: str, role: str, name: str):
-    verify_url = f"http://localhost:8000/verify/{token}"
+    # Include role hint so /verify can theme and route correctly
+    verify_url = f"http://localhost:8000/verify/{token}?r={role}"
     if role == "researcher":
         subject = "🔬 Verify your FieldSense researcher account"
         headline = "Welcome, Researcher"
