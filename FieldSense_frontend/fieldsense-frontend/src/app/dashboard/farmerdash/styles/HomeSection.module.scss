@@ -1,0 +1,196 @@
+.homeContent {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  padding-bottom: 100px; // Space for bottom nav
+}
+
+.welcomeSection {
+  background: white;
+  border: 1px solid #e2e8f0;
+  border-radius: 1.5rem;
+  padding: 2rem;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1);
+}
+
+.welcomeHeader {
+  margin-bottom: 1.5rem;
+}
+
+.greeting {
+  font-size: 1.875rem;
+  font-weight: 700;
+  color: #1e293b;
+  margin-bottom: 0.25rem;
+}
+
+.subGreeting {
+  color: #64748b;
+  font-size: 1rem;
+  line-height: 1.5;
+}
+
+.quickStats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+
+  @media (max-width: 768px) {
+    grid-template-columns: 1fr;
+    gap: 0.75rem;
+  }
+}
+
+.sectionTitle {
+  font-size: 1.375rem;
+  font-weight: 700;
+  color: #1e293b;
+  margin-bottom: 1rem;
+}
+
+// SMART ACTIONS STYLING - COMPLETE FIX
+.smartActions {
+  margin-bottom: 1.5rem;
+  background: white;
+  border: 1px solid #e2e8f0;
+  border-radius: 1.5rem;
+  padding: 1.5rem;
+  box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1);
+}
+
+.actionGrid {
+  display: grid;
+  gap: 1rem;
+}
+
+.smartActionBtn {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1.5rem;
+  background: linear-gradient(135deg, #16a34a, #22c55e);
+  color: white;
+  border: none;
+  border-radius: 1.25rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 6px -1px rgba(22, 163, 74, 0.3);
+  width: 100%;
+  text-align: left;
+  
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 32px rgba(22, 163, 74, 0.4);
+  }
+}
+
+.actionIconBg {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 56px;
+  height: 56px;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 16px;
+  flex-shrink: 0;
+}
+
+.actionIcon {
+  width: 28px;
+  height: 28px;
+  color: white;
+}
+
+.actionContent {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.actionTitle {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: white;
+}
+
+.actionDesc {
+  font-size: 0.875rem;
+  opacity: 0.9;
+  color: white;
+}
+
+.chevronIcon {
+  width: 20px;
+  height: 20px;
+  opacity: 0.7;
+  flex-shrink: 0;
+  color: white;
+}
+
+// FARM STATUS STYLING
+.farmStatus {
+  margin-bottom: 1.5rem;
+  background: white;
+  border: 1px solid #e2e8f0;
+  border-radius: 1.5rem;
+  padding: 1.5rem;
+  box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1);
+}
+
+.farmGrid {
+  display: grid;
+  gap: 1rem;
+  
+  @media (min-width: 768px) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.statIcon {
+  width: 28px;
+  height: 28px;
+  color: #16a34a;
+}
+
+// Mobile responsive
+@media (max-width: 768px) {
+  .homeContent {
+    padding-bottom: 120px;
+  }
+  
+  .welcomeSection {
+    padding: 1.5rem;
+  }
+  
+  .greeting {
+    font-size: 1.5rem;
+  }
+  
+  .smartActions, .farmStatus {
+    padding: 1rem;
+  }
+  
+  .smartActionBtn {
+    padding: 1.25rem;
+  }
+  
+  .actionIconBg {
+    width: 48px;
+    height: 48px;
+  }
+  
+  .actionIcon {
+    width: 24px;
+    height: 24px;
+  }
+  
+  .actionTitle {
+    font-size: 1rem;
+  }
+  
+  .actionDesc {
+    font-size: 0.8125rem;
+  }
+}

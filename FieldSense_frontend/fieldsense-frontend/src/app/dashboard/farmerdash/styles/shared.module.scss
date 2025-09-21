@@ -1,0 +1,1402 @@
+// ===========================================
+// COMPLETE SHARED STYLES FOR FARMER DASHBOARD
+// ===========================================
+
+// Dashboard base styles
+.dashboard {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background: #f8fafc;
+
+  &.fadeOut {
+    opacity: 0.5;
+    transition: opacity 0.3s ease;
+  }
+
+  &.fadeIn {
+    opacity: 1;
+    transition: opacity 0.3s ease;
+  }
+}
+
+.main {
+  flex: 1;
+  padding: 1rem;
+  padding-bottom: 100px;
+}
+
+.loadingScreen {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  background: #f8fafc;
+}
+
+.loadingSpinner {
+  font-size: 1.25rem;
+  color: #16a34a;
+  font-weight: 600;
+}
+
+// ===========================================
+// MODAL STYLES - COMPLETE IMPLEMENTATION
+// ===========================================
+
+.modal {
+  position: fixed !important;
+  top: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
+  bottom: 0 !important;
+  background: rgba(0, 0, 0, 0.8) !important;
+  backdrop-filter: blur(8px) !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  z-index: 9999 !important;
+  padding: 1rem !important;
+  animation: modalFadeIn 0.3s ease !important;
+}
+
+.modalContent {
+  background: white !important;
+  border-radius: 1.5rem !important;
+  padding: 2rem !important;
+  max-width: 500px !important;
+  width: 100% !important;
+  max-height: 90vh !important;
+  overflow-y: auto !important;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5) !important;
+  position: relative !important;
+  animation: modalSlideUp 0.4s ease !important;
+}
+
+.modalHeader {
+  display: flex !important;
+  justify-content: space-between !important;
+  align-items: center !important;
+  margin-bottom: 1.5rem !important;
+  padding-bottom: 1rem !important;
+  border-bottom: 1px solid #e2e8f0 !important;
+  
+  h3 {
+    font-size: 1.5rem !important;
+    font-weight: 700 !important;
+    color: #1e293b !important;
+    margin: 0 !important;
+  }
+}
+
+.closeBtn {
+  background: none !important;
+  border: none !important;
+  color: #64748b !important;
+  cursor: pointer !important;
+  padding: 0.5rem !important;
+  border-radius: 0.5rem !important;
+  transition: all 0.2s ease !important;
+  
+  &:hover {
+    background: #f1f5f9 !important;
+    color: #374151 !important;
+  }
+}
+
+// ===========================================
+// PROCESSING MODAL STYLES
+// ===========================================
+
+.processingModal {
+  background: white !important;
+  border-radius: 2rem !important;
+  padding: 3rem 2rem !important;
+  max-width: 500px !important;
+  width: 100% !important;
+  text-align: center !important;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5) !important;
+  border: 1px solid rgba(255, 255, 255, 0.2) !important;
+  animation: modalSlideUp 0.4s ease !important;
+  position: relative !important;
+  overflow: hidden !important;
+  background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%) !important;
+}
+
+.processingContainer {
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  gap: 2rem !important;
+  position: relative !important;
+  z-index: 2 !important;
+}
+
+.lottieWrapper {
+  width: 200px !important;
+  height: 200px !important;
+  border-radius: 50% !important;
+  overflow: hidden !important;
+  box-shadow: 0 20px 40px rgba(22, 163, 74, 0.3) !important;
+  background: white !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  position: relative !important;
+  animation: lottieGlow 2s ease-in-out infinite alternate !important;
+  
+  &:empty::before {
+    content: '🌱' !important;
+    font-size: 4rem !important;
+    animation: spin 2s linear infinite !important;
+  }
+}
+
+.processingText {
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  gap: 1.5rem !important;
+  
+  h3 {
+    font-size: 1.75rem !important;
+    font-weight: 700 !important;
+    color: #1e293b !important;
+    margin: 0 !important;
+    text-align: center !important;
+    line-height: 1.2 !important;
+  }
+}
+
+.dynamicText {
+  font-size: 1.125rem !important;
+  color: #64748b !important;
+  margin: 0 !important;
+  min-height: 28px !important;
+  font-weight: 500 !important;
+  text-align: center !important;
+  animation: textFade 0.5s ease-in-out !important;
+}
+
+.progressBar {
+  width: 320px !important;
+  height: 12px !important;
+  background: #e2e8f0 !important;
+  border-radius: 6px !important;
+  overflow: hidden !important;
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1) !important;
+  position: relative !important;
+}
+
+.progressFill {
+  height: 100% !important;
+  background: linear-gradient(135deg, #16a34a 0%, #22c55e 50%, #4ade80 100%) !important;
+  border-radius: 6px !important;
+  transition: width 0.8s cubic-bezier(0.4, 0, 0.2, 1) !important;
+  position: relative !important;
+  
+  &::after {
+    content: '' !important;
+    position: absolute !important;
+    top: 0 !important;
+    left: -100% !important;
+    width: 100% !important;
+    height: 100% !important;
+    background: linear-gradient(
+      90deg,
+      rgba(255, 255, 255, 0) 0%,
+      rgba(255, 255, 255, 0.4) 50%,
+      rgba(255, 255, 255, 0) 100%
+    ) !important;
+    animation: shimmer 2s infinite !important;
+  }
+}
+
+.progressPercentage {
+  font-size: 2rem !important;
+  font-weight: 800 !important;
+  color: #16a34a !important;
+  animation: bounce 1s ease-in-out infinite alternate !important;
+}
+
+// ===========================================
+// LOCATION MODAL STYLES
+// ===========================================
+
+.locationInfo {
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 1rem !important;
+}
+
+.locationRow {
+  display: grid !important;
+  grid-template-columns: 1fr 1fr !important;
+  gap: 1rem !important;
+}
+
+.locationItem {
+  display: flex !important;
+  align-items: center !important;
+  gap: 1rem !important;
+  padding: 1rem !important;
+  background: #f8fafc !important;
+  border-radius: 0.75rem !important;
+  border: 1px solid #e2e8f0 !important;
+  min-height: 70px !important;
+}
+
+.locationIcon {
+  width: 24px !important;
+  height: 24px !important;
+  color: #16a34a !important;
+  flex-shrink: 0 !important;
+}
+
+.locationDetails {
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 0.25rem !important;
+  flex: 1 !important;
+  min-width: 0 !important;
+}
+
+.locationLabel {
+  font-size: 0.875rem !important;
+  font-weight: 500 !important;
+  color: #64748b !important;
+  line-height: 1.2 !important;
+}
+
+.locationValue {
+  font-size: 1rem !important;
+  font-weight: 600 !important;
+  color: #1e293b !important;
+  line-height: 1.2 !important;
+  word-break: break-word !important;
+}
+
+.confirmBtn {
+  width: 100% !important;
+  padding: 1rem 2rem !important;
+  background: linear-gradient(135deg, #16a34a, #22c55e) !important;
+  color: white !important;
+  border: none !important;
+  border-radius: 0.75rem !important;
+  font-size: 1rem !important;
+  font-weight: 600 !important;
+  cursor: pointer !important;
+  transition: all 0.2s ease !important;
+  margin-top: 1rem !important;
+  
+  &:hover {
+    transform: translateY(-1px) !important;
+    box-shadow: 0 8px 25px rgba(22, 163, 74, 0.3) !important;
+  }
+}
+
+.loadingLocation {
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  justify-content: center !important;
+  padding: 2rem 1rem !important;
+  text-align: center !important;
+  
+  p {
+    margin-top: 1rem !important;
+    color: #64748b !important;
+    font-size: 1rem !important;
+  }
+}
+
+// ===========================================
+// REPORT MODAL STYLES - ENHANCED COMPLETE VERSION
+// ===========================================
+
+.reportModal {
+  background: white !important;
+  border-radius: 1.5rem !important;
+  max-width: 900px !important;
+  width: 100% !important;
+  max-height: 90vh !important;
+  overflow-y: auto !important;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5) !important;
+  animation: modalSlideUp 0.4s ease !important;
+}
+
+.reportHeader {
+  display: flex !important;
+  justify-content: space-between !important;
+  align-items: center !important;
+  padding: 1.5rem 2rem !important;
+  border-bottom: 1px solid #e2e8f0 !important;
+  position: sticky !important;
+  top: 0 !important;
+  background: white !important;
+  z-index: 10 !important;
+  border-radius: 1.5rem 1.5rem 0 0 !important;
+}
+
+.reportLogo {
+  display: flex !important;
+  align-items: center !important;
+  gap: 0.5rem !important;
+  
+  .logoIcon {
+    font-size: 1.5rem !important;
+  }
+  
+  .logoText {
+    display: flex !important;
+    align-items: center !important;
+    gap: 0.25rem !important;
+    font-size: 1.25rem !important;
+    font-weight: 700 !important;
+    color: #16a34a !important;
+    
+    .aiTag {
+      font-size: 0.75rem !important;
+      background: #3b82f6 !important;
+      color: white !important;
+      padding: 0.125rem 0.375rem !important;
+      border-radius: 0.25rem !important;
+    }
+  }
+}
+
+.reportContent {
+  padding: 2rem !important;
+  background: white !important;
+}
+
+.reportTitle {
+  text-align: center !important;
+  margin-bottom: 2rem !important;
+  
+  h2 {
+    font-size: 1.875rem !important;
+    font-weight: 700 !important;
+    color: #1e293b !important;
+    margin-bottom: 0.5rem !important;
+  }
+}
+
+.reportMeta {
+  display: flex !important;
+  justify-content: center !important;
+  gap: 2rem !important;
+  font-size: 0.875rem !important;
+  color: #64748b !important;
+  flex-wrap: wrap !important;
+}
+
+.reportSection {
+  margin-bottom: 2rem !important;
+  background: #fafbfc !important;
+  padding: 1.5rem !important;
+  border-radius: 1rem !important;
+  border: 1px solid #f1f3f4 !important;
+  
+  h3 {
+    font-size: 1.25rem !important;
+    font-weight: 600 !important;
+    color: #1e293b !important;
+    margin-bottom: 1rem !important;
+    padding-bottom: 0.5rem !important;
+    border-bottom: 2px solid #e2e8f0 !important;
+  }
+}
+
+.infoGrid {
+  display: grid !important;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)) !important;
+  gap: 1rem !important;
+}
+
+.infoItem {
+  display: flex !important;
+  justify-content: space-between !important;
+  align-items: center !important;
+  padding: 1rem !important;
+  background: white !important;
+  border-radius: 0.5rem !important;
+  font-size: 0.875rem !important;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1) !important;
+  border: 1px solid #e5e7eb !important;
+  
+  span:first-child {
+    color: #64748b !important;
+    font-weight: 500 !important;
+  }
+  
+  span:last-child {
+    color: #1e293b !important;
+    font-weight: 600 !important;
+  }
+}
+
+// ANALYSIS RESULTS STYLING
+.analysisResults {
+  text-align: center !important;
+}
+
+.scoreCard {
+  display: inline-flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  padding: 2rem !important;
+  background: linear-gradient(135deg, #16a34a, #22c55e) !important;
+  color: white !important;
+  border-radius: 1rem !important;
+  margin-bottom: 2rem !important;
+  box-shadow: 0 8px 32px rgba(22, 163, 74, 0.3) !important;
+}
+
+.scoreValue {
+  font-size: 3rem !important;
+  font-weight: 700 !important;
+  line-height: 1 !important;
+}
+
+.scoreLabel {
+  font-size: 1rem !important;
+  opacity: 0.9 !important;
+  margin-top: 0.5rem !important;
+}
+
+.metricsGrid {
+  display: grid !important;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)) !important;
+  gap: 1rem !important;
+}
+
+.metricCard {
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  padding: 1.5rem !important;
+  background: white !important;
+  border-radius: 0.75rem !important;
+  text-align: center !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1) !important;
+  border: 1px solid #e5e7eb !important;
+}
+
+.metricIcon {
+  width: 32px !important;
+  height: 32px !important;
+  color: #16a34a !important;
+  margin-bottom: 0.5rem !important;
+}
+
+.metricValue {
+  font-size: 1.5rem !important;
+  font-weight: 700 !important;
+  color: #1e293b !important;
+  margin-bottom: 0.25rem !important;
+}
+
+.metricLabel {
+  font-size: 0.875rem !important;
+  color: #64748b !important;
+}
+
+// NUTRIENT ANALYSIS STYLING - ENHANCED
+.nutrientAnalysis {
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 1.5rem !important;
+  background: white !important;
+  padding: 1rem !important;
+  border-radius: 0.75rem !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05) !important;
+}
+
+.nutrientItem {
+  display: flex !important;
+  align-items: center !important;
+  gap: 1rem !important;
+  padding: 0.75rem !important;
+  background: #f8fafc !important;
+  border-radius: 0.5rem !important;
+  border: 1px solid #e2e8f0 !important;
+}
+
+.nutrientName {
+  min-width: 140px !important;
+  font-size: 0.875rem !important;
+  font-weight: 600 !important;
+  color: #1e293b !important;
+}
+
+.progressBar {
+  flex: 1 !important;
+  height: 12px !important;
+  background: #e2e8f0 !important;
+  border-radius: 6px !important;
+  overflow: hidden !important;
+  position: relative !important;
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1) !important;
+}
+
+.nutrientValue {
+  min-width: 50px !important;
+  text-align: right !important;
+  font-size: 0.875rem !important;
+  font-weight: 700 !important;
+  color: #16a34a !important;
+}
+
+// RECOMMENDATIONS STYLING
+.recommendations {
+  list-style: none !important;
+  padding: 0 !important;
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 1rem !important;
+  
+  li {
+    padding: 1.25rem !important;
+    background: #f0fdf4 !important;
+    border-left: 4px solid #16a34a !important;
+    border-radius: 0.5rem !important;
+    font-size: 0.875rem !important;
+    line-height: 1.6 !important;
+    color: #166534 !important;
+    font-weight: 500 !important;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05) !important;
+    position: relative !important;
+    
+    &::before {
+      content: '✓' !important;
+      position: absolute !important;
+      left: 0.75rem !important;
+      top: 0.75rem !important;
+      color: #16a34a !important;
+      font-weight: bold !important;
+      font-size: 1rem !important;
+    }
+    
+    padding-left: 2.5rem !important;
+  }
+}
+
+// IRRIGATION SCHEDULE STYLING
+.scheduleList {
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 1rem !important;
+}
+
+.scheduleItem {
+  display: flex !important;
+  align-items: center !important;
+  gap: 1rem !important;
+  padding: 1.25rem !important;
+  background: #eff6ff !important;
+  border-left: 4px solid #3b82f6 !important;
+  border-radius: 0.5rem !important;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05) !important;
+  font-weight: 500 !important;
+  color: #1e40af !important;
+}
+
+.scheduleIcon {
+  width: 24px !important;
+  height: 24px !important;
+  color: #3b82f6 !important;
+  flex-shrink: 0 !important;
+}
+
+// REPORT FOOTER STYLING
+.reportFooter {
+  padding: 2rem !important;
+  border-top: 1px solid #e2e8f0 !important;
+  background: #f8fafc !important;
+  display: flex !important;
+  justify-content: center !important;
+  border-radius: 0 0 1.5rem 1.5rem !important;
+}
+
+.downloadBtn {
+  display: flex !important;
+  align-items: center !important;
+  gap: 0.75rem !important;
+  padding: 1rem 2rem !important;
+  background: linear-gradient(135deg, #16a34a, #22c55e) !important;
+  color: white !important;
+  border: none !important;
+  border-radius: 0.75rem !important;
+  font-size: 1rem !important;
+  font-weight: 600 !important;
+  cursor: pointer !important;
+  transition: all 0.2s ease !important;
+  box-shadow: 0 4px 12px rgba(22, 163, 74, 0.3) !important;
+  
+  &:hover {
+    transform: translateY(-2px) !important;
+    box-shadow: 0 8px 25px rgba(22, 163, 74, 0.4) !important;
+  }
+}
+
+// ===========================================
+// SHARED COMPONENT STYLES
+// ===========================================
+
+.spinner {
+  width: 48px !important;
+  height: 48px !important;
+  color: #16a34a !important;
+  animation: spin 1s linear infinite !important;
+  margin-bottom: 1rem !important;
+}
+
+.statIcon {
+  width: 28px;
+  height: 28px;
+  color: #16a34a;
+}
+
+.detailIcon {
+  width: 14px;
+  height: 14px;
+}
+
+.chevronIcon {
+  width: 20px;
+  height: 20px;
+  opacity: 0.6;
+  flex-shrink: 0;
+}
+
+// Bottom Navigation
+.bottomNav {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+  border-top: 1px solid #e2e8f0;
+  padding: 1rem 0.75rem;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.5rem;
+  z-index: 50;
+  box-shadow: 0 -4px 6px -1px rgb(0 0 0 / 0.1);
+}
+
+.navTab {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.375rem;
+  padding: 0.75rem;
+  background: transparent;
+  border: none;
+  color: #64748b;
+  font-size: 0.75rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border-radius: 1rem;
+  
+  &.active {
+    color: #16a34a;
+    background: rgba(22, 163, 74, 0.1);
+    
+    .navIcon {
+      color: #16a34a;
+      transform: scale(1.1);
+    }
+    
+    .aiTabIcon .navIcon {
+      color: #3b82f6;
+    }
+    
+    .aiTabIcon .aiIndicator {
+      color: #1d4ed8;
+    }
+  }
+  
+  &:hover:not(.active) {
+    color: #16a34a;
+    background: rgba(22, 163, 74, 0.05);
+  }
+}
+
+.navIcon {
+  width: 26px;
+  height: 26px;
+  transition: all 0.2s ease;
+}
+
+.aiTabIcon {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.aiIndicator {
+  position: absolute;
+  top: -6px;
+  right: -6px;
+  width: 14px;
+  height: 14px;
+  color: #3b82f6;
+  animation: sparkle 2s infinite;
+}
+
+.navLabel {
+  font-weight: 500;
+  line-height: 1;
+}
+
+// Weather Card Styles
+.weatherCard {
+  background: linear-gradient(135deg, #0ea5e9, #0284c7);
+  border-radius: 1.5rem;
+  padding: 2rem;
+  color: white;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 8px 32px rgba(14, 165, 233, 0.3);
+  position: relative;
+  overflow: hidden;
+  
+  &::before {
+    content: '';
+    position: absolute;
+    top: -20px;
+    right: -20px;
+    width: 100px;
+    height: 100px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 50%;
+  }
+}
+
+.weatherHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+  
+  .cardTitle {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: white;
+  }
+}
+
+.weatherCondition {
+  font-size: 0.875rem;
+  opacity: 0.9;
+  background: rgba(255, 255, 255, 0.2);
+  padding: 0.25rem 0.75rem;
+  border-radius: 1rem;
+}
+
+.weatherGrid {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 2rem;
+  align-items: center;
+}
+
+.tempDisplay {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  
+  .temperature {
+    font-size: 3.5rem;
+    font-weight: 700;
+    line-height: 1;
+  }
+  
+  .weatherIcon {
+    width: 56px;
+    height: 56px;
+    opacity: 0.9;
+  }
+}
+
+.weatherDetails {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.weatherItem {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  
+  .weatherIcon {
+    width: 20px;
+    height: 20px;
+    opacity: 0.8;
+  }
+  
+  .weatherLabel {
+    font-size: 0.875rem;
+    opacity: 0.9;
+    min-width: 50px;
+  }
+  
+  .weatherValue {
+    font-weight: 600;
+    font-size: 1rem;
+  }
+}
+
+// Smart Actions Styles
+.smartActions {
+  margin-bottom: 1.5rem;
+}
+
+.sectionTitle {
+  font-size: 1.375rem;
+  font-weight: 700;
+  color: #1e293b;
+  margin-bottom: 1rem;
+}
+
+.actionGrid {
+  display: grid;
+  gap: 1rem;
+}
+
+.smartActionBtn {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1.5rem;
+  background: linear-gradient(135deg, #16a34a, #22c55e);
+  color: white;
+  border: none;
+  border-radius: 1.25rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 6px -1px rgba(22, 163, 74, 0.3);
+  
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 32px rgba(22, 163, 74, 0.4);
+  }
+}
+
+.actionIconBg {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 56px;
+  height: 56px;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 16px;
+  flex-shrink: 0;
+}
+
+.actionIcon {
+  width: 28px;
+  height: 28px;
+  color: white;
+}
+
+.actionContent {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  text-align: left;
+}
+
+.actionTitle {
+  font-size: 1.125rem;
+  font-weight: 600;
+}
+
+.actionDesc {
+  font-size: 0.875rem;
+  opacity: 0.9;
+}
+
+// Farm Status Styles
+.farmStatus {
+  margin-bottom: 1.5rem;
+}
+
+.farmGrid {
+  display: grid;
+  gap: 1rem;
+  
+  @media (min-width: 768px) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.farmStatusCard {
+  background: white;
+  border: 1px solid #e2e8f0;
+  border-radius: 1.25rem;
+  padding: 1.5rem;
+  transition: all 0.3s ease;
+  
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+    border-color: #16a34a;
+  }
+}
+
+.farmHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 1rem;
+}
+
+.farmBasic {
+  flex: 1;
+  
+  .farmName {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: #1e293b;
+    margin-bottom: 0.25rem;
+  }
+  
+  .farmSize {
+    font-size: 0.875rem;
+    color: #64748b;
+    margin-bottom: 0.5rem;
+  }
+}
+
+.farmMeta {
+  display: flex;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.soilType, .irrigationType {
+  font-size: 0.75rem;
+  padding: 0.25rem 0.5rem;
+  background: #f1f5f9;
+  color: #64748b;
+  border-radius: 0.5rem;
+  font-weight: 500;
+}
+
+.healthBadge {
+  display: flex;
+  align-items: center;
+  gap: 0.375rem;
+  padding: 0.5rem 0.75rem;
+  border-radius: 2rem;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  
+  &.excellent {
+    background: #dcfce7;
+    color: #16a34a;
+  }
+  
+  &.good {
+    background: #fef3c7;
+    color: #d97706;
+  }
+  
+  .healthIcon {
+    width: 16px;
+    height: 16px;
+  }
+}
+
+.farmFooter {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  
+  .lastUpdate {
+    font-size: 0.8125rem;
+    color: #64748b;
+  }
+}
+
+.viewDetailsBtn {
+  display: flex;
+  align-items: center;
+  gap: 0.375rem;
+  padding: 0.5rem 1rem;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 0.5rem;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  color: #475569;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  
+  &:hover {
+    background: #16a34a;
+    color: white;
+    border-color: #16a34a;
+  }
+  
+  .detailIcon {
+    width: 14px;
+    height: 14px;
+  }
+}
+
+// Stat Items
+.statItem {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 0.5rem;
+  padding: 1.25rem;
+  background: #f8fafc;
+  border-radius: 1rem;
+  transition: all 0.2s ease;
+  
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+  }
+}
+
+.statLabel {
+  font-size: 0.875rem;
+  color: #64748b;
+  font-weight: 500;
+}
+
+.statValue {
+  font-size: 1.375rem;
+  font-weight: 700;
+  color: #1e293b;
+}
+
+// Notification Panel Styles
+.notificationPanel {
+  position: fixed;
+  top: 80px;
+  right: 1rem;
+  width: 350px;
+  max-width: calc(100vw - 2rem);
+  background: white;
+  border-radius: 1rem;
+  box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 10px 10px -5px rgb(0 0 0 / 0.04);
+  border: 1px solid #e2e8f0;
+  z-index: 200;
+  transform: translateY(-10px);
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.3s ease;
+  max-height: 70vh;
+  overflow: hidden;
+  
+  &.show {
+    transform: translateY(0);
+    opacity: 1;
+    visibility: visible;
+  }
+}
+
+.notificationHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.5rem 1.5rem 1rem;
+  border-bottom: 1px solid #f1f5f9;
+  
+  h3 {
+    font-size: 1.125rem;
+    font-weight: 600;
+    color: #1e293b;
+  }
+}
+
+.notificationList {
+  max-height: 400px;
+  overflow-y: auto;
+  padding: 0.5rem;
+}
+
+.notificationItem {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  padding: 1rem;
+  border-radius: 0.75rem;
+  margin-bottom: 0.5rem;
+  transition: all 0.2s ease;
+  position: relative;
+  
+  &:hover {
+    background: #f8fafc;
+  }
+  
+  &.urgent {
+    background: rgba(239, 68, 68, 0.05);
+    border-left: 3px solid #ef4444;
+  }
+}
+
+.notificationIcon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: #f1f5f9;
+  color: #64748b;
+  flex-shrink: 0;
+  
+  .urgent & {
+    background: rgba(239, 68, 68, 0.1);
+    color: #ef4444;
+  }
+}
+
+.notificationContent {
+  flex: 1;
+  min-width: 0;
+}
+
+.notificationTitle {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #1e293b;
+  margin-bottom: 0.25rem;
+  line-height: 1.4;
+}
+
+.notificationMessage {
+  font-size: 0.8125rem;
+  color: #64748b;
+  line-height: 1.4;
+  margin-bottom: 0.5rem;
+}
+
+.notificationTime {
+  font-size: 0.75rem;
+  color: #94a3b8;
+}
+
+.urgentBadge {
+  position: absolute;
+  top: 0.75rem;
+  right: 0.75rem;
+  color: #ef4444;
+}
+
+// ===========================================
+// ANIMATIONS
+// ===========================================
+
+@keyframes modalFadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes modalSlideUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes lottieGlow {
+  from {
+    box-shadow: 0 20px 40px rgba(22, 163, 74, 0.2);
+  }
+  to {
+    box-shadow: 0 25px 50px rgba(22, 163, 74, 0.4);
+  }
+}
+
+@keyframes textFade {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes shimmer {
+  0% {
+    left: -100%;
+  }
+  100% {
+    left: 100%;
+  }
+}
+
+@keyframes bounce {
+  from {
+    transform: scale(1);
+  }
+  to {
+    transform: scale(1.05);
+  }
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+@keyframes sparkle {
+  0%, 100% { transform: rotate(0deg) scale(1); }
+  50% { transform: rotate(180deg) scale(1.1); }
+}
+
+// ===========================================
+// MOBILE RESPONSIVE
+// ===========================================
+
+@media (max-width: 768px) {
+  .modal {
+    padding: 0.5rem !important;
+  }
+  
+  .modalContent, .processingModal, .reportModal {
+    padding: 1.5rem !important;
+    border-radius: 1rem !important;
+    max-width: 95vw !important;
+  }
+  
+  .reportModal {
+    max-width: 98vw !important;
+  }
+  
+  .lottieWrapper {
+    width: 150px !important;
+    height: 150px !important;
+    
+    &:empty::before {
+      font-size: 3rem !important;
+    }
+  }
+  
+  .processingText {
+    gap: 1rem !important;
+    
+    h3 {
+      font-size: 1.5rem !important;
+    }
+  }
+  
+  .dynamicText {
+    font-size: 1rem !important;
+  }
+  
+  .progressBar {
+    width: 250px !important;
+    height: 10px !important;
+  }
+  
+  .progressPercentage {
+    font-size: 1.75rem !important;
+  }
+  
+  .locationRow {
+    grid-template-columns: 1fr !important;
+  }
+  
+  .reportMeta {
+    flex-direction: column !important;
+    gap: 0.5rem !important;
+  }
+  
+  .infoGrid {
+    grid-template-columns: 1fr !important;
+  }
+  
+  .metricsGrid {
+    grid-template-columns: 1fr !important;
+  }
+  
+  .weatherGrid {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+    text-align: center;
+  }
+  
+  .tempDisplay {
+    justify-content: center;
+  }
+  
+  .farmGrid {
+    grid-template-columns: 1fr;
+  }
+  
+  .farmHeader {
+    flex-direction: column;
+    gap: 1rem;
+  }
+  
+  .healthBadge {
+    align-self: flex-start;
+  }
+  
+  .notificationPanel {
+    top: 70px;
+    right: 0.5rem;
+    width: calc(100vw - 1rem);
+    max-width: none;
+  }
+}
+
+@media (max-width: 480px) {
+  .processingModal {
+    padding: 1.5rem 1rem !important;
+  }
+  
+  .lottieWrapper {
+    width: 120px !important;
+    height: 120px !important;
+    
+    &:empty::before {
+      font-size: 2.5rem !important;
+    }
+  }
+  
+  .progressBar {
+    width: 200px !important;
+  }
+  
+  .progressPercentage {
+    font-size: 1.5rem !important;
+  }
+  
+  .reportContent {
+    padding: 1rem !important;
+  }
+  
+  .reportSection {
+    padding: 1rem !important;
+  }
+  
+  .nutrientName {
+    min-width: 100px !important;
+    font-size: 0.8125rem !important;
+  }
+}
