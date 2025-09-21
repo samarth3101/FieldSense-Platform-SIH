@@ -9,8 +9,12 @@ from email_utils import send_verification_email, send_welcome_email
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, EmailStr
 
-app = FastAPI(title="FieldSense API")
+# NEW: import FieldFusion router
+from FieldFusion.app.router import router as fusion_router
 
+app = FastAPI(title="FieldSense API")  # keep existing title/context; FieldFusion runs as a sub-router [web:59]
+
+# CORS
 origins = [
     "http://localhost:3000",
     "http://127.0.0.1:3000",
@@ -24,6 +28,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+# DB init
 Base.metadata.create_all(bind=engine)
 
 def get_db():
@@ -33,6 +38,7 @@ def get_db():
     finally:
         db.close()
 
+# Health
 @app.get("/health")
 def health():
     return {"ok": True}
@@ -52,14 +58,12 @@ def register(user: UserCreate, db: Session = Depends(get_db)):
         if requested in current_roles:
             return existing
 
-        # Append the new role and send a fresh role-themed verification link
         current_roles.append(requested)
         existing.roles = ",".join(sorted(set(current_roles)))
         token = create_verification_token()
         existing.verification_token = token
         db.commit()
         try:
-            # include the role hint in the verify URL (handled inside email_utils)
             send_verification_email(
                 to_email=existing.email,
                 token=token,
@@ -70,7 +74,6 @@ def register(user: UserCreate, db: Session = Depends(get_db)):
             print(f"Email send error (append role): {e}")
         return existing
 
-    # New user path
     hashed_pw = hash_password(user.password)
     token = create_verification_token()
     db_user = User(
@@ -180,6 +183,10 @@ def verify_email(token: str, request: Request, db: Session = Depends(get_db)):
       </div></div></body></html>"""
     return HTMLResponse(content=html_content)
 
+# Root
 @app.get("/")
 def root():
     return {"message": "FieldSense backend is running!"}
+
+# MOUNT FIELDFUSION ROUTER LAST (no route conflicts; lives under /fusion)
+app.include_router(fusion_router)
