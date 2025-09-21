@@ -610,13 +610,20 @@
 }
 
 // REPORT FOOTER STYLING
+// Report footer improvements
 .reportFooter {
-  padding: 2rem !important;
+  padding: 1.5rem 2rem 2rem !important;
   border-top: 1px solid #e2e8f0 !important;
   background: #f8fafc !important;
-  display: flex !important;
-  justify-content: center !important;
   border-radius: 0 0 1.5rem 1.5rem !important;
+}
+
+.reportActions {
+  display: flex !important;
+  gap: 1rem !important;
+  justify-content: center !important;
+  margin-bottom: 1.5rem !important;
+  flex-wrap: wrap !important;
 }
 
 .downloadBtn {
@@ -639,6 +646,38 @@
     box-shadow: 0 8px 25px rgba(22, 163, 74, 0.4) !important;
   }
 }
+
+.downloadBtnSecondary {
+  display: flex !important;
+  align-items: center !important;
+  gap: 0.75rem !important;
+  padding: 1rem 2rem !important;
+  background: white !important;
+  color: #16a34a !important;
+  border: 2px solid #16a34a !important;
+  border-radius: 0.75rem !important;
+  font-size: 1rem !important;
+  font-weight: 600 !important;
+  cursor: pointer !important;
+  transition: all 0.2s ease !important;
+  
+  &:hover {
+    background: #16a34a !important;
+    color: white !important;
+    transform: translateY(-2px) !important;
+    box-shadow: 0 8px 25px rgba(22, 163, 74, 0.3) !important;
+  }
+}
+
+.reportCredits {
+  text-align: center !important;
+  color: #64748b !important;
+  font-size: 0.85rem !important;
+  font-style: italic !important;
+  line-height: 1.4 !important;
+  margin: 0 !important;
+}
+
 
 // ===========================================
 // SHARED COMPONENT STYLES
@@ -1398,5 +1437,788 @@
   .nutrientName {
     min-width: 100px !important;
     font-size: 0.8125rem !important;
+  }
+}
+
+
+// Enhanced report modal styles
+.reportModal {
+  max-width: 800px;
+  width: 90vw;
+  max-height: 90vh;
+  overflow-y: auto;
+  background: white;
+  border-radius: 16px;
+  box-shadow: 0 25px 50px rgba(0, 0, 0, 0.2);
+}
+
+.reportId {
+  font-family: 'JetBrains Mono', monospace;
+  background: rgba(34, 197, 94, 0.1);
+  color: #16a34a;
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-size: 0.8rem;
+}
+
+.sectionIcon {
+  width: 18px;
+  height: 18px;
+  margin-right: 6px;
+}
+
+.ndviCard {
+  background: linear-gradient(135deg, #f0fdf4, #dcfce7);
+  border: 1px solid #bbf7d0;
+  border-radius: 12px;
+  padding: 20px;
+  text-align: center;
+}
+
+.ndviValue {
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: 4px;
+}
+
+.ndviDesc {
+  color: #6b7280;
+  margin-bottom: 8px;
+}
+
+.ndviDate {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  color: #6b7280;
+  font-size: 0.85rem;
+}
+
+.weatherGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 16px;
+}
+
+.weatherCard {
+  text-align: center;
+  padding: 16px;
+  background: #f9fafb;
+  border-radius: 12px;
+  border: 1px solid #e5e7eb;
+}
+
+.weatherIcon {
+  width: 24px;
+  height: 24px;
+  margin-bottom: 8px;
+}
+
+.weatherValue {
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin-bottom: 4px;
+}
+
+.weatherLabel {
+  color: #6b7280;
+  font-size: 0.85rem;
+}
+
+.riskGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 16px;
+}
+
+.riskCard {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 16px;
+  background: #f9fafb;
+  border-radius: 12px;
+  border: 1px solid #e5e7eb;
+}
+
+.riskIconLow { color: #22c55e; }
+.riskIconMedium { color: #f59e0b; }
+.riskIconHigh { color: #ef4444; }
+.riskIconUnknown { color: #6b7280; }
+
+.riskTitle {
+  font-weight: 600;
+  margin-bottom: 2px;
+}
+
+.riskLevel {
+  font-size: 0.9rem;
+  font-weight: 500;
+  text-transform: capitalize;
+}
+
+.insightsContainer {
+  background: #fefce8;
+  border: 1px solid #fde047;
+  border-radius: 12px;
+  padding: 16px;
+  margin-bottom: 16px;
+}
+
+.insightItem {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  margin-bottom: 8px;
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+}
+
+.insightBullet {
+  color: #eab308;
+  font-weight: bold;
+  margin-top: 2px;
+}
+
+.insightText {
+  color: #713f12;
+  line-height: 1.4;
+}
+
+.confidenceBar {
+  margin-top: 16px;
+}
+
+.confidenceLabel {
+  display: block;
+  font-size: 0.9rem;
+  color: #6b7280;
+  margin-bottom: 6px;
+}
+
+.confidenceTrack {
+  height: 6px;
+  background: #e5e7eb;
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.confidenceFill {
+  height: 100%;
+  border-radius: 3px;
+  transition: width 0.5s ease;
+}
+
+.driversList {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.driverChip {
+  background: #e0f2fe;
+  color: #0369a1;
+  padding: 4px 10px;
+  border-radius: 16px;
+  font-size: 0.8rem;
+  border: 1px solid #bae6fd;
+}
+
+.reportCredits {
+  color: #6b7280;
+  font-size: 0.8rem;
+  text-align: center;
+}
+
+// Location modal enhancements
+.locationModal {
+  max-width: 500px;
+  width: 90vw;
+}
+
+.locationDetail {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.locationAddress {
+  font-weight: 600;
+  color: #1f2937;
+  margin-bottom: 2px;
+}
+
+.locationCoords {
+  color: #6b7280;
+  font-size: 0.9rem;
+  font-family: 'JetBrains Mono', monospace;
+}
+
+.locationTime {
+  font-weight: 600;
+  color: #1f2937;
+}
+
+.locationTimezone {
+  color: #6b7280;
+  font-size: 0.9rem;
+}
+
+.locationAccuracy {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #16a34a;
+  font-size: 0.9rem;
+  background: rgba(34, 197, 94, 0.1);
+  padding: 8px 12px;
+  border-radius: 8px;
+  margin-top: 16px;
+}
+
+.accuracyDot {
+  width: 8px;
+  height: 8px;
+  background: #16a34a;
+  border-radius: 50%;
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
+
+// ===========================================
+// MISSING LOCATION MODAL STYLES
+// ===========================================
+
+.locationModal {
+  background: white !important;
+  border-radius: 1.5rem !important;
+  max-width: 500px !important;
+  width: 90vw !important;
+  max-height: 90vh !important;
+  overflow-y: auto !important;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5) !important;
+  animation: modalSlideUp 0.4s ease !important;
+}
+
+.locationHeader {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  padding: 2rem 2rem 1rem !important;
+  border-bottom: 1px solid #e2e8f0 !important;
+  
+  h3 {
+    font-size: 1.5rem !important;
+    font-weight: 700 !important;
+    color: #1e293b !important;
+    margin: 0 0 0 0.5rem !important;
+  }
+}
+
+.locationIcon {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: 40px !important;
+  height: 40px !important;
+  background: rgba(22, 163, 74, 0.1) !important;
+  color: #16a34a !important;
+  border-radius: 50% !important;
+}
+
+.locationContent {
+  padding: 1.5rem 2rem !important;
+}
+
+.locationLoading {
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  justify-content: center !important;
+  padding: 2rem 1rem !important;
+  text-align: center !important;
+  
+  p {
+    margin-top: 1rem !important;
+    color: #64748b !important;
+    font-size: 1rem !important;
+  }
+}
+
+.locationInfo {
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 1.5rem !important;
+}
+
+.locationDetail {
+  display: flex !important;
+  align-items: flex-start !important;
+  gap: 12px !important;
+  padding: 1rem !important;
+  background: #f8fafc !important;
+  border-radius: 12px !important;
+  border: 1px solid #e2e8f0 !important;
+}
+
+.locationAddress {
+  font-weight: 600 !important;
+  color: #1f2937 !important;
+  margin-bottom: 4px !important;
+  font-size: 1rem !important;
+}
+
+.locationCoords {
+  color: #6b7280 !important;
+  font-size: 0.85rem !important;
+  font-family: 'JetBrains Mono', 'Courier New', monospace !important;
+  letter-spacing: 0.025em !important;
+}
+
+.locationTime {
+  font-weight: 600 !important;
+  color: #1f2937 !important;
+  margin-bottom: 4px !important;
+}
+
+.locationTimezone {
+  color: #6b7280 !important;
+  font-size: 0.85rem !important;
+}
+
+.locationAccuracy {
+  display: flex !important;
+  align-items: center !important;
+  gap: 10px !important;
+  color: #16a34a !important;
+  font-size: 0.9rem !important;
+  background: rgba(34, 197, 94, 0.1) !important;
+  padding: 12px 16px !important;
+  border-radius: 10px !important;
+  margin-top: 8px !important;
+  font-weight: 500 !important;
+}
+
+.accuracyDot {
+  width: 8px !important;
+  height: 8px !important;
+  background: #16a34a !important;
+  border-radius: 50% !important;
+  animation: pulse 2s infinite !important;
+  flex-shrink: 0 !important;
+}
+
+.locationError {
+  text-align: center !important;
+  padding: 2rem 1rem !important;
+  color: #ef4444 !important;
+}
+
+.locationFooter {
+  display: flex !important;
+  gap: 1rem !important;
+  padding: 1.5rem 2rem 2rem !important;
+  border-top: 1px solid #f1f5f9 !important;
+}
+
+.cancelBtn {
+  flex: 1 !important;
+  padding: 0.75rem 1.5rem !important;
+  background: #f8fafc !important;
+  color: #64748b !important;
+  border: 1px solid #e2e8f0 !important;
+  border-radius: 0.75rem !important;
+  font-size: 0.9rem !important;
+  font-weight: 500 !important;
+  cursor: pointer !important;
+  transition: all 0.2s ease !important;
+  
+  &:hover {
+    background: #f1f5f9 !important;
+    border-color: #cbd5e1 !important;
+  }
+}
+
+.confirmBtn {
+  flex: 2 !important;
+  padding: 0.75rem 1.5rem !important;
+  background: linear-gradient(135deg, #16a34a, #22c55e) !important;
+  color: white !important;
+  border: none !important;
+  border-radius: 0.75rem !important;
+  font-size: 0.9rem !important;
+  font-weight: 600 !important;
+  cursor: pointer !important;
+  transition: all 0.2s ease !important;
+  
+  &:hover:not(:disabled) {
+    transform: translateY(-1px) !important;
+    box-shadow: 0 8px 25px rgba(22, 163, 74, 0.3) !important;
+  }
+  
+  &:disabled {
+    opacity: 0.5 !important;
+    cursor: not-allowed !important;
+    transform: none !important;
+  }
+}
+
+// ===========================================
+// ENHANCED REPORT MODAL STYLES (ADDITIONS)
+// ===========================================
+
+.reportId {
+  font-family: 'JetBrains Mono', 'Courier New', monospace !important;
+  background: rgba(34, 197, 94, 0.1) !important;
+  color: #16a34a !important;
+  padding: 4px 8px !important;
+  border-radius: 6px !important;
+  font-size: 0.8rem !important;
+  font-weight: 600 !important;
+  letter-spacing: 0.025em !important;
+}
+
+.sectionIcon {
+  width: 18px !important;
+  height: 18px !important;
+  margin-right: 6px !important;
+  vertical-align: -2px !important;
+}
+
+.ndviCard {
+  background: linear-gradient(135deg, #f0fdf4, #dcfce7) !important;
+  border: 2px solid #bbf7d0 !important;
+  border-radius: 16px !important;
+  padding: 24px !important;
+  text-align: center !important;
+  position: relative !important;
+  overflow: hidden !important;
+  
+  &::before {
+    content: '' !important;
+    position: absolute !important;
+    top: -2px !important;
+    left: -2px !important;
+    right: -2px !important;
+    bottom: -2px !important;
+    background: linear-gradient(45deg, #16a34a, #22c55e, #4ade80, #16a34a) !important;
+    border-radius: 16px !important;
+    z-index: -1 !important;
+    animation: borderGlow 3s ease-in-out infinite !important;
+  }
+}
+
+.ndviValue {
+  font-size: 2.5rem !important;
+  font-weight: 800 !important;
+  margin-bottom: 8px !important;
+  text-shadow: 0 2px 4px rgba(0,0,0,0.1) !important;
+}
+
+.ndviDesc {
+  color: #16a34a !important;
+  margin-bottom: 12px !important;
+  font-weight: 600 !important;
+}
+
+.ndviDate {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 6px !important;
+  color: #059669 !important;
+  font-size: 0.85rem !important;
+  font-weight: 500 !important;
+}
+
+.weatherGrid {
+  display: grid !important;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)) !important;
+  gap: 16px !important;
+}
+
+.weatherCard {
+  text-align: center !important;
+  padding: 20px 16px !important;
+  background: white !important;
+  border-radius: 16px !important;
+  border: 2px solid #e5e7eb !important;
+  transition: all 0.3s ease !important;
+  position: relative !important;
+  
+  &:hover {
+    transform: translateY(-4px) !important;
+    box-shadow: 0 12px 32px rgba(0,0,0,0.1) !important;
+    border-color: #d1d5db !important;
+  }
+}
+
+.weatherIcon {
+  width: 32px !important;
+  height: 32px !important;
+  margin-bottom: 12px !important;
+}
+
+.weatherValue {
+  font-size: 1.75rem !important;
+  font-weight: 700 !important;
+  margin-bottom: 6px !important;
+  color: #1e293b !important;
+}
+
+.weatherLabel {
+  color: #64748b !important;
+  font-size: 0.9rem !important;
+  font-weight: 500 !important;
+}
+
+.riskGrid {
+  display: grid !important;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)) !important;
+  gap: 16px !important;
+}
+
+.riskCard {
+  display: flex !important;
+  align-items: center !important;
+  gap: 16px !important;
+  padding: 20px !important;
+  background: white !important;
+  border-radius: 16px !important;
+  border: 2px solid #e5e7eb !important;
+  transition: all 0.3s ease !important;
+  
+  &:hover {
+    transform: translateY(-2px) !important;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.08) !important;
+  }
+}
+
+.riskIconLow { 
+  color: #22c55e !important; 
+  width: 24px !important;
+  height: 24px !important;
+}
+.riskIconMedium { 
+  color: #f59e0b !important; 
+  width: 24px !important;
+  height: 24px !important;
+}
+.riskIconHigh { 
+  color: #ef4444 !important; 
+  width: 24px !important;
+  height: 24px !important;
+}
+.riskIconUnknown { 
+  color: #6b7280 !important; 
+  width: 24px !important;
+  height: 24px !important;
+}
+
+.riskTitle {
+  font-weight: 600 !important;
+  margin-bottom: 4px !important;
+  color: #1e293b !important;
+  font-size: 1rem !important;
+}
+
+.riskLevel {
+  font-size: 0.9rem !important;
+  font-weight: 600 !important;
+  text-transform: capitalize !important;
+}
+
+.insightsContainer {
+  background: linear-gradient(135deg, #fefce8, #fef3c7) !important;
+  border: 2px solid #fde047 !important;
+  border-radius: 16px !important;
+  padding: 20px !important;
+  margin-bottom: 20px !important;
+  position: relative !important;
+  
+  &::before {
+    content: '💡' !important;
+    position: absolute !important;
+    top: 16px !important;
+    right: 16px !important;
+    font-size: 1.5rem !important;
+  }
+}
+
+.insightItem {
+  display: flex !important;
+  align-items: flex-start !important;
+  gap: 12px !important;
+  margin-bottom: 12px !important;
+
+  &:last-child {
+    margin-bottom: 0 !important;
+  }
+}
+
+.insightBullet {
+  color: #eab308 !important;
+  font-weight: bold !important;
+  margin-top: 3px !important;
+  font-size: 1.1rem !important;
+}
+
+.insightText {
+  color: #92400e !important;
+  line-height: 1.5 !important;
+  font-weight: 500 !important;
+}
+
+.confidenceBar {
+  margin-top: 20px !important;
+}
+
+.confidenceLabel {
+  display: block !important;
+  font-size: 0.95rem !important;
+  color: #374151 !important;
+  margin-bottom: 8px !important;
+  font-weight: 600 !important;
+}
+
+.confidenceTrack {
+  height: 8px !important;
+  background: #e5e7eb !important;
+  border-radius: 4px !important;
+  overflow: hidden !important;
+  box-shadow: inset 0 1px 3px rgba(0,0,0,0.1) !important;
+}
+
+.confidenceFill {
+  height: 100% !important;
+  border-radius: 4px !important;
+  transition: width 0.8s cubic-bezier(0.4, 0, 0.2, 1) !important;
+  position: relative !important;
+  
+  &::after {
+    content: '' !important;
+    position: absolute !important;
+    top: 0 !important;
+    left: -100% !important;
+    width: 100% !important;
+    height: 100% !important;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent) !important;
+    animation: shimmer 2s infinite !important;
+  }
+}
+
+.driversList {
+  display: flex !important;
+  flex-wrap: wrap !important;
+  gap: 10px !important;
+  margin-top: 12px !important;
+}
+
+.driverChip {
+  background: linear-gradient(135deg, #e0f2fe, #bae6fd) !important;
+  color: #0369a1 !important;
+  padding: 6px 12px !important;
+  border-radius: 20px !important;
+  font-size: 0.8rem !important;
+  border: 1px solid #0ea5e9 !important;
+  font-weight: 500 !important;
+  transition: all 0.2s ease !important;
+  
+  &:hover {
+    transform: translateY(-1px) !important;
+    box-shadow: 0 4px 12px rgba(14, 165, 233, 0.2) !important;
+  }
+}
+
+.reportCredits {
+  color: #64748b !important;
+  font-size: 0.8rem !important;
+  text-align: center !important;
+  font-style: italic !important;
+  margin-right: 1rem !important;
+}
+
+// ===========================================
+// ADDITIONAL ANIMATIONS
+// ===========================================
+
+@keyframes borderGlow {
+  0%, 100% {
+    opacity: 0.5;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+@keyframes pulse {
+  0%, 100% { 
+    opacity: 1; 
+    transform: scale(1);
+  }
+  50% { 
+    opacity: 0.5; 
+    transform: scale(1.1);
+  }
+}
+
+// ===========================================
+// MOBILE RESPONSIVE ADDITIONS
+// ===========================================
+
+@media (max-width: 768px) {
+  .locationModal {
+    width: 95vw !important;
+    max-width: 95vw !important;
+  }
+  
+  .locationHeader {
+    padding: 1.5rem 1rem 1rem !important;
+    
+    h3 {
+      font-size: 1.25rem !important;
+    }
+  }
+  
+  .locationContent {
+    padding: 1rem !important;
+  }
+  
+  .locationFooter {
+    padding: 1rem !important;
+    flex-direction: column !important;
+  }
+  
+  .cancelBtn, .confirmBtn {
+    flex: none !important;
+  }
+  
+  .weatherGrid, .riskGrid {
+    grid-template-columns: 1fr !important;
+  }
+  
+  .ndviCard {
+    padding: 20px !important;
+    
+    &::before {
+      display: none !important;
+    }
+  }
+  
+  .ndviValue {
+    font-size: 2rem !important;
+  }
+  
+  .driversList {
+    justify-content: center !important;
   }
 }

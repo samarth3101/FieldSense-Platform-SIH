@@ -56,6 +56,20 @@ export default function AuthModal({ onClose }: AuthModalProps) {
     try {
       if (mode === "login") {
         const res = await loginAPI({ email, password }); // { message, name, email, roles }
+
+        // ✅ STORE USER DATA IN LOCALSTORAGE
+        const userData = {
+          name: res.name,
+          email: res.email,
+          phone: mobile || "+91 XXXXXXXXXX"
+        };
+
+        localStorage.setItem('fs_user', JSON.stringify(userData));
+        localStorage.setItem('user', JSON.stringify(userData));
+        localStorage.setItem('loginResponse', JSON.stringify({ ...res, mobile }));
+
+        console.log('✅ Stored user ', userData);
+
         const rolesCsv = res.roles || "";
         const roles = rolesCsv.split(",").map((r) => r.trim()).filter(Boolean);
 
@@ -78,6 +92,8 @@ export default function AuthModal({ onClose }: AuthModalProps) {
           handleClose();
         }, 50);
         return;
+
+
       } else if (mode === "signup") {
         await registerAPI({ name, email, mobile, password, requested_role: role });
         setMode("signup-success");

@@ -15,6 +15,20 @@ export default function LoginForm() {
     setLoading(true);
     try {
       const res = await loginAPI({ email, password });
+
+      // ✅ STORE USER DATA IN LOCALSTORAGE
+      const userData = {
+        name: res.name,
+        email: res.email,
+        phone: "+91 98765 43210" // default since LoginForm doesn't have phone
+      };
+
+      localStorage.setItem('fs_user', JSON.stringify(userData));
+      localStorage.setItem('user', JSON.stringify(userData));
+      localStorage.setItem('loginResponse', JSON.stringify(res));
+
+      console.log('✅ Stored user ', userData);
+
       setMsg("Login successful");
       console.log("Login:", res);
       if ("vibrate" in navigator) navigator.vibrate(30);
@@ -25,10 +39,11 @@ export default function LoginForm() {
     }
   };
 
+
   return (
     <form onSubmit={onSubmit}>
-      <input type="email" placeholder="Email" value={email} onChange={(e)=>setEmail(e.target.value)} required />
-      <input type="password" placeholder="Password" value={password} onChange={(e)=>setPassword(e.target.value)} required />
+      <input type="email" placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)} required />
+      <input type="password" placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)} required />
       <button type="submit" disabled={loading}>{loading ? "Logging in..." : "Login"}</button>
       {msg && <p>{msg}</p>}
     </form>

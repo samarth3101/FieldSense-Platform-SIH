@@ -1,15 +1,15 @@
-import { Camera, FileText } from 'lucide-react';
-import { useLanguage } from '../../hooks/useLanguage';
-import styles from '../../styles/CaptureSection.module.scss';
+"use client";
+import React from "react";
+import { Camera, FileText } from "lucide-react";
+import { useLanguage } from "../../hooks/useLanguage";
+import styles from "../../styles/CaptureSection.module.scss";
 
 interface CaptureSectionProps {
   onCaptureRequest: (mode: string) => void;
 }
 
-const CaptureSection = ({ onCaptureRequest }: CaptureSectionProps) => {
+export default function CaptureSection({ onCaptureRequest }: CaptureSectionProps) {
   const { language, t } = useLanguage();
-
-  console.log('📷 CaptureSection rendering with language:', language);
 
   return (
     <div className={styles.captureContent}>
@@ -19,7 +19,7 @@ const CaptureSection = ({ onCaptureRequest }: CaptureSectionProps) => {
       </div>
 
       <div className={styles.captureOptions}>
-        <div className={styles.captureCard} onClick={() => onCaptureRequest('camera')}>
+        <div className={styles.captureCard} onClick={() => onCaptureRequest("camera")}>
           <div className={styles.captureIconWrapper}>
             <Camera className={styles.captureIcon} />
           </div>
@@ -32,13 +32,13 @@ const CaptureSection = ({ onCaptureRequest }: CaptureSectionProps) => {
           </div>
         </div>
 
-        <div className={styles.captureCard} onClick={() => onCaptureRequest('gallery')}>
+        <div className={styles.captureCard} onClick={() => onCaptureRequest("gallery")}>
           <div className={styles.captureIconWrapper}>
             <FileText className={styles.captureIcon} />
           </div>
           <h3 className={styles.captureTitle}>{t.uploadGallery}</h3>
           <p className={styles.captureDesc}>
-            {language === 'hi' ? 'मौजूदा तस्वीरें अपलोड करें' : 'Upload existing photos'}
+            {language === "hi" ? "मौजूदा तस्वीरें अपलोड करें" : "Upload existing photos"}
           </p>
           <div className={styles.captureFeatures}>
             <span>• {t.batchUpload}</span>
@@ -49,6 +49,4 @@ const CaptureSection = ({ onCaptureRequest }: CaptureSectionProps) => {
       </div>
     </div>
   );
-};
-
-export default CaptureSection;
+}
