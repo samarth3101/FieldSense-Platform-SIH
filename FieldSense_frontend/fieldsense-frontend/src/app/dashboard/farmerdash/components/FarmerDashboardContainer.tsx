@@ -33,6 +33,7 @@ const FarmerDashboardContainer = () => {
   const [processingStep, setProcessingStep] = useState(0);
   const [captureMode, setCaptureMode] = useState('');
   const [isAuthenticated, setIsAuthenticated] = useState<boolean | null>(null);
+  const [isIntentionalLogout, setIsIntentionalLogout] = useState(false);
   
   const { language, isLanguageChanging, handleLanguageChange, t } = useLanguage();
   const { notifications, showNotifications, setShowNotifications } = useNotifications(language);
@@ -90,10 +91,17 @@ const FarmerDashboardContainer = () => {
   }, [router]);
 
   // ========================================
-  // BROWSER BACK BUTTON PREVENTION WITH WARNING
+  // BROWSER BACK BUTTON PREVENTION WITH WARNING - ENHANCED
   // ========================================
   useEffect(() => {
+    let isLogoutInProgress = false; // Local flag for immediate logout detection
+
     const handleBackNavigation = () => {
+      if (isLogoutInProgress || isIntentionalLogout) {
+        console.log('🔓 Logout in progress, skipping back navigation warning');
+        return;
+      }
+
       const warningMessage = language === 'hi' 
         ? "क्या आप वाकई डैशबोर्ड छोड़कर मुख्य वेबसाइट पर जाना चाहते हैं?\n\nयह आपको लॉगआउट कर देगा।"
         : "Are you sure you want to leave the dashboard and go to the main website?\n\nThis will log you out.";
@@ -103,42 +111,45 @@ const FarmerDashboardContainer = () => {
       if (userConfirmed) {
         console.log('🚪 User confirmed exit, clearing auth and redirecting...');
         
-        // Clear all authentication data
+        isLogoutInProgress = true;
+        setIsIntentionalLogout(true);
+        
         localStorage.clear();
         sessionStorage.clear();
         
-        // Show logout message
         const logoutMessage = language === 'hi' 
           ? "सफलतापूर्वक लॉगआउट हो गए"
           : "Successfully logged out";
         
         alert(logoutMessage);
-        
-        // Navigate to home page
         window.location.replace('/');
       } else {
         console.log('🔄 User cancelled exit, staying in dashboard');
-        // Push the current state back to prevent actual navigation
         window.history.pushState(null, '', window.location.href);
       }
     };
 
-    // Prevent browser back button with warning
     const preventBack = () => {
       window.history.pushState(null, '', window.location.href);
     };
 
-    // Add history entry to detect back navigation
     preventBack();
 
-    // Listen for popstate event (back button pressed)
     const handlePopState = (event: PopStateEvent) => {
       event.preventDefault();
       handleBackNavigation();
     };
 
-    // Listen for beforeunload event (tab close/refresh)
+    // ENHANCED beforeunload handler - COMPLETELY FIXED
     const handleBeforeUnload = (event: BeforeUnloadEvent) => {
+      // If logout is in progress, don't show any warning
+      if (isLogoutInProgress || isIntentionalLogout) {
+        console.log('🔓 Logout in progress, allowing page unload');
+        // Explicitly allow the navigation by not calling preventDefault
+        return undefined;
+      }
+
+      // Only show warning for accidental navigation (refresh, close tab, etc)
       const message = language === 'hi' 
         ? "क्या आप वाकई पेज छोड़ना चाहते हैं? आपका डेटा खो सकता है।"
         : "Are you sure you want to leave? Your data might be lost.";
@@ -148,14 +159,27 @@ const FarmerDashboardContainer = () => {
       return message;
     };
 
+    // ENHANCED global logout handler
+    (window as any).handleDashboardLogout = () => {
+      console.log('🎯 Setting logout flags immediately');
+      isLogoutInProgress = true; // Set local flag first
+      setIsIntentionalLogout(true); // Then set state flag
+      
+      // Also remove the beforeunload listener temporarily
+      window.removeEventListener('beforeunload', handleBeforeUnload);
+      
+      console.log('✅ Logout flags set, beforeunload listener removed');
+    };
+
     window.addEventListener('popstate', handlePopState);
     window.addEventListener('beforeunload', handleBeforeUnload);
 
     return () => {
       window.removeEventListener('popstate', handlePopState);
       window.removeEventListener('beforeunload', handleBeforeUnload);
+      delete (window as any).handleDashboardLogout;
     };
-  }, [language, router]);
+  }, [language, router, isIntentionalLogout]);
 
   // Load farmer data when authenticated
   useEffect(() => {
@@ -280,7 +304,7 @@ const FarmerDashboardContainer = () => {
         
         return newStep;
       });
-    }, 2000); // Reduced interval for faster processing
+    }, 2000);
   };
 
   // Show loading screen with timeout

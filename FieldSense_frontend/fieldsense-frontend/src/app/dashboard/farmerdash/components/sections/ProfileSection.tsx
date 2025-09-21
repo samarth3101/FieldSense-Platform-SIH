@@ -1,14 +1,14 @@
-import { 
-  User, 
-  Phone, 
-  Mail, 
-  MapPin, 
-  Calendar, 
-  BarChart3, 
+import {
+  User,
+  Phone,
+  Mail,
+  MapPin,
+  Calendar,
+  BarChart3,
   Activity,
-  Settings, 
-  HelpCircle, 
-  LogOut, 
+  Settings,
+  HelpCircle,
+  LogOut,
   ChevronRight,
   X
 } from 'lucide-react';
@@ -29,39 +29,61 @@ const ProfileSection = ({ farmerData, onClose }: ProfileSectionProps) => {
 
   console.log('👤 ProfileSection rendering with language:', language);
 
+  // ========================================
+  // FIXED LOGOUT HANDLER - NO MORE DOUBLE CONFIRMATIONS
+  // ========================================
   const handleLogout = () => {
-    const confirmMessage = language === 'hi' 
+    const confirmMessage = language === 'hi'
       ? "क्या आप वाकई लॉगआउट करना चाहते हैं?"
       : "Are you sure you want to logout?";
-      
+
     const confirmed = window.confirm(confirmMessage);
-    
+
     if (confirmed) {
-      console.log('🚪 Logging out...');
-      
-      // Clear ALL authentication data
-      localStorage.clear();
-      sessionStorage.clear();
-      
-      // Clear any cookies if you're using them
-      document.cookie.split(";").forEach((c) => {
-        document.cookie = c.replace(/^ +/, "").replace(/=.*/, "=;expires=" + new Date().toUTCString() + ";path=/");
-      });
-      
-      // Show logout message
-      const logoutMessage = language === 'hi' 
-        ? "सफलतापूर्वक लॉगआउट हो गए"
-        : "Successfully logged out";
-        
-      alert(logoutMessage);
-      
-      // IMPORTANT: Use replace to prevent back navigation + force reload
-      window.location.replace('/');
-      
-      // Additional security: Clear browser history
-      if (window.history && window.history.replaceState) {
-        window.history.replaceState(null, '', '/');
+      console.log('🚪 Starting logout process...');
+
+      // STEP 1: Call global handler IMMEDIATELY to disable all warnings
+      if ((window as any).handleDashboardLogout) {
+        console.log('🎯 Calling global logout handler to disable warnings');
+        (window as any).handleDashboardLogout();
       }
+
+      // STEP 2: Use setTimeout to ensure flags are processed before navigation
+      setTimeout(() => {
+        console.log('🧹 Clearing authentication data');
+        
+        // Clear all authentication data
+        localStorage.clear();
+        sessionStorage.clear();
+
+        // Show success message
+        const logoutMessage = language === 'hi'
+          ? "सफलतापूर्वक लॉगआउट हो गए"
+          : "Successfully logged out";
+
+        alert(logoutMessage);
+
+        console.log('🏠 Navigating to home page');
+        
+        // Use multiple navigation methods as fallback
+        try {
+          // Method 1: Try router first
+          router.replace('/');
+          
+          // Method 2: Fallback to window.location.href (doesn't trigger beforeunload)
+          setTimeout(() => {
+            window.location.href = '/';
+          }, 100);
+          
+        } catch (error) {
+          console.error('Router failed, using window.location:', error);
+          // Method 3: Final fallback
+          window.location.href = '/';
+        }
+        
+      }, 50); // Small delay to ensure global handler processes first
+    } else {
+      console.log('❌ User cancelled logout');
     }
   };
 
@@ -79,7 +101,7 @@ const ProfileSection = ({ farmerData, onClose }: ProfileSectionProps) => {
           </button>
         </div>
       )}
-      
+
       <div className={styles.profileHeader}>
         <div className={styles.profileAvatar}>
           <User />
@@ -195,13 +217,13 @@ const ProfileSection = ({ farmerData, onClose }: ProfileSectionProps) => {
           <span>{t.accountSettings}</span>
           <ChevronRight className={styles.chevronIcon} />
         </button>
-        
+
         <button className={styles.actionButton}>
           <HelpCircle className={styles.actionIcon} />
           <span>{t.helpSupport}</span>
           <ChevronRight className={styles.chevronIcon} />
         </button>
-        
+
         <button className={styles.logoutButton} onClick={handleLogout}>
           <LogOut className={styles.actionIcon} />
           <span>{t.logout}</span>
