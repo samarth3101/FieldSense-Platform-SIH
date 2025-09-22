@@ -1,90 +1,100 @@
-import { MapPin, Activity, Thermometer, CheckCircle, BarChart3, ChevronRight, Camera } from 'lucide-react';
-import WeatherCard from '../cards/WeatherCard';
-import FarmStatusCard from '../cards/FarmStatusCard';
-import StatCard from '../cards/StatCard';
-import { useLanguage } from '../../hooks/useLanguage';
-import { FarmerData, WeatherData } from '../../types';
-import styles from '../../styles/HomeSection.module.scss';
+"use client";
+import styles from "../../styles/shared.module.scss";
+import { MapPin, Thermometer, Droplets, Wind, CloudRain, Calendar, Clock, Sparkles, Leaf } from "lucide-react";
+import { useDashboardData } from "../../hooks/useDashboardData";
 
 interface HomeSectionProps {
-  farmerData: FarmerData | null;
-  weatherData: WeatherData | null;
   onCaptureClick: () => void;
+  language?: "hi" | "en";
 }
 
-const HomeSection = ({ farmerData, weatherData, onCaptureClick }: HomeSectionProps) => {
-  const { language, t } = useLanguage();
-  const fpiScore = 78;
-
-  console.log('🏠 HomeSection rendering with language:', language);
+export default function HomeSection({ onCaptureClick, language = "hi" }: HomeSectionProps) {
+  const { displayName, greeting, address, weather, loading } = useDashboardData(language);
+  const t = (hi: string, en: string) => (language === "hi" ? hi : en);
+  const now = new Date();
+  const dateStr = now.toLocaleDateString(language === "hi" ? "hi-IN" : "en-IN", { day: "2-digit", month: "long", year: "numeric" });
+  const timeStr = now.toLocaleTimeString(language === "hi" ? "hi-IN" : "en-IN", { hour: "2-digit", minute: "2-digit" });
 
   return (
-    <div className={styles.homeContent}>
-      {/* Welcome Section */}
-      <div className={styles.welcomeSection}>
-        <div className={styles.welcomeHeader}>
-          <div className={styles.userGreeting}>
-            <h2 className={styles.greeting}>
-              {t.greeting}, {language === 'hi' ? 'राकेश!' : 'Rakesh!'}
-            </h2>
-            <p className={styles.subGreeting}>{t.subtitle}</p>
+    <div className={styles.homeWrap}>
+      {/* Greeting */}
+      <div className={styles.heroCard}>
+        <div className={styles.heroTitle}>
+          {t("नमस्ते", "Hello")}, {displayName}!
+        </div>
+        <div className={styles.heroSub}>
+          {t("आज आपके खेत की स्थिति देखें", "Check today’s field status")} • {greeting}
+        </div>
+        <div className={styles.heroMeta}>
+          <div className={styles.metaItem}><Calendar size={16} /> {dateStr}</div>
+          <div className={styles.metaItem}><Clock size={16} /> {timeStr}</div>
+        </div>
+      </div>
+
+      {/* Full Address */}
+      <div className={styles.locationStrip}>
+        <MapPin className={styles.stripIcon} />
+        <span className={styles.stripLabel}>{t("पता", "Address")}:</span>
+        <span className={styles.stripValue}>
+          {loading ? t("लोड हो रहा है...", "Loading...") : (address.full || t("उपलब्ध नहीं", "Unavailable"))}
+        </span>
+      </div>
+
+      {/* Mini metrics */}
+      <div className={styles.miniGrid}>
+        <div className={styles.miniCard}>
+          <Thermometer className={styles.miniIcon} />
+          <div className={styles.miniLabel}>{t("तापमान", "Temperature")}</div>
+          <div className={styles.miniValue}>{weather.temp_c != null ? `${Math.round(weather.temp_c)}°C` : "—"}</div>
+        </div>
+        <div className={styles.miniCard}>
+          <Droplets className={styles.miniIcon} />
+          <div className={styles.miniLabel}>{t("आर्द्रता", "Humidity")}</div>
+          <div className={styles.miniValue}>{weather.humidity_pct != null ? `${Math.round(weather.humidity_pct)}%` : "—"}</div>
+        </div>
+        <div className={styles.miniCard}>
+          <CloudRain className={styles.miniIcon} />
+          <div className={styles.miniLabel}>{t("वर्षा संभावना", "Rain chance")}</div>
+          <div className={styles.miniValue}>{weather.rain_chance_pct != null ? `${Math.round(weather.rain_chance_pct)}%` : "—"}</div>
+        </div>
+        <div className={styles.miniCard}>
+          <Wind className={styles.miniIcon} />
+          <div className={styles.miniLabel}>{t("पवन गति", "Wind")}</div>
+          <div className={styles.miniValue}>{weather.wind_kph != null ? `${Math.round(weather.wind_kph)} km/h` : "—"}</div>
+        </div>
+      </div>
+
+      {/* Insights row */}
+      <div className={styles.insightsRow}>
+        <div className={styles.insightCard}>
+          <Leaf className={styles.insightIcon} />
+          <div className={styles.insightText}>
+            {t("आज AI विश्लेषण से अपनी फसल की स्थिति जाँचे।", "Use AI today to check crop condition.")}
           </div>
         </div>
-        
-        {/* Quick Stats */}
-        <div className={styles.quickStats}>
-          <StatCard
-            icon={<MapPin className={styles.statIcon} />}
-            label={t.totalLand}
-            value={farmerData?.totalLand || (language === 'hi' ? '4.3 एकड़' : '4.3 acres')}
-          />
-          <StatCard
-            icon={<Activity className={styles.statIcon} />}
-            label={t.fpiScore}
-            value={`${fpiScore}/100`}
-          />
-          <StatCard
-            icon={<Thermometer className={styles.statIcon} />}
-            label={t.temperature}
-            value={`${weatherData?.temp || 28}°C`}
-          />
+        <div className={styles.insightCard}>
+          <Sparkles className={styles.insightIcon} />
+          <div className={styles.insightText}>
+            {t("बेहतर सलाह के लिए सटीक स्थान और साफ़ फोटो लें।", "Get precise advice with accurate location and clear photos.")}
+          </div>
         </div>
       </div>
 
-      {/* Weather Card */}
-      <WeatherCard weatherData={weatherData} />
-
-      {/* Smart Actions */}
+      {/* Smart Action */}
       <div className={styles.smartActions}>
-        <h3 className={styles.sectionTitle}>{t.smartActions}</h3>
+        <div className={styles.sectionTitle}>{t("स्मार्ट कार्य", "Smart actions")}</div>
         <div className={styles.actionGrid}>
-          <button 
-            className={styles.smartActionBtn}
-            onClick={onCaptureClick}
-          >
-            <div className={styles.actionIconBg}>
-              <Camera className={styles.actionIcon} />
-            </div>
+          <button className={styles.smartActionBtn} onClick={onCaptureClick}>
+            <div className={styles.actionIconBg}><Sparkles className={styles.actionIcon} /></div>
             <div className={styles.actionContent}>
-              <span className={styles.actionTitle}>{t.captureField}</span>
-              <span className={styles.actionDesc}>{t.aiAnalysis}</span>
+              <div className={styles.actionTitle}>{t("फील्ड कैप्चर करें", "Capture Field")}</div>
+              <div className={styles.actionDesc}>
+                {t("AI विश्लेषण के लिए छवि/स्थान लें", "Take image/location for AI analysis")}
+              </div>
             </div>
-            <ChevronRight className={styles.chevronIcon} />
           </button>
-        </div>
-      </div>
-
-      {/* Farm Status */}
-      <div className={styles.farmStatus}>
-        <h3 className={styles.sectionTitle}>{t.myFarms}</h3>
-        <div className={styles.farmGrid}>
-          {farmerData?.farms?.map((farm) => (
-            <FarmStatusCard key={`${farm.id}-${language}`} farm={farm} />
-          ))}
         </div>
       </div>
     </div>
   );
-};
-
-export default HomeSection;
+}

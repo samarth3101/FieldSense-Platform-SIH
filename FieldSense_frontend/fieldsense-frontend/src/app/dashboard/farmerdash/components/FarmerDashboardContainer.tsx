@@ -31,10 +31,10 @@ const FarmerDashboardContainer = () => {
   const [showReportModal, setShowReportModal] = useState(false);
   const [reportData, setReportData] = useState<any | null>(null);
   const [processingStep, setProcessingStep] = useState(0);
-  const [pendingMode, setPendingMode] = useState<"camera"|"gallery"|null>(null);
+  const [pendingMode, setPendingMode] = useState<"camera" | "gallery" | null>(null);
   const [isAuthenticated, setIsAuthenticated] = useState<boolean | null>(null);
   const [isIntentionalLogout, setIsIntentionalLogout] = useState(false);
-  
+
   const { language, isLanguageChanging, handleLanguageChange, t } = useLanguage();
   const { notifications, showNotifications, setShowNotifications } = useNotifications(language);
   const { locationData, isLoading: locationLoading, requestLocation } = useLocation();
@@ -49,23 +49,23 @@ const FarmerDashboardContainer = () => {
         console.log('🔍 Checking authentication...');
         const allKeys = Object.keys(localStorage);
         console.log('📦 Available localStorage keys:', allKeys);
-        
+
         const token = localStorage.getItem('token');
         const user = localStorage.getItem('user');
         const authData = localStorage.getItem('authData');
         const isLoggedIn = localStorage.getItem('isLoggedIn');
         const access_token = localStorage.getItem('access_token');
         const userData = localStorage.getItem('userData');
-        
-        console.log('🔑 Auth values:', { 
-          token: !!token, 
-          user: !!user, 
-          authData: !!authData, 
+
+        console.log('🔑 Auth values:', {
+          token: !!token,
+          user: !!user,
+          authData: !!authData,
           isLoggedIn: !!isLoggedIn,
           access_token: !!access_token,
           userData: !!userData
         });
-        
+
         console.log('✅ Setting authenticated to true');
         setIsAuthenticated(true);
         return true;
@@ -93,23 +93,23 @@ const FarmerDashboardContainer = () => {
         return;
       }
 
-      const warningMessage = language === 'hi' 
+      const warningMessage = language === 'hi'
         ? "क्या आप वाकई डैशबोर्ड छोड़कर मुख्य वेबसाइट पर जाना चाहते हैं?\n\nयह आपको लॉगआउट कर देगा।"
         : "Are you sure you want to leave the dashboard and go to the main website?\n\nThis will log you out.";
-      
+
       const userConfirmed = window.confirm(warningMessage);
-      
+
       if (userConfirmed) {
         console.log('🚪 User confirmed exit, clearing auth and redirecting...');
         isLogoutInProgress = true;
         setIsIntentionalLogout(true);
         localStorage.clear();
         sessionStorage.clear();
-        
-        const logoutMessage = language === 'hi' 
+
+        const logoutMessage = language === 'hi'
           ? "सफलतापूर्वक लॉगआउट हो गए"
           : "Successfully logged out";
-        
+
         alert(logoutMessage);
         window.location.replace('/');
       } else {
@@ -135,10 +135,10 @@ const FarmerDashboardContainer = () => {
         return undefined;
       }
 
-      const message = language === 'hi' 
+      const message = language === 'hi'
         ? "क्या आप वाकई पेज छोड़ना चाहते हैं? आपका डेटा खो सकता है।"
         : "Are you sure you want to leave? Your data might be lost.";
-      
+
       event.preventDefault();
       event.returnValue = message;
       return message;
@@ -199,12 +199,12 @@ const FarmerDashboardContainer = () => {
       input.onchange = async (e: any) => {
         const file = e.target.files?.[0];
         if (!file) return;
-        
+
         console.log('📁 File selected:', file.name);
-        
+
         setShowProcessingModal(true);
         setProcessingStep(0);
-        
+
         // Load Lottie animation
         if (typeof window !== 'undefined') {
           import('lottie-web').then((lottie) => {
@@ -217,7 +217,7 @@ const FarmerDashboardContainer = () => {
                 autoplay: true,
                 path: '/animation/fusion.json'
               });
-              
+
               return () => animation.destroy();
             }
           });
@@ -225,7 +225,7 @@ const FarmerDashboardContainer = () => {
 
         const steps = language === 'hi' ? PROCESSING_STEPS_HI : PROCESSING_STEPS_EN;
         let stepInterval: NodeJS.Timeout | null = null;
-        
+
         try {
           // ✅ SLOW DOWN PROCESSING: 1.2 seconds per step instead of 800ms
           stepInterval = setInterval(() => {
@@ -244,21 +244,21 @@ const FarmerDashboardContainer = () => {
             include_forecast_days: 7,
             notes: "upload",
           };
-          
+
           console.log('🚀 Calling analyzeWithImage with req:', req);
           const data = await analyzeWithImage(req, file, file.name);
           console.log('✅ Analysis complete:', data);
-          
+
           if (stepInterval) clearInterval(stepInterval);
           setProcessingStep(steps.length - 1);
-          
+
           // ✅ ADDITIONAL DELAY: Wait 2 more seconds before showing report
           setTimeout(() => {
             setReportData({ ...data, request: req });
             setShowProcessingModal(false);
             setShowReportModal(true);
           }, 2000); // 2 second delay
-          
+
         } catch (e) {
           console.error('❌ Analysis failed:', e);
           if (stepInterval) clearInterval(stepInterval);
@@ -276,10 +276,10 @@ const FarmerDashboardContainer = () => {
     try {
       console.log('📸 Starting camera flow');
       await navigator.mediaDevices.getUserMedia({ video: true });
-      
+
       setShowProcessingModal(true);
       setProcessingStep(0);
-      
+
       // ✅ FIXED LOTTIE LOADING FOR CAMERA MODE
       if (typeof window !== 'undefined') {
         import('lottie-web').then((lottie) => {
@@ -287,7 +287,7 @@ const FarmerDashboardContainer = () => {
           if (container) {
             console.log('🎬 Loading camera mode lottie animation...');
             container.innerHTML = ''; // Clear container first
-            
+
             try {
               const animation = lottie.default.loadAnimation({
                 container: container,
@@ -296,18 +296,18 @@ const FarmerDashboardContainer = () => {
                 autoplay: true,
                 path: '/animation/fusion.json'
               });
-              
+
               animation.addEventListener('DOMLoaded', () => {
                 console.log('✅ Camera mode lottie loaded successfully');
               });
-              
+
               animation.addEventListener('data_failed', () => {
                 console.log('❌ Camera mode lottie failed, using fallback');
                 if (container) {
                   container.innerHTML = '<div class="fallback-spinner">🌱</div>';
                 }
               });
-              
+
               return () => animation.destroy();
             } catch (error) {
               console.log('❌ Camera mode lottie error:', error);
@@ -327,7 +327,7 @@ const FarmerDashboardContainer = () => {
 
       const steps = language === 'hi' ? PROCESSING_STEPS_HI : PROCESSING_STEPS_EN;
       let stepInterval: NodeJS.Timeout | null = null;
-      
+
       try {
         // ✅ SLOW DOWN PROCESSING: 1.2 seconds per step for camera too
         stepInterval = setInterval(() => {
@@ -346,28 +346,28 @@ const FarmerDashboardContainer = () => {
           include_forecast_days: 7,
           notes: "capture",
         };
-        
+
         console.log('🚀 Calling analyzeLocation with req:', req);
         const data = await analyzeLocation(req);
         console.log('✅ Analysis complete:', data);
-        
+
         if (stepInterval) clearInterval(stepInterval);
         setProcessingStep(steps.length - 1);
-        
+
         // ✅ ADDITIONAL DELAY: Wait 2 more seconds before showing report
         setTimeout(() => {
           setReportData({ ...data, request: req });
           setShowProcessingModal(false);
           setShowReportModal(true);
         }, 2000); // 2 second delay
-        
+
       } catch (e) {
         console.error('❌ Analysis failed:', e);
         if (stepInterval) clearInterval(stepInterval);
         setShowProcessingModal(false);
         alert(language === "hi" ? "विश्लेषण विफल" : "Analysis failed");
       }
-      
+
     } catch (e) {
       console.error('❌ Camera/analysis failed:', e);
       setShowProcessingModal(false);
@@ -396,26 +396,27 @@ const FarmerDashboardContainer = () => {
       return <ProfileSection farmerData={farmerData} onClose={() => setShowProfile(false)} />;
     }
 
-    switch(activeTab) {
-      case 'home': 
+    switch (activeTab) {
+      case 'home':
         return (
-          <HomeSection 
-            farmerData={farmerData}
-            weatherData={weatherData}
+          <HomeSection
             onCaptureClick={() => setActiveTab('capture')}
+            language={language as "hi" | "en"}
           />
+
         );
-      case 'capture': 
+
+      case 'capture':
         return <CaptureSection onCaptureRequest={handleCaptureRequest} />;
-      case 'krishimitra': 
+      case 'krishimitra':
         return <KrishiMitraAI />;
-      default: 
+      default:
         return (
-          <HomeSection 
-            farmerData={farmerData}
-            weatherData={weatherData}
+          <HomeSection
             onCaptureClick={() => setActiveTab('capture')}
+            language={language as "hi" | "en"}
           />
+
         );
     }
   };
