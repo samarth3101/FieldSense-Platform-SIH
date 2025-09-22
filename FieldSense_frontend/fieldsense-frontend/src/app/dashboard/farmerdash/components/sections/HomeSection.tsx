@@ -1,5 +1,5 @@
 "use client";
-import styles from "../../styles/shared.module.scss";
+import styles from "../../styles/HomeSection.module.scss";
 import { MapPin, Thermometer, Droplets, Wind, CloudRain, Calendar, Clock, Sparkles, Leaf, Gauge, Eye } from "lucide-react";
 import { useDashboardData } from "../../hooks/useDashboardData";
 
@@ -19,8 +19,9 @@ export default function HomeSection({ onCaptureClick, language = "hi" }: HomeSec
     <div className={styles.homeWrap}>
       <div className={styles.heroCard}>
         <div className={styles.heroTitle}>
-          {t("नमस्ते", "Hello")}, {displayName}!
+          {t("नमस्ते", "Hello")}, <span>{displayName}</span>
         </div>
+
         <div className={styles.heroSub}>
           {t("आज आपके खेत की स्थिति देखें", "Check today’s field status")} • {greeting}
         </div>

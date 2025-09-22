@@ -1,67 +1,356 @@
-.homeContent {
+// ===== HOME SECTION - FINAL OPTIMIZED VERSION =====
+
+.homeWrap {
   display: flex;
   flex-direction: column;
-  gap: 1.5rem;
+  width: 100%;
+  min-height: 100vh;
+  padding: 1rem;
   padding-bottom: 100px; // Space for bottom nav
+  background: #f8fafc;
+  box-sizing: border-box;
+  
+  // Desktop: NO SCROLL, FIT CONTENT
+  @media (min-width: 1024px) {
+    height: 100vh;
+    overflow: hidden;
+    justify-content: space-between; // Distribute space evenly
+    gap: 1rem; // Consistent spacing
+    padding: 1.5rem;
+    padding-bottom: 120px; // More space for bottom nav
+  }
 }
 
-.welcomeSection {
+// ===== HERO SECTION =====
+.heroCard {
+  background: linear-gradient(135deg, #16a34a 0%, #22c55e 100%);
+  border-radius: 1.5rem;
+  padding: 1.5rem;
+  color: white;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 8px 32px rgba(22, 163, 74, 0.3);
+  margin-bottom: 1rem;
+  flex-shrink: 0;
+  
+  // Desktop: Larger hero
+  @media (min-width: 1024px) {
+    padding: 2rem;
+    margin-bottom: 0;
+  }
+  
+  &::before {
+    content: '';
+    position: absolute;
+    top: -20px;
+    right: -20px;
+    width: 100px;
+    height: 100px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 50%;
+  }
+}
+
+.heroTitle {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+  color: white;
+  line-height: 1.3;
+  
+  // Desktop: Bigger title
+  @media (min-width: 1024px) {
+    font-size: 2rem;
+  }
+}
+
+// Target the displayName specifically for line break on mobile
+.heroTitle {
+  // Mobile: Force name break using CSS targeting
+  @media (max-width: 1023px) {
+    // This will force "Samarth" and "Patil!" to separate lines
+    &::after {
+      content: '';
+    }
+    
+    // Better approach: Use span wrapping in JSX
+    word-spacing: normal;
+    
+    // Target last word (name) to break
+    span:last-child {
+      display: block;
+      margin-top: 0.125rem;
+    }
+  }
+}
+
+.heroSub {
+  font-size: 0.875rem;
+  opacity: 0.9;
+  margin-bottom: 1rem;
+  line-height: 1.5;
+  
+  @media (min-width: 1024px) {
+    font-size: 1rem;
+  }
+}
+
+.heroMeta {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.metaItem {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.8125rem;
+  opacity: 0.9;
+  
+  svg {
+    width: 16px;
+    height: 16px;
+  }
+  
+  @media (min-width: 1024px) {
+    font-size: 0.875rem;
+  }
+}
+
+// ===== LOCATION STRIP =====
+.locationStrip {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
   background: white;
   border: 1px solid #e2e8f0;
-  border-radius: 1.5rem;
-  padding: 2rem;
-  margin-bottom: 1.5rem;
+  border-radius: 1rem;
+  padding: 1rem 1.25rem;
   box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1);
+  margin-bottom: 1rem;
+  flex-shrink: 0;
+  
+  @media (min-width: 1024px) {
+    margin-bottom: 0;
+  }
 }
 
-.welcomeHeader {
-  margin-bottom: 1.5rem;
+.stripIcon {
+  width: 20px;
+  height: 20px;
+  color: #16a34a;
+  flex-shrink: 0;
 }
 
-.greeting {
-  font-size: 1.875rem;
-  font-weight: 700;
-  color: #1e293b;
-  margin-bottom: 0.25rem;
-}
-
-.subGreeting {
+.stripLabel {
+  font-weight: 500;
   color: #64748b;
-  font-size: 1rem;
-  line-height: 1.5;
+  font-size: 0.875rem;
 }
 
-.quickStats {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 1rem;
+.stripValue {
+  font-weight: 600;
+  color: #1e293b;
+  font-size: 0.875rem;
+  flex: 1;
+  word-break: break-word;
+}
 
-  @media (max-width: 768px) {
-    grid-template-columns: 1fr;
+// ===== WEATHER CARDS - PERFECT SIZING =====
+.miniGrid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr); // Mobile: 2 columns
+  gap: 0.875rem;
+  margin: 1rem 0;
+  flex-shrink: 0;
+  
+  @media (min-width: 480px) {
+    grid-template-columns: repeat(3, 1fr);
+  }
+  
+  @media (min-width: 768px) {
+    grid-template-columns: repeat(6, 1fr);
+  }
+  
+  // Desktop: BIGGER cards with more space
+  @media (min-width: 1024px) {
+    grid-template-columns: repeat(6, 1fr);
+    gap: 1rem;
+    margin: 0;
+    max-width: none; // Remove constraint
+  }
+}
+
+.miniCard {
+  background: white;
+  border: 1px solid #e2e8f0;
+  border-radius: 1rem;
+  padding: 1rem 0.75rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 0.5rem;
+  transition: all 0.2s ease;
+  box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1);
+  
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(22, 163, 74, 0.15);
+    border-color: #16a34a;
+  }
+  
+  // Desktop: BIGGER cards
+  @media (min-width: 1024px) {
+    padding: 1.5rem 1rem;
     gap: 0.75rem;
   }
 }
 
+.miniIcon {
+  width: 22px;
+  height: 22px;
+  color: #16a34a;
+  flex-shrink: 0;
+  
+  @media (min-width: 1024px) {
+    width: 28px;
+    height: 28px;
+  }
+}
+
+.miniLabel {
+  font-size: 0.6875rem;
+  color: #64748b;
+  font-weight: 500;
+  line-height: 1.2;
+  
+  @media (min-width: 1024px) {
+    font-size: 0.8125rem;
+  }
+}
+
+.miniValue {
+  font-size: 1rem;
+  font-weight: 700;
+  color: #1e293b;
+  line-height: 1;
+  
+  @media (min-width: 768px) {
+    font-size: 1.125rem;
+  }
+  
+  // Desktop: BIGGER values
+  @media (min-width: 1024px) {
+    font-size: 1.375rem;
+  }
+}
+
+// ===== WEATHER META =====
+.weatherMeta {
+  text-align: center;
+  color: #94a3b8;
+  font-size: 0.75rem;
+  line-height: 1.4;
+  padding: 0 0.5rem;
+  margin: 0.75rem 0;
+  flex-shrink: 0;
+  
+  @media (min-width: 1024px) {
+    font-size: 0.8125rem;
+    margin: 0;
+  }
+}
+
+// ===== INSIGHTS =====
+.insightsRow {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin: 1rem 0;
+  flex-shrink: 0;
+  
+  @media (min-width: 640px) {
+    flex-direction: row;
+  }
+  
+  @media (min-width: 1024px) {
+    margin: 0;
+    gap: 1rem;
+  }
+}
+
+.insightCard {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  background: rgba(22, 163, 74, 0.05);
+  border: 1px solid rgba(22, 163, 74, 0.2);
+  border-radius: 1rem;
+  padding: 1.25rem;
+  border-left: 4px solid #16a34a;
+  flex: 1;
+  
+  @media (min-width: 1024px) {
+    padding: 1.5rem;
+  }
+}
+
+.insightIcon {
+  width: 20px;
+  height: 20px;
+  color: #16a34a;
+  flex-shrink: 0;
+  margin-top: 0.125rem;
+}
+
+.insightText {
+  font-size: 0.875rem;
+  line-height: 1.5;
+  color: #166534;
+  font-weight: 500;
+  flex: 1;
+  
+  @media (min-width: 1024px) {
+    font-size: 0.9375rem;
+  }
+}
+
+// ===== SMART ACTIONS =====
+.smartActions {
+  margin-top: 1rem;
+  flex-shrink: 0;
+  
+  @media (min-width: 1024px) {
+    margin-top: 0;
+  }
+}
+
 .sectionTitle {
-  font-size: 1.375rem;
+  font-size: 1.25rem;
   font-weight: 700;
   color: #1e293b;
   margin-bottom: 1rem;
-}
-
-// SMART ACTIONS STYLING - COMPLETE FIX
-.smartActions {
-  margin-bottom: 1.5rem;
-  background: white;
-  border: 1px solid #e2e8f0;
-  border-radius: 1.5rem;
-  padding: 1.5rem;
-  box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1);
+  
+  @media (min-width: 1024px) {
+    font-size: 1.375rem;
+  }
 }
 
 .actionGrid {
   display: grid;
+  grid-template-columns: 1fr;
   gap: 1rem;
+  
+  @media (min-width: 768px) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  
+  @media (min-width: 1024px) {
+    grid-template-columns: 1fr; // Single column on desktop
+    gap: 1rem;
+  }
 }
 
 .smartActionBtn {
@@ -83,6 +372,11 @@
     transform: translateY(-2px);
     box-shadow: 0 8px 32px rgba(22, 163, 74, 0.4);
   }
+  
+  @media (min-width: 1024px) {
+    padding: 2rem;
+    gap: 1.5rem;
+  }
 }
 
 .actionIconBg {
@@ -94,12 +388,23 @@
   background: rgba(255, 255, 255, 0.2);
   border-radius: 16px;
   flex-shrink: 0;
+  
+  @media (min-width: 1024px) {
+    width: 64px;
+    height: 64px;
+    border-radius: 18px;
+  }
 }
 
 .actionIcon {
   width: 28px;
   height: 28px;
   color: white;
+  
+  @media (min-width: 1024px) {
+    width: 32px;
+    height: 32px;
+  }
 }
 
 .actionContent {
@@ -113,84 +418,135 @@
   font-size: 1.125rem;
   font-weight: 600;
   color: white;
+  
+  @media (min-width: 1024px) {
+    font-size: 1.25rem;
+  }
 }
 
 .actionDesc {
   font-size: 0.875rem;
   opacity: 0.9;
   color: white;
-}
-
-.chevronIcon {
-  width: 20px;
-  height: 20px;
-  opacity: 0.7;
-  flex-shrink: 0;
-  color: white;
-}
-
-// FARM STATUS STYLING
-.farmStatus {
-  margin-bottom: 1.5rem;
-  background: white;
-  border: 1px solid #e2e8f0;
-  border-radius: 1.5rem;
-  padding: 1.5rem;
-  box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1);
-}
-
-.farmGrid {
-  display: grid;
-  gap: 1rem;
   
-  @media (min-width: 768px) {
-    grid-template-columns: repeat(2, 1fr);
+  @media (min-width: 1024px) {
+    font-size: 1rem;
   }
 }
 
-.statIcon {
-  width: 28px;
-  height: 28px;
-  color: #16a34a;
-}
+/* ===== MOBILE BREAKPOINTS ===== */
 
-// Mobile responsive
-@media (max-width: 768px) {
-  .homeContent {
-    padding-bottom: 120px;
+/* Extra Small Mobile (320px - 374px) */
+@media (max-width: 374px) {
+  .homeWrap {
+    padding: 0.75rem;
+    padding-bottom: 90px;
   }
   
-  .welcomeSection {
-    padding: 1.5rem;
-  }
-  
-  .greeting {
-    font-size: 1.5rem;
-  }
-  
-  .smartActions, .farmStatus {
-    padding: 1rem;
-  }
-  
-  .smartActionBtn {
+  .heroCard {
     padding: 1.25rem;
   }
   
-  .actionIconBg {
-    width: 48px;
-    height: 48px;
+  .heroTitle {
+    font-size: 1.375rem;
   }
   
-  .actionIcon {
-    width: 24px;
-    height: 24px;
+  .miniGrid {
+    gap: 0.75rem;
   }
   
-  .actionTitle {
+  .miniCard {
+    padding: 0.875rem 0.5rem;
+  }
+  
+  .miniValue {
+    font-size: 0.9375rem;
+  }
+}
+
+/* Small Mobile (375px - 479px) */
+@media (min-width: 375px) and (max-width: 479px) {
+  .heroTitle {
+    font-size: 1.5rem;
+  }
+  
+  .miniValue {
     font-size: 1rem;
   }
+}
+
+/* Landscape */
+@media (max-width: 1023px) and (orientation: landscape) {
+  .homeWrap {
+    padding-bottom: 80px;
+    overflow-y: auto;
+  }
   
-  .actionDesc {
-    font-size: 0.8125rem;
+  .heroCard {
+    padding: 1.25rem;
+  }
+  
+  .heroTitle {
+    font-size: 1.5rem;
+  }
+  
+  .miniGrid {
+    grid-template-columns: repeat(6, 1fr);
+  }
+  
+  .insightsRow {
+    flex-direction: row;
+  }
+}
+
+/* ===== ACCESSIBILITY ===== */
+@media (hover: none) and (pointer: coarse) {
+  .smartActionBtn {
+    min-height: 44px;
+  }
+  
+  .smartActionBtn:hover {
+    transform: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .smartActionBtn,
+  .miniCard {
+    transition: none;
+  }
+  
+  .smartActionBtn:hover,
+  .miniCard:hover {
+    transform: none;
+  }
+}
+
+@media (prefers-contrast: high) {
+  .heroCard,
+  .locationStrip,
+  .miniCard,
+  .insightCard {
+    border-width: 2px;
+  }
+}
+
+@media print {
+  .homeWrap {
+    height: auto;
+    overflow: visible;
+    padding-bottom: 1rem;
+  }
+  
+  .heroCard {
+    background: #f0f0f0 !important;
+    color: #000 !important;
+    box-shadow: none !important;
+  }
+  
+  .smartActionBtn {
+    background: #f0f0f0 !important;
+    color: #000 !important;
+    box-shadow: none !important;
   }
 }

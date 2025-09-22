@@ -1,89 +1,288 @@
+// ===== CAPTURE SECTION - DESKTOP OPTIMIZED =====
+
 .captureContent {
-  padding-top: 1rem;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  padding: 1rem;
+  padding-bottom: 100px;
+  background: #f8fafc;
+  box-sizing: border-box;
+  
+  // DESKTOP: NO SCROLL, HORIZONTAL LAYOUT
+  @media (min-width: 1024px) {
+    height: 100vh;
+    overflow: hidden;
+    justify-content: center;
+    align-items: center;
+    padding: 2rem;
+    padding-bottom: 120px;
+  }
 }
 
+// HEADER - COMPACT ON DESKTOP
 .captureHeader {
   text-align: center;
-  margin-bottom: 2rem;
+  margin-bottom: 1.5rem;
   
-  .pageTitle {
-    font-size: 2rem;
-    font-weight: 700;
-    color: #1e293b;
-    margin-bottom: 0.5rem;
-  }
-  
-  .captureSubtitle {
-    color: #64748b;
-    font-size: 1rem;
-    line-height: 1.5;
+  @media (min-width: 1024px) {
+    margin-bottom: 2rem;
   }
 }
 
+.pageTitle {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #1e293b;
+  margin-bottom: 0.5rem;
+  
+  @media (min-width: 1024px) {
+    font-size: 1.75rem; // Smaller on desktop
+  }
+}
+
+.captureSubtitle {
+  color: #64748b;
+  font-size: 0.875rem;
+  line-height: 1.5;
+  
+  @media (min-width: 1024px) {
+    font-size: 0.9375rem;
+  }
+}
+
+// WIDE HORIZONTAL LAYOUT FOR DESKTOP
 .captureOptions {
   display: grid;
-  gap: 1.5rem;
+  grid-template-columns: 1fr;
+  gap: 1rem;
   
-  @media (min-width: 768px) {
+  @media (min-width: 640px) {
     grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
+  }
+  
+  // DESKTOP: WIDER CARDS
+  @media (min-width: 1024px) {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 3rem;
+    max-width: 1200px; // WIDER CONTAINER
+    margin: 0 auto;
   }
 }
 
+// WIDER & SHORTER CARDS ON DESKTOP
 .captureCard {
   background: white;
   border: 2px solid #e2e8f0;
-  border-radius: 1.5rem;
-  padding: 2rem;
+  border-radius: 1.25rem;
+  padding: 1.25rem;
   text-align: center;
   cursor: pointer;
   transition: all 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
   
   &:hover {
     border-color: #16a34a;
-    transform: translateY(-4px);
-    box-shadow: 0 20px 40px rgba(22, 163, 74, 0.15);
+    transform: translateY(-3px);
+    box-shadow: 0 12px 40px rgba(22, 163, 74, 0.15);
+  }
+  
+  // DESKTOP: WIDER & SHORTER
+  @media (min-width: 1024px) {
+    padding: 2rem 3rem; // More horizontal padding
+    min-height: 240px; // REDUCED HEIGHT
+    max-width: 500px; // INCREASED WIDTH
+    justify-self: center;
   }
 }
 
+// SMALLER ICONS ON DESKTOP
 .captureIconWrapper {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 96px;
-  height: 96px;
+  width: 72px;
+  height: 72px;
   background: linear-gradient(135deg, #16a34a, #22c55e);
   border-radius: 50%;
-  margin-bottom: 1.5rem;
-  box-shadow: 0 8px 32px rgba(22, 163, 74, 0.3);
+  margin-bottom: 1rem;
+  box-shadow: 0 4px 16px rgba(22, 163, 74, 0.3);
+  transition: all 0.3s ease;
+  
+  .captureCard:hover & {
+    transform: scale(1.05);
+  }
+  
+  // DESKTOP: SMALLER ICON
+  @media (min-width: 1024px) {
+    width: 64px; // SMALLER
+    height: 64px;
+    margin-bottom: 0.75rem; // LESS MARGIN
+  }
 }
 
 .captureIcon {
-  width: 48px;
-  height: 48px;
+  width: 36px;
+  height: 36px;
   color: white;
+  
+  // DESKTOP: SMALLER
+  @media (min-width: 1024px) {
+    width: 32px;
+    height: 32px;
+  }
 }
 
+// COMPACT TEXT ON DESKTOP
 .captureTitle {
-  font-size: 1.375rem;
+  font-size: 1.125rem;
   font-weight: 600;
   color: #1e293b;
   margin-bottom: 0.5rem;
+  
+  @media (min-width: 1024px) {
+    font-size: 1.25rem;
+    margin-bottom: 0.375rem; // LESS MARGIN
+  }
 }
 
 .captureDesc {
   color: #64748b;
-  font-size: 1rem;
+  font-size: 0.875rem;
   margin-bottom: 1rem;
+  line-height: 1.5;
+  
+  @media (min-width: 1024px) {
+    font-size: 0.9375rem;
+    margin-bottom: 0.75rem; // LESS MARGIN
+  }
 }
 
+// COMPACT FEATURES LIST
 .captureFeatures {
   display: flex;
   flex-direction: column;
   gap: 0.25rem;
   text-align: left;
   
+  @media (min-width: 1024px) {
+    gap: 0.125rem; // TIGHTER SPACING
+  }
+  
   span {
-    font-size: 0.875rem;
+    font-size: 0.75rem;
     color: #64748b;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    
+    &::before {
+      content: '•';
+      color: #16a34a;
+      font-weight: bold;
+      margin-right: 0.5rem;
+    }
+    
+    @media (min-width: 1024px) {
+      font-size: 0.8125rem;
+    }
+  }
+}
+
+/* MOBILE RESPONSIVE */
+@media (max-width: 374px) {
+  .captureContent {
+    padding: 0.75rem;
+    padding-bottom: 90px;
+  }
+  
+  .captureCard {
+    padding: 1rem;
+  }
+  
+  .captureIconWrapper {
+    width: 64px;
+    height: 64px;
+  }
+  
+  .captureIcon {
+    width: 32px;
+    height: 32px;
+  }
+}
+
+@media (min-width: 375px) and (max-width: 639px) {
+  .captureOptions {
+    gap: 1.25rem;
+  }
+}
+
+/* LANDSCAPE */
+@media (max-width: 1023px) and (orientation: landscape) {
+  .captureContent {
+    padding-bottom: 80px;
+    overflow-y: auto;
+  }
+  
+  .captureOptions {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+  }
+  
+  .captureCard {
+    padding: 1rem;
+    min-height: 200px;
+  }
+  
+  .captureIconWrapper {
+    width: 56px;
+    height: 56px;
+    margin-bottom: 0.5rem;
+  }
+  
+  .captureIcon {
+    width: 28px;
+    height: 28px;
+  }
+}
+
+/* ACCESSIBILITY */
+@media (hover: none) and (pointer: coarse) {
+  .captureCard:hover {
+    transform: none;
+  }
+  
+  .captureIconWrapper {
+    .captureCard:hover & {
+      transform: none;
+    }
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .captureCard,
+  .captureIconWrapper {
+    transition: none;
+  }
+  
+  .captureCard:hover {
+    transform: none;
+  }
+}
+
+@media print {
+  .captureContent {
+    height: auto;
+    overflow: visible;
+    padding-bottom: 1rem;
+  }
+  
+  .captureCard {
+    box-shadow: none !important;
+    border: 2px solid #000 !important;
   }
 }
