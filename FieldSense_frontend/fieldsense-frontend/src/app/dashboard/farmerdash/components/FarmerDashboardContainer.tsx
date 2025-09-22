@@ -403,8 +403,8 @@ const FarmerDashboardContainer = () => {
             onCaptureClick={() => setActiveTab('capture')}
             language={language as "hi" | "en"}
           />
-        );
 
+        );
 
       case 'capture':
         return <CaptureSection onCaptureRequest={handleCaptureRequest} />;

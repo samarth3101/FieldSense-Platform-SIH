@@ -29,9 +29,6 @@ const ProfileSection = ({ farmerData, onClose }: ProfileSectionProps) => {
 
   console.log('👤 ProfileSection rendering with language:', language);
 
-  // ========================================
-  // FIXED LOGOUT HANDLER - NO MORE DOUBLE CONFIRMATIONS
-  // ========================================
   const handleLogout = () => {
     const confirmMessage = language === 'hi'
       ? "क्या आप वाकई लॉगआउट करना चाहते हैं?"
@@ -40,52 +37,29 @@ const ProfileSection = ({ farmerData, onClose }: ProfileSectionProps) => {
     const confirmed = window.confirm(confirmMessage);
 
     if (confirmed) {
-      console.log('🚪 Starting logout process...');
+      console.log('🚪 Logging out...');
 
-      // STEP 1: Call global handler IMMEDIATELY to disable all warnings
+      // Call global logout handler to set intentional logout flag
       if ((window as any).handleDashboardLogout) {
-        console.log('🎯 Calling global logout handler to disable warnings');
         (window as any).handleDashboardLogout();
       }
 
-      // STEP 2: Use setTimeout to ensure flags are processed before navigation
-      setTimeout(() => {
-        console.log('🧹 Clearing authentication data');
-        
-        // Clear all authentication data
-        localStorage.clear();
-        sessionStorage.clear();
+      // Clear ALL authentication data
+      localStorage.clear();
+      sessionStorage.clear();
 
-        // Show success message
-        const logoutMessage = language === 'hi'
-          ? "सफलतापूर्वक लॉगआउट हो गए"
-          : "Successfully logged out";
+      // Show logout message
+      const logoutMessage = language === 'hi'
+        ? "सफलतापूर्वक लॉगआउट हो गए"
+        : "Successfully logged out";
 
-        alert(logoutMessage);
+      alert(logoutMessage);
 
-        console.log('🏠 Navigating to home page');
-        
-        // Use multiple navigation methods as fallback
-        try {
-          // Method 1: Try router first
-          router.replace('/');
-          
-          // Method 2: Fallback to window.location.href (doesn't trigger beforeunload)
-          setTimeout(() => {
-            window.location.href = '/';
-          }, 100);
-          
-        } catch (error) {
-          console.error('Router failed, using window.location:', error);
-          // Method 3: Final fallback
-          window.location.href = '/';
-        }
-        
-      }, 50); // Small delay to ensure global handler processes first
-    } else {
-      console.log('❌ User cancelled logout');
+      // Use window.location.replace for complete reset
+      window.location.replace('/');
     }
   };
+
 
   if (!farmerData) {
     return <div>Loading...</div>;
