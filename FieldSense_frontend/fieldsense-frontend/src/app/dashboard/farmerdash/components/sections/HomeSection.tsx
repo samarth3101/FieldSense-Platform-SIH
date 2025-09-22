@@ -1,6 +1,6 @@
 "use client";
 import styles from "../../styles/shared.module.scss";
-import { MapPin, Thermometer, Droplets, Wind, CloudRain, Calendar, Clock, Sparkles, Leaf } from "lucide-react";
+import { MapPin, Thermometer, Droplets, Wind, CloudRain, Calendar, Clock, Sparkles, Leaf, Gauge, Eye } from "lucide-react";
 import { useDashboardData } from "../../hooks/useDashboardData";
 
 interface HomeSectionProps {
@@ -17,7 +17,6 @@ export default function HomeSection({ onCaptureClick, language = "hi" }: HomeSec
 
   return (
     <div className={styles.homeWrap}>
-      {/* Greeting */}
       <div className={styles.heroCard}>
         <div className={styles.heroTitle}>
           {t("नमस्ते", "Hello")}, {displayName}!
@@ -31,7 +30,6 @@ export default function HomeSection({ onCaptureClick, language = "hi" }: HomeSec
         </div>
       </div>
 
-      {/* Full Address */}
       <div className={styles.locationStrip}>
         <MapPin className={styles.stripIcon} />
         <span className={styles.stripLabel}>{t("पता", "Address")}:</span>
@@ -40,31 +38,65 @@ export default function HomeSection({ onCaptureClick, language = "hi" }: HomeSec
         </span>
       </div>
 
-      {/* Mini metrics */}
       <div className={styles.miniGrid}>
         <div className={styles.miniCard}>
           <Thermometer className={styles.miniIcon} />
           <div className={styles.miniLabel}>{t("तापमान", "Temperature")}</div>
-          <div className={styles.miniValue}>{weather.temp_c != null ? `${Math.round(weather.temp_c)}°C` : "—"}</div>
+          {/* <div className={styles.miniValue}>{weather.temp_c != null ? `${Math.round(weather.temp_c)}°C` : "—"}</div> */}
+          <div className={styles.miniValue}>
+            {typeof weather?.temp_c === "number" ? `${Math.round(weather.temp_c)}°C` : "—"}
+          </div>
         </div>
         <div className={styles.miniCard}>
           <Droplets className={styles.miniIcon} />
           <div className={styles.miniLabel}>{t("आर्द्रता", "Humidity")}</div>
-          <div className={styles.miniValue}>{weather.humidity_pct != null ? `${Math.round(weather.humidity_pct)}%` : "—"}</div>
+          {/* <div className={styles.miniValue}>{weather.humidity_pct != null ? `${Math.round(weather.humidity_pct)}%` : "—"}</div> */}
+          <div className={styles.miniValue}>
+            {typeof weather?.humidity_pct === "number" ? `${Math.round(weather.humidity_pct)}%` : "—"}
+          </div>
+
         </div>
         <div className={styles.miniCard}>
           <CloudRain className={styles.miniIcon} />
           <div className={styles.miniLabel}>{t("वर्षा संभावना", "Rain chance")}</div>
-          <div className={styles.miniValue}>{weather.rain_chance_pct != null ? `${Math.round(weather.rain_chance_pct)}%` : "—"}</div>
+          {/* <div className={styles.miniValue}>{weather.rain_chance_pct != null ? `${Math.round(weather.rain_chance_pct)}%` : "—"}</div> */}
+          <div className={styles.miniValue}>
+            {typeof weather?.rain_chance_pct === "number" ? `${Math.round(weather.rain_chance_pct)}%` : "—"}
+          </div>
+
         </div>
         <div className={styles.miniCard}>
           <Wind className={styles.miniIcon} />
           <div className={styles.miniLabel}>{t("पवन गति", "Wind")}</div>
-          <div className={styles.miniValue}>{weather.wind_kph != null ? `${Math.round(weather.wind_kph)} km/h` : "—"}</div>
+          {/* <div className={styles.miniValue}>{weather.wind_kph != null ? `${Math.round(weather.wind_kph)} km/h` : "—"}</div> */}
+          <div className={styles.miniValue}>
+            {typeof weather?.wind_kph === "number" ? `${Math.round(weather.wind_kph)} km/h` : "—"}
+          </div>
+        </div>
+        <div className={styles.miniCard}>
+          <Gauge className={styles.miniIcon} />
+          <div className={styles.miniLabel}>{t("दाब", "Pressure")}</div>
+          {/* <div className={styles.miniValue}>{weather.pressure_hpa != null ? `${weather.pressure_hpa} hPa` : "—"}</div> */}
+          <div className={styles.miniValue}>
+            {typeof weather?.pressure_hpa === "number" ? `${weather.pressure_hpa} hPa` : "—"}
+          </div>
+        </div>
+        <div className={styles.miniCard}>
+          <Eye className={styles.miniIcon} />
+          <div className={styles.miniLabel}>{t("दृश्यता", "Visibility")}</div>
+          {/* <div className={styles.miniValue}>{weather.visibility_km != null ? `${weather.visibility_km} km` : "—"}</div> */}
+          <div className={styles.miniValue}>
+            {typeof weather?.visibility_km === "number" ? `${weather.visibility_km} km` : "—"}
+          </div>
         </div>
       </div>
 
-      {/* Insights row */}
+      <div className={styles.weatherMeta}>
+        <span>{weather?.source === "openweather" ? "OpenWeather" : "Open‑Meteo"} • {weather?.as_of || ""}</span>
+        {weather?.locality && <span> • {weather.locality}</span>}
+      </div>
+
+
       <div className={styles.insightsRow}>
         <div className={styles.insightCard}>
           <Leaf className={styles.insightIcon} />
@@ -80,7 +112,6 @@ export default function HomeSection({ onCaptureClick, language = "hi" }: HomeSec
         </div>
       </div>
 
-      {/* Smart Action */}
       <div className={styles.smartActions}>
         <div className={styles.sectionTitle}>{t("स्मार्ट कार्य", "Smart actions")}</div>
         <div className={styles.actionGrid}>

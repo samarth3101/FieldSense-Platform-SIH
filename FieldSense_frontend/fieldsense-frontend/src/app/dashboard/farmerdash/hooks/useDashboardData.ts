@@ -1,133 +1,158 @@
 "use client";
 import { useEffect, useState } from "react";
+import { getTrustedWeather, type MiniWeather } from "../components/lib/fetchWeather";
 
-// Simple Latin→Devanagari transliteration for names (basic)
+// Basic transliteration stub; swap with robust lib if needed
 function transliterateToHi(input: string) {
-  // Very lightweight mapping for common characters
-  // For production, integrate `@ai4bharat/indic-transliterate` or an API.
-  const map: Record<string,string> = {
-    a:"अ", aa:"आ", i:"इ", ee:"ई", u:"उ", oo:"ऊ", e:"ए", ai:"ऐ", o:"ओ", au:"औ",
-    k:"क", kh:"ख", g:"ग", gh:"घ", ch:"च", j:"ज", zh:"झ", t:"ट", th:"ठ", d:"ड", dh:"ढ",
-    n:"न", p:"प", ph:"फ", b:"ब", bh:"भ", m:"म", y:"य", r:"र", l:"ल", v:"व",
-    sh:"श", s:"स", h:"ह"
-  };
-  // Fallback: just return original if non-ASCII
-  if (!/^[a-zA-Z .]+$/.test(input)) return input;
-  // Minimal split by space and capitalize effect
-  return input.split(" ").map(part => part).join(" ");
+    if (!/^[\x00-\x7F]+$/.test(input)) return input; // already non-ASCII
+    return input; // keep Latin form for now (no fake mapping)
 }
 
-type MiniWeather = {
-  temp_c?: number;
-  humidity_pct?: number;
-  rain_chance_pct?: number;
-  wind_kph?: number;
-  aqi?: number;
-};
-
 type Address = {
-  area?: string;
-  city?: string;
-  state?: string;
-  pincode?: string;
-  full?: string;
+    area?: string;
+    city?: string;
+    state?: string;
+    pincode?: string;
+    full?: string;
 };
 
 export function useDashboardData(language: "hi" | "en") {
-  const [rawName, setRawName] = useState<string>("Farmer");
-  const [displayName, setDisplayName] = useState<string>("किसान");
-  const [greeting, setGreeting] = useState<string>("");
-  const [address, setAddress] = useState<Address>({});
-  const [weather, setWeather] = useState<MiniWeather>({});
-  const [loading, setLoading] = useState<boolean>(true);
+    const [rawName, setRawName] = useState<string>("Farmer");
+    const [displayName, setDisplayName] = useState<string>("किसान");
+    const [greeting, setGreeting] = useState<string>("");
+    const [address, setAddress] = useState<Address>({});
+    //   const [weather, setWeather] = useState<MiniWeather>({ source: "open-meteo", as_of: new Date().toLocaleString() });
+    const [weather, setWeather] = useState<MiniWeather>({
+        temp_c: undefined,
+        humidity_pct: undefined,
+        rain_chance_pct: undefined,
+        wind_kph: undefined,
+        pressure_hpa: undefined,
+        cloud_pct: undefined,
+        visibility_km: undefined,
+        aqi: undefined,
+        source: "open-meteo",
+        as_of: new Date().toLocaleString(),
+        locality: undefined
+    });
 
-  useEffect(() => {
-    // 1) Name from storage (dynamic per user)
-    try {
-      const keys = ["fs_user","user","userData","loginResponse","auth_user"];
-      for (const k of keys) {
-        const raw = localStorage.getItem(k);
-        if (raw) {
-          const p = JSON.parse(raw);
-          const nm = p?.name || p?.fullName || p?.user?.name;
-          if (nm) {
-            setRawName(nm);
-            break;
-          }
+    const [loading, setLoading] = useState<boolean>(true);
+
+    // Read user name each session
+    useEffect(() => {
+        try {
+            const keys = ["fs_user", "user", "userData", "loginResponse", "auth_user"];
+            for (const k of keys) {
+                const raw = localStorage.getItem(k);
+                if (raw) {
+                    const p = JSON.parse(raw);
+                    const nm = p?.name || p?.fullName || p?.user?.name;
+                    if (nm) {
+                        setRawName(nm);
+                        break;
+                    }
+                }
+            }
+        } catch { }
+    }, []);
+
+    // Greeting and localized name
+    useEffect(() => {
+        const h = new Date().getHours();
+        setGreeting(language === "hi" ? (h < 12 ? "सुप्रभात" : h < 18 ? "नमस्ते" : "शुभ संध्या") : (h < 12 ? "Good morning" : h < 18 ? "Hello" : "Good evening"));
+        if (language === "hi") {
+            setDisplayName(transliterateToHi(rawName) || "किसान");
+        } else {
+            setDisplayName(rawName || "Farmer");
         }
-      }
-    } catch {}
+    }, [language, rawName]);
 
-    // 2) Greeting
-    const h = new Date().getHours();
-    setGreeting(language === "hi" ? (h<12?"सुप्रभात":h<18?"नमस्ते":"शुभ संध्या") : (h<12?"Good morning":h<18?"Hello":"Good evening"));
-  }, [language]);
+    // Reverse geocode + weather with 10-min cache
+    useEffect(() => {
+        const setAllFromCoords = async (lat: number, lon: number) => {
+            try {
+                console.log("📍 Using coords:", { lat, lon });
 
-  useEffect(() => {
-    // Localize name if Hindi selected
-    if (language === "hi") {
-      const dev = transliterateToHi(rawName) || "किसान";
-      setDisplayName(dev);
-    } else {
-      setDisplayName(rawName || "Farmer");
-    }
-  }, [rawName, language]);
+                // Reverse geocode
+                const res = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&addressdetails=1&zoom=18&lat=${lat}&lon=${lon}`);
+                if (!res.ok) throw new Error(`Reverse geocode failed: ${res.status}`);
+                const j = await res.json();
+                const a = j.address || {};
+                const area = a.suburb || a.neighbourhood || a.village || a.town || a.hamlet || a.locality;
+                const city = a.city || a.town || a.village || a.county;
+                const state = a.state;
+                const pincode = a.postcode;
+                const full = [area, city, state, pincode].filter(Boolean).join(", ");
+                setAddress({ area, city, state, pincode, full });
+                console.log("📌 Address:", { area, city, state, pincode });
 
-  useEffect(() => {
-    const setAllFromCoords = async (lat: number, lon: number) => {
-      try {
-        // Full reverse geocode (Nominatim)
-        const res = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&addressdetails=1&zoom=18&lat=${lat}&lon=${lon}`);
-        const j = await res.json();
-        const a = j.address || {};
-        const area = a.suburb || a.neighbourhood || a.village || a.town || a.hamlet || a.locality;
-        const city = a.city || a.town || a.village || a.county;
-        const state = a.state;
-        const pincode = a.postcode;
-        const full = [area, city, state, pincode].filter(Boolean).join(", ");
-        setAddress({ area, city, state, pincode, full });
+                const locality = [area, city].filter(Boolean).join(", ") || city || state || "Locality";
+                const key = `fs_wx_${locality}_${Math.round(lat * 1000)}_${Math.round(lon * 1000)}`;
+                const cached = localStorage.getItem(key);
+                if (cached) {
+                    const c = JSON.parse(cached);
+                    if (Date.now() - c.ts < 10 * 60 * 1000 && c.data && typeof c.data === "object") {
+                        console.log("♻️ Using cached weather:", c.data);
+                        setWeather(c.data);
+                        setLoading(false);
+                        return;
+                    } else {
+                        localStorage.removeItem(key);
+                    }
+                }
 
-        // Weather (Open-Meteo)
-        const w = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,relative_humidity_2m,wind_speed_10m,precipitation_probability`);
-        const jw = await w.json();
-        setWeather({
-          temp_c: jw?.current?.temperature_2m,
-          humidity_pct: jw?.current?.relative_humidity_2m,
-          wind_kph: jw?.current?.wind_speed_10m ? Math.round(jw.current.wind_speed_10m * 3.6) : undefined,
-          rain_chance_pct: jw?.current?.precipitation_probability
-        });
-      } catch {}
-      setLoading(false);
-    };
+                // Live weather
+                const wx = await getTrustedWeather(lat, lon, locality);
+                console.log("🌤️ Live weather:", wx);
 
-    // Prefer cached coords
-    try {
-      const cached = localStorage.getItem("fs_cached_location");
-      if (cached) {
-        const { lat, lon, ts } = JSON.parse(cached);
-        if (lat && lon && ts && Date.now() - ts < 3600_000) {
-          setAllFromCoords(lat, lon);
-          return;
+                // Validate at least one numeric field before caching
+                const hasAny =
+                    typeof wx.temp_c === "number" ||
+                    typeof wx.humidity_pct === "number" ||
+                    typeof wx.wind_kph === "number" ||
+                    typeof wx.pressure_hpa === "number" ||
+                    typeof wx.visibility_km === "number";
+
+                if (hasAny) {
+                    setWeather(wx);
+                    localStorage.setItem(key, JSON.stringify({ ts: Date.now(), wx }));
+                } else {
+                    console.warn("⚠️ Weather empty – showing placeholders");
+                }
+            } catch (err) {
+                console.error("❌ setAllFromCoords error:", err);
+            } finally {
+                setLoading(false);
+            }
+        };
+
+
+        try {
+            const cached = localStorage.getItem("fs_cached_location");
+            if (cached) {
+                const { lat, lon, ts } = JSON.parse(cached);
+                if (lat && lon && ts && Date.now() - ts < 3600_000) {
+                    setAllFromCoords(lat, lon);
+                    return;
+                }
+            }
+        } catch { }
+
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(
+                pos => {
+                    const lat = pos.coords.latitude;
+                    const lon = pos.coords.longitude;
+                    localStorage.setItem("fs_cached_location", JSON.stringify({ lat, lon, ts: Date.now() }));
+                    setAllFromCoords(lat, lon);
+                },
+                () => setLoading(false),
+                { enableHighAccuracy: true, timeout: 8000 }
+            );
+        } else {
+            setLoading(false);
         }
-      }
-    } catch {}
+    }, [language]);
 
-    // Geolocation
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(
-        pos => {
-          const lat = pos.coords.latitude;
-          const lon = pos.coords.longitude;
-          localStorage.setItem("fs_cached_location", JSON.stringify({ lat, lon, ts: Date.now() }));
-          setAllFromCoords(lat, lon);
-        },
-        () => setLoading(false),
-        { enableHighAccuracy: true, timeout: 8000 }
-      );
-    } else {
-      setLoading(false);
-    }
-  }, [language]);
-
-  return { displayName, greeting, address, weather, loading };
+    return { displayName, greeting, address, weather, loading };
 }
