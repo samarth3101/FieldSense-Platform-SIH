@@ -9,16 +9,6 @@
   position: relative;
   overflow: hidden;
   
-  @media (min-width: 768px) {
-    padding-top: 3.5rem;
-    padding-bottom: 3.5rem;
-  }
-  
-  @media (min-width: 1024px) {
-    padding-top: 4rem;
-    padding-bottom: 4rem;
-  }
-  
   &::before {
     content: '';
     position: absolute;
@@ -38,17 +28,11 @@
   padding: 0 1rem;
   position: relative;
   z-index: 2;
-  
-  @media (min-width: 768px) {
-    padding: 0 1.5rem;
-  }
-  
-  @media (min-width: 1024px) {
-    padding: 0 2rem;
-  }
+  /* CRITICAL: Prevent horizontal overflow on mobile */
+  overflow-x: hidden;
 }
 
-// Header - Reduced spacing
+// Header
 .header {
   text-align: center;
   margin-bottom: 2.5rem;
@@ -59,10 +43,6 @@
   &.visible {
     opacity: 1;
     transform: translateY(0);
-  }
-  
-  @media (min-width: 768px) {
-    margin-bottom: 3rem;
   }
 }
 
@@ -92,15 +72,6 @@
   line-height: 1.2;
   color: #ffffff;
   margin-bottom: 1rem;
-  
-  @media (min-width: 768px) {
-    font-size: 2.5rem;
-    margin-bottom: 1.25rem;
-  }
-  
-  @media (min-width: 1024px) {
-    font-size: 3rem;
-  }
 }
 
 .highlight {
@@ -118,29 +89,26 @@
   color: #d1d5db;
   max-width: 700px;
   margin: 0 auto;
-  
-  @media (min-width: 768px) {
-    font-size: 1.125rem;
-    line-height: 1.7;
-  }
 }
 
-// Content Layout - Reduced spacing
+// Content Layout - Mobile First (Stacked)
 .content {
   display: grid;
+  grid-template-columns: 1fr; /* Mobile: Single column stack */
   gap: 2rem;
-  
-  @media (min-width: 1024px) {
-    grid-template-columns: 1fr 380px;
-    gap: 2.5rem;
-  }
+  /* CRITICAL: Prevent overflow */
+  width: 100%;
+  overflow: hidden;
 }
 
-// Code Section - Optimized spacing
+// Code Section - MOBILE FIXED
 .codeSection {
   opacity: 0;
   transform: translateY(40px);
   transition: all 0.8s ease-out 0.2s;
+  /* CRITICAL: Prevent overflow on mobile */
+  width: 100%;
+  min-width: 0; /* Allow shrinking */
   
   &.visible {
     opacity: 1;
@@ -157,12 +125,20 @@
   border-bottom: none;
   border-radius: 0.75rem 0.75rem 0 0;
   padding: 0.875rem 1.25rem;
+  /* MOBILE: Smaller padding */
+  @media (max-width: 767px) {
+    padding: 0.75rem 1rem;
+  }
 }
 
 .codeTitle {
   display: flex;
   align-items: center;
   gap: 0.875rem;
+  /* MOBILE: Smaller gap */
+  @media (max-width: 767px) {
+    gap: 0.5rem;
+  }
 }
 
 .language {
@@ -173,12 +149,21 @@
   font-size: 0.75rem;
   font-weight: 500;
   text-transform: uppercase;
+  /* MOBILE: Even smaller */
+  @media (max-width: 767px) {
+    font-size: 0.6875rem;
+    padding: 0.1875rem 0.5rem;
+  }
 }
 
 .filename {
   color: #d1d5db;
   font-size: 0.875rem;
   font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+  /* MOBILE: Hide filename on very small screens */
+  @media (max-width: 479px) {
+    display: none;
+  }
 }
 
 .copyBtn {
@@ -205,39 +190,79 @@
   height: 14px;
 }
 
+/* CRITICAL: Fixed code block for mobile */
 .codeBlock {
   background: rgba(0, 0, 0, 0.3);
   border: 1px solid rgba(255, 255, 255, 0.1);
   border-top: none;
-  overflow-x: auto;
+  border-radius: 0 0 0.75rem 0.75rem;
   font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+  /* MOBILE: Critical fixes */
+  width: 100%;
+  overflow-x: auto; /* Allow horizontal scroll */
+  overflow-y: hidden;
+  -webkit-overflow-scrolling: touch; /* Smooth scrolling on iOS */
+  
+  /* Custom scrollbar for better UX */
+  &::-webkit-scrollbar {
+    height: 6px;
+  }
+  
+  &::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 3px;
+  }
+  
+  &::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.3);
+    border-radius: 3px;
+    
+    &:hover {
+      background: rgba(255, 255, 255, 0.5);
+    }
+  }
 }
 
+/* CRITICAL: Fixed code content for mobile */
 .code {
   padding: 1.25rem;
   margin: 0;
   font-size: 0.8125rem;
   line-height: 1.6;
   color: #d1d5db;
-  white-space: pre;
-  overflow-x: auto;
+  white-space: pre; /* Preserve formatting - DO NOT USE pre-wrap */
+  width: max-content; /* Allow content to extend naturally */
+  min-width: 100%; /* Ensure full width usage */
+  display: block;
   
-  @media (min-width: 768px) {
-    padding: 1.5rem;
-    font-size: 0.875rem;
+  /* MOBILE: Smaller text and padding */
+  @media (max-width: 767px) {
+    font-size: 0.75rem;
+    padding: 1rem;
+    line-height: 1.5;
+  }
+  
+  /* VERY SMALL MOBILE: Even smaller */
+  @media (max-width: 479px) {
+    font-size: 0.6875rem;
+    padding: 0.875rem;
   }
 }
 
-// Endpoints - Reduced spacing
+// Endpoints - MOBILE FIXED
 .endpoints {
   margin-top: 1.5rem;
   background: rgba(255, 255, 255, 0.02);
   border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 0.75rem;
   padding: 1.25rem;
+  /* MOBILE: Prevent overflow */
+  width: 100%;
+  overflow: hidden;
   
-  @media (min-width: 768px) {
-    padding: 1.5rem;
+  @media (max-width: 767px) {
+    margin-top: 1.25rem;
+    padding: 1rem;
   }
 }
 
@@ -247,6 +272,10 @@
   font-weight: 600;
   color: #ffffff;
   margin-bottom: 0.875rem;
+  
+  @media (max-width: 767px) {
+    font-size: 0.9375rem;
+  }
 }
 
 .endpointsList {
@@ -262,6 +291,9 @@
   border-radius: 0.5rem;
   cursor: pointer;
   transition: all 0.2s ease;
+  /* MOBILE: Prevent overflow */
+  width: 100%;
+  overflow: hidden;
   
   &:hover,
   &.active {
@@ -275,6 +307,12 @@
   align-items: center;
   gap: 0.75rem;
   margin-bottom: 0.375rem;
+  /* MOBILE: Wrap if needed */
+  flex-wrap: wrap;
+  
+  @media (max-width: 479px) {
+    gap: 0.5rem;
+  }
 }
 
 .method {
@@ -283,6 +321,7 @@
   font-size: 0.625rem;
   font-weight: 700;
   text-transform: uppercase;
+  flex-shrink: 0; /* Don't shrink */
   
   &.post {
     background: rgba(16, 185, 129, 0.2);
@@ -299,18 +338,31 @@
   font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
   font-size: 0.8125rem;
   color: #d1d5db;
+  /* MOBILE: Allow wrapping for very long paths */
+  word-break: break-all;
+  
+  @media (max-width: 479px) {
+    font-size: 0.75rem;
+  }
 }
 
 .endpointDescription {
   color: #9ca3af;
   font-size: 0.8125rem;
+  
+  @media (max-width: 479px) {
+    font-size: 0.75rem;
+  }
 }
 
-// Info Section - Reduced spacing
+// Info Section
 .infoSection {
   opacity: 0;
   transform: translateY(40px);
   transition: all 0.8s ease-out 0.4s;
+  /* MOBILE: Prevent overflow */
+  width: 100%;
+  min-width: 0;
   
   &.visible {
     opacity: 1;
@@ -318,7 +370,7 @@
   }
 }
 
-// Features - Reduced from 4 to 3 features
+// Features
 .features {
   margin-bottom: 2rem;
 }
@@ -329,6 +381,10 @@
   font-weight: 600;
   color: #ffffff;
   margin-bottom: 1rem;
+  
+  @media (max-width: 767px) {
+    font-size: 1.125rem;
+  }
 }
 
 .featuresList {
@@ -343,8 +399,13 @@
   padding: 0.875rem;
   background: rgba(255, 255, 255, 0.03);
   border-radius: 0.75rem;
+  /* MOBILE: Smaller padding */
+  @media (max-width: 767px) {
+    padding: 0.75rem;
+    gap: 0.75rem;
+  }
   
-  // Color variants
+  // Color variants - PRESERVED EXACTLY
   &.blue .featureIcon {
     background: linear-gradient(135deg, #3b82f6, #60a5fa);
   }
@@ -367,15 +428,26 @@
   justify-content: center;
   flex-shrink: 0;
   
+  @media (max-width: 767px) {
+    width: 36px;
+    height: 36px;
+  }
+  
   .icon {
     width: 20px;
     height: 20px;
     color: #ffffff;
+    
+    @media (max-width: 767px) {
+      width: 18px;
+      height: 18px;
+    }
   }
 }
 
 .featureContent {
   flex: 1;
+  min-width: 0; /* Allow shrinking */
 }
 
 .featureTitle {
@@ -384,21 +456,33 @@
   font-weight: 600;
   color: #ffffff;
   margin-bottom: 0.25rem;
+  
+  @media (max-width: 767px) {
+    font-size: 0.875rem;
+  }
 }
 
 .featureDescription {
   color: #9ca3af;
   font-size: 0.8125rem;
   line-height: 1.5;
+  
+  @media (max-width: 767px) {
+    font-size: 0.75rem;
+  }
 }
 
-// API Key Section - Compact
+// API Key Section
 .apiKeySection {
   background: rgba(255, 255, 255, 0.05);
   border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 1rem;
   padding: 1.25rem;
   margin-bottom: 1.5rem;
+  
+  @media (max-width: 767px) {
+    padding: 1rem;
+  }
 }
 
 .apiKeyHeader {
@@ -420,12 +504,20 @@
   font-weight: 600;
   color: #ffffff;
   margin: 0;
+  
+  @media (max-width: 767px) {
+    font-size: 0.9375rem;
+  }
 }
 
 .apiKeyDescription {
   color: #9ca3af;
   font-size: 0.8125rem;
   margin: 0;
+  
+  @media (max-width: 767px) {
+    font-size: 0.75rem;
+  }
 }
 
 .keyPreview {
@@ -438,11 +530,21 @@
   padding: 0.75rem;
   font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
   margin-bottom: 1rem;
+  /* MOBILE: Prevent overflow */
+  overflow: hidden;
+  
+  @media (max-width: 767px) {
+    padding: 0.625rem;
+  }
 }
 
 .keyPrefix {
   color: #6b7280;
   font-size: 0.8125rem;
+  
+  @media (max-width: 767px) {
+    font-size: 0.75rem;
+  }
 }
 
 .keyValue {
@@ -450,6 +552,14 @@
   font-size: 0.8125rem;
   flex: 1;
   margin-left: 0.5rem;
+  /* MOBILE: Prevent overflow */
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  
+  @media (max-width: 767px) {
+    font-size: 0.75rem;
+  }
 }
 
 .keyStatus {
@@ -459,6 +569,11 @@
   border-radius: 0.25rem;
   font-size: 0.75rem;
   font-weight: 500;
+  flex-shrink: 0;
+  
+  @media (max-width: 767px) {
+    font-size: 0.6875rem;
+  }
 }
 
 .getKeyBtn {
@@ -490,7 +605,7 @@
   }
 }
 
-// Bottom Section - Compact stats and doc link
+// Bottom Section
 .bottomSection {
   display: flex;
   flex-direction: column;
@@ -501,6 +616,11 @@
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: 0.75rem;
+  
+  @media (max-width: 479px) {
+    grid-template-columns: 1fr;
+    gap: 0.5rem;
+  }
 }
 
 .stat {
@@ -508,6 +628,10 @@
   padding: 0.875rem 0.5rem;
   background: rgba(255, 255, 255, 0.03);
   border-radius: 0.75rem;
+  
+  @media (max-width: 767px) {
+    padding: 0.75rem 0.375rem;
+  }
 }
 
 .statValue {
@@ -518,6 +642,10 @@
   color: #F6C84C;
   line-height: 1;
   margin-bottom: 0.25rem;
+  
+  @media (max-width: 767px) {
+    font-size: 1.125rem;
+  }
 }
 
 .statLabel {
@@ -525,6 +653,10 @@
   font-size: 0.75rem;
   text-transform: uppercase;
   letter-spacing: 0.05em;
+  
+  @media (max-width: 767px) {
+    font-size: 0.6875rem;
+  }
 }
 
 .docBtn {
@@ -556,38 +688,266 @@
   }
 }
 
-// Mobile adjustments
-@media (max-width: 767px) {
+/* ===== COMPREHENSIVE RESPONSIVE BREAKPOINTS ===== */
+
+/* Extra Small Mobile (320px - 374px) */
+@media (max-width: 374px) {
+  .fpiSection {
+    padding-top: 2rem;
+    padding-bottom: 2rem;
+  }
+  
+  .container {
+    padding: 0 0.875rem;
+  }
+  
+  .title {
+    font-size: 1.5rem;
+    margin-bottom: 0.875rem;
+  }
+  
+  .subtitle {
+    font-size: 0.9375rem;
+  }
+  
   .content {
     gap: 1.5rem;
   }
   
+  .header {
+    margin-bottom: 2rem;
+  }
+}
+
+/* Small Mobile (375px - 479px) */
+@media (min-width: 375px) and (max-width: 479px) {
+  .title {
+    font-size: 1.625rem;
+  }
+  
+  .subtitle {
+    font-size: 0.9375rem;
+  }
+  
+  .content {
+    gap: 1.75rem;
+  }
+}
+
+/* Large Mobile (480px - 639px) */
+@media (min-width: 480px) and (max-width: 639px) {
+  .title {
+    font-size: 1.75rem;
+  }
+  
+  .subtitle {
+    font-size: 1rem;
+  }
+  
   .code {
-    font-size: 0.75rem;
-    padding: 1rem;
+    font-size: 0.8125rem;
   }
   
   .stats {
-    grid-template-columns: 1fr;
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* Small Tablet (640px - 767px) */
+@media (min-width: 640px) and (max-width: 767px) {
+  .content {
+    gap: 2rem;
   }
   
-  .feature {
-    padding: 0.75rem;
-    gap: 0.75rem;
+  .stats {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
   }
   
-  .featureIcon {
-    width: 36px;
-    height: 36px;
-    
-    .icon {
-      width: 18px;
-      height: 18px;
-    }
+  .statValue {
+    font-size: 1.5rem;
+  }
+  
+  .statLabel {
+    font-size: 0.8125rem;
+  }
+}
+
+/* Tablet Portrait (768px - 1023px) */
+@media (min-width: 768px) {
+  .fpiSection {
+    padding-top: 3.5rem;
+    padding-bottom: 3.5rem;
+  }
+  
+  .container {
+    padding: 0 1.5rem;
+  }
+  
+  .header {
+    margin-bottom: 3rem;
+  }
+  
+  .title {
+    font-size: 2.5rem;
+    margin-bottom: 1.25rem;
+  }
+  
+  .subtitle {
+    font-size: 1.125rem;
+    line-height: 1.7;
+  }
+  
+  .content {
+    gap: 2.5rem;
+  }
+  
+  .code {
+    padding: 1.5rem;
+    font-size: 0.875rem;
   }
   
   .endpoints {
-    margin-top: 1.25rem;
-    padding: 1rem;
+    padding: 1.5rem;
+  }
+  
+  .stats {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+  }
+  
+  .statValue {
+    font-size: 1.75rem;
+  }
+  
+  .statLabel {
+    font-size: 0.875rem;
+  }
+}
+
+/* Desktop (1024px+) - Two Column Layout */
+@media (min-width: 1024px) {
+  .fpiSection {
+    padding-top: 4rem;
+    padding-bottom: 4rem;
+  }
+  
+  .container {
+    padding: 0 2rem;
+  }
+  
+  .title {
+    font-size: 3rem;
+  }
+  
+  .content {
+    grid-template-columns: 1fr 380px; /* Two columns - code left, info right */
+    gap: 2.5rem;
+  }
+  
+  .stats {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.75rem;
+  }
+  
+  .statValue {
+    font-size: 1.25rem;
+  }
+}
+
+/* Large Desktop (1280px+) */
+@media (min-width: 1280px) {
+  .content {
+    grid-template-columns: 1fr 400px; /* Wider info column */
+    gap: 3rem;
+  }
+  
+  .stats {
+    gap: 1rem;
+  }
+  
+  .statValue {
+    font-size: 1.5rem;
+  }
+}
+
+/* Ultra Large Desktop (1440px+) */
+@media (min-width: 1440px) {
+  .container {
+    max-width: 1400px;
+    padding: 0 2.5rem;
+  }
+  
+  .content {
+    grid-template-columns: 1fr 420px;
+    gap: 3.5rem;
+  }
+  
+  .title {
+    font-size: 3.5rem;
+  }
+  
+  .subtitle {
+    font-size: 1.25rem;
+    max-width: 800px;
+  }
+}
+
+/* ===== ACCESSIBILITY & PERFORMANCE ===== */
+
+/* Reduced Motion Support */
+@media (prefers-reduced-motion: reduce) {
+  .header,
+  .codeSection,
+  .infoSection {
+    transition: none;
+    animation: none;
+  }
+  
+  .header,
+  .codeSection,
+  .infoSection {
+    opacity: 1;
+    transform: none;
+  }
+  
+  .getKeyBtn:hover,
+  .copyBtn:hover,
+  .docBtn:hover {
+    transform: none;
+  }
+}
+
+/* High Contrast Mode */
+@media (prefers-contrast: high) {
+  .codeBlock,
+  .keyPreview {
+    border-width: 2px;
+  }
+  
+  .endpoint,
+  .feature,
+  .apiKeySection {
+    border: 1px solid rgba(255, 255, 255, 0.2);
+  }
+}
+
+/* Touch Device Optimizations */
+@media (hover: none) and (pointer: coarse) {
+  .copyBtn,
+  .getKeyBtn,
+  .docBtn {
+    min-height: 44px; /* Minimum touch target */
+  }
+  
+  .endpoint {
+    min-height: 44px;
+    padding: 0.875rem;
+  }
+  
+  .getKeyBtn:hover,
+  .copyBtn:hover,
+  .docBtn:hover {
+    transform: none; /* Remove transform on touch devices */
   }
 }

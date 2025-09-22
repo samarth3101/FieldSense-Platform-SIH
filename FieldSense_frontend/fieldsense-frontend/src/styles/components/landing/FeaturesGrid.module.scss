@@ -63,11 +63,6 @@
     opacity: 1;
     transform: translateY(0);
   }
-  
-  @include mobile-only {
-    flex-wrap: wrap;
-    gap: $space-3;
-  }
 }
 
 .tab {
@@ -93,7 +88,7 @@
     box-shadow: $shadow-lg;
   }
   
-  // Color variants
+  // Color variants - PRESERVED EXACTLY
   &.green.active {
     background: linear-gradient(135deg, $primary-green, $green-400);
   }
@@ -109,11 +104,6 @@
   &.orange.active {
     background: linear-gradient(135deg, #f97316, #fb923c);
   }
-  
-  @include mobile-only {
-    flex: 1;
-    min-width: 120px;
-  }
 }
 
 .tabIcon {
@@ -126,9 +116,10 @@
   white-space: nowrap;
 }
 
-// Features Grid - Reduced Size
+// Features Grid - 4 Cards One Row for Desktop
 .featuresGrid {
   display: grid;
+  grid-template-columns: 1fr; /* Mobile: 1 column */
   gap: $space-6;
   opacity: 0;
   transform: translateY(40px);
@@ -137,16 +128,6 @@
   &.visible {
     opacity: 1;
     transform: translateY(0);
-  }
-  
-  @include tablet-up {
-    grid-template-columns: repeat(2, 1fr);
-    gap: $space-8;
-  }
-  
-  @include desktop-up {
-    grid-template-columns: repeat(2, 1fr);
-    gap: $space-10;
   }
 }
 
@@ -159,10 +140,6 @@
   animation: cardSlideUp 0.8s ease-out both;
   animation-delay: var(--delay);
   
-  @include tablet-up {
-    padding: $space-7;
-  }
-  
   &:hover {
     transform: translateY(-4px);
     box-shadow: $shadow-xl;
@@ -170,7 +147,7 @@
   }
 }
 
-// Smaller Icon without hover effects
+// Smaller Icon without hover effects - NO COLOR CHANGES
 .featureIcon {
   width: 50px;
   height: 50px;
@@ -179,33 +156,16 @@
   @include flex-center;
   margin-bottom: $space-5;
   
-  @include tablet-up {
-    width: 56px;
-    height: 56px;
-    margin-bottom: $space-6;
-  }
-  
   .icon {
     width: 26px;
     height: 26px;
     color: $white;
-    
-    @include tablet-up {
-      width: 28px;
-      height: 28px;
-    }
   }
-  
-  // Removed hover scale and rotate effects
 }
 
 .featureContent {
   flex: 1;
   margin-bottom: $space-5;
-  
-  @include tablet-up {
-    margin-bottom: $space-6;
-  }
 }
 
 .featureTitle {
@@ -213,10 +173,6 @@
   margin-bottom: $space-3;
   color: $gray-900;
   font-size: $text-lg;
-  
-  @include tablet-up {
-    font-size: $text-xl;
-  }
 }
 
 .featureDescription {
@@ -225,11 +181,6 @@
   margin-bottom: $space-4;
   font-size: $text-sm;
   line-height: 1.5;
-  
-  @include tablet-up {
-    font-size: $text-base;
-    line-height: 1.6;
-  }
 }
 
 .featureList {
@@ -259,10 +210,6 @@
   font-weight: $font-semibold;
   transition: all $transition-base;
   font-size: $text-sm;
-  
-  @include tablet-up {
-    font-size: $text-base;
-  }
   
   &:hover {
     color: $green-600;
@@ -296,14 +243,6 @@
     opacity: 1;
     transform: translateY(0);
   }
-  
-  @include tablet-up {
-    flex-direction: row;
-    justify-content: space-between;
-    text-align: left;
-    margin-top: $space-20;
-    padding: $space-12;
-  }
 }
 
 .ctaContent {
@@ -324,11 +263,6 @@
 .ctaActions {
   display: flex;
   gap: $space-4;
-  
-  @include mobile-only {
-    flex-direction: column;
-    width: 100%;
-  }
 }
 
 .primaryBtn {
@@ -353,8 +287,340 @@
   }
 }
 
-// Mobile adjustments - Further Reduced
-@include mobile-only {
+/* ===== RESPONSIVE BREAKPOINTS - 4 CARDS ONE ROW ===== */
+
+/* Extra Small Mobile (320px - 374px) */
+@media (max-width: 374px) {
+  .header {
+    margin-bottom: $space-12;
+  }
+  
+  .title {
+    font-size: 1.5rem;
+    margin-bottom: $space-3;
+  }
+  
+  .subtitle {
+    font-size: $text-sm;
+  }
+  
+  .tabs {
+    flex-wrap: wrap;
+    gap: $space-1;
+    margin-bottom: $space-12;
+  }
+  
+  .tab {
+    padding: $space-2 $space-4;
+    font-size: $text-xs;
+    flex: 1;
+    min-width: 100px;
+  }
+  
+  .tabIcon {
+    width: 14px;
+    height: 14px;
+    margin-right: $space-1;
+  }
+  
+  .featuresGrid {
+    gap: $space-4;
+  }
+  
+  .featureCard {
+    padding: $space-4;
+  }
+  
+  .featureIcon {
+    width: 44px;
+    height: 44px;
+    margin-bottom: $space-4;
+    
+    .icon {
+      width: 22px;
+      height: 22px;
+    }
+  }
+  
+  .featureContent {
+    margin-bottom: $space-4;
+  }
+  
+  .featureTitle {
+    font-size: $text-base;
+    margin-bottom: $space-2;
+  }
+  
+  .featureDescription {
+    font-size: $text-sm;
+    margin-bottom: $space-3;
+  }
+  
+  .featureCta {
+    font-size: $text-sm;
+  }
+  
+  .bottomCta {
+    padding: $space-6;
+    margin-top: $space-12;
+    gap: $space-6;
+  }
+  
+  .ctaActions {
+    flex-direction: column;
+    width: 100%;
+  }
+}
+
+/* Small Mobile (375px - 479px) */
+@media (min-width: 375px) and (max-width: 479px) {
+  .tabs {
+    flex-wrap: wrap;
+    gap: $space-2;
+  }
+  
+  .tab {
+    padding: $space-2 $space-5;
+    min-width: 110px;
+  }
+  
+  .featureCard {
+    padding: $space-5;
+  }
+  
+  .bottomCta {
+    padding: $space-8;
+  }
+  
+  .ctaActions {
+    flex-direction: column;
+    width: 100%;
+  }
+}
+
+/* Large Mobile (480px - 639px) */
+@media (min-width: 480px) and (max-width: 639px) {
+  .tabs {
+    flex-wrap: nowrap;
+    gap: $space-3;
+  }
+  
+  .tab {
+    flex: none;
+  }
+  
+  .ctaActions {
+    flex-direction: column;
+    width: 100%;
+  }
+}
+
+/* Small Tablet (640px - 767px) */
+@media (min-width: 640px) and (max-width: 767px) {
+  .featuresGrid {
+    grid-template-columns: repeat(2, 1fr); /* 2 columns */
+    gap: $space-6;
+  }
+  
+  .featureCard {
+    padding: $space-6;
+  }
+  
+  .featureIcon {
+    width: 48px;
+    height: 48px;
+    margin-bottom: $space-5;
+    
+    .icon {
+      width: 24px;
+      height: 24px;
+    }
+  }
+  
+  .ctaActions {
+    flex-direction: row;
+    gap: $space-4;
+  }
+}
+
+/* Tablet Portrait (768px - 1023px) */
+@media (min-width: 768px) and (max-width: 1023px) {
+  .featuresGrid {
+    grid-template-columns: repeat(2, 1fr); /* 2 columns */
+    gap: $space-8;
+  }
+  
+  .featureCard {
+    padding: $space-7;
+  }
+  
+  .featureIcon {
+    width: 50px;
+    height: 50px;
+    margin-bottom: $space-5;
+    
+    .icon {
+      width: 26px;
+      height: 26px;
+    }
+  }
+  
+  .featureTitle {
+    font-size: $text-lg;
+  }
+  
+  .featureDescription {
+    font-size: $text-base;
+    line-height: 1.6;
+  }
+  
+  .bottomCta {
+    flex-direction: row;
+    justify-content: space-between;
+    text-align: left;
+    margin-top: $space-20;
+    padding: $space-12;
+  }
+}
+
+/* Desktop (1024px+) - 4 CARDS IN ONE ROW */
+@media (min-width: 1024px) {
+  .featuresGrid {
+    grid-template-columns: repeat(4, 1fr); /* 4 CARDS ONE ROW */
+    gap: $space-8;
+  }
+  
+  .featureCard {
+    padding: $space-6;
+  }
+  
+  .featureIcon {
+    width: 56px;
+    height: 56px;
+    margin-bottom: $space-6;
+    
+    .icon {
+      width: 28px;
+      height: 28px;
+    }
+  }
+  
+  .featureTitle {
+    font-size: $text-xl;
+  }
+  
+  .featureDescription {
+    font-size: $text-base;
+  }
+  
+  .featureCta {
+    font-size: $text-base;
+  }
+  
+  .bottomCta {
+    flex-direction: row;
+    justify-content: space-between;
+    text-align: left;
+    margin-top: $space-20;
+    padding: $space-12;
+  }
+}
+
+/* Large Desktop (1280px+) - 4 CARDS ONE ROW */
+@media (min-width: 1280px) {
+  .featuresGrid {
+    grid-template-columns: repeat(4, 1fr); /* 4 CARDS ONE ROW */
+    gap: $space-10;
+  }
+  
+  .featureCard {
+    padding: $space-7;
+  }
+  
+  .featureIcon {
+    width: 60px;
+    height: 60px;
+    
+    .icon {
+      width: 30px;
+      height: 30px;
+    }
+  }
+}
+
+/* Ultra Large Desktop (1440px+) - 4 CARDS ONE ROW */
+@media (min-width: 1440px) {
+  .featuresGrid {
+    grid-template-columns: repeat(4, 1fr); /* 4 CARDS ONE ROW */
+    gap: $space-12;
+  }
+  
+  .featureCard {
+    padding: $space-8;
+  }
+}
+
+/* Landscape Orientation */
+@media (max-width: 1023px) and (orientation: landscape) {
+  .featuresGrid {
+    grid-template-columns: repeat(2, 1fr); /* 2 columns in landscape */
+    gap: $space-4;
+  }
+  
+  .featureCard {
+    padding: $space-4;
+  }
+  
+  .featureIcon {
+    width: 40px;
+    height: 40px;
+    margin-bottom: $space-3;
+    
+    .icon {
+      width: 20px;
+      height: 20px;
+    }
+  }
+  
+  .featureTitle {
+    font-size: $text-base;
+    margin-bottom: $space-2;
+  }
+  
+  .featureDescription {
+    font-size: $text-sm;
+    margin-bottom: $space-3;
+  }
+  
+  .bottomCta {
+    padding: $space-6;
+    margin-top: $space-8;
+    gap: $space-4;
+  }
+}
+
+/* Tab Scrolling for Small Screens */
+@media (max-width: 639px) {
+  .tabs {
+    overflow-x: auto;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    
+    &::-webkit-scrollbar {
+      display: none;
+    }
+    
+    scroll-snap-type: x mandatory;
+  }
+  
+  .tab {
+    scroll-snap-align: start;
+    flex-shrink: 0;
+  }
+}
+
+/* Mobile adjustments - PRESERVED ORIGINAL */
+@media (max-width: 1023px) {
   .featuresGrid {
     gap: $space-5;
   }
@@ -391,5 +657,51 @@
   .bottomCta {
     padding: $space-8;
     margin-top: $space-12;
+  }
+}
+
+/* ===== ACCESSIBILITY ===== */
+
+/* Reduced Motion */
+@media (prefers-reduced-motion: reduce) {
+  .header,
+  .tabs,
+  .featuresGrid,
+  .bottomCta,
+  .featureCard {
+    transition: none;
+    animation: none;
+  }
+  
+  .featureCard {
+    opacity: 1;
+    transform: none;
+  }
+  
+  .featureCard:hover,
+  .tab.active {
+    transform: none;
+  }
+}
+
+/* Touch Devices */
+@media (hover: none) and (pointer: coarse) {
+  .tab {
+    min-height: 44px;
+  }
+  
+  .featureCard:hover {
+    transform: translateY(-2px);
+  }
+}
+
+/* High Contrast */
+@media (prefers-contrast: high) {
+  .tab {
+    border-width: 3px;
+  }
+  
+  .featureCard {
+    border-width: 2px;
   }
 }

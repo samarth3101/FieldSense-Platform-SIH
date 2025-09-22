@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import { usePathname } from 'next/navigation';
 import Link from 'next/link';
-import { Menu, X, ChevronDown, Globe } from 'lucide-react';
+import { Menu, X, Download } from 'lucide-react';
 import AuthModal from '@/components/forms/AuthModal';
 import styles from './Navbar.module.scss';
 
@@ -11,8 +11,6 @@ const Navbar = () => {
   const pathname = usePathname();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
-  const [currentLang, setCurrentLang] = useState('EN');
-  const [showLangDropdown, setShowLangDropdown] = useState(false);
   const [showAuthModal, setShowAuthModal] = useState(false);
   const [activeSection, setActiveSection] = useState('home');
 
@@ -44,7 +42,6 @@ const Navbar = () => {
 
   useEffect(() => {
     setIsMobileMenuOpen(false);
-    setShowLangDropdown(false);
   }, [pathname]);
 
   const navigation = [
@@ -56,20 +53,18 @@ const Navbar = () => {
     { name: 'Contact', section: 'contact' },
   ];
 
-  const languages = [
-    { code: 'EN', name: 'English', flag: '🇺🇸' },
-    { code: 'HI', name: 'हिंदी', flag: '🇮🇳' },
-    { code: 'MR', name: 'मराठी', flag: '🇮🇳' },
-    { code: 'TE', name: 'తెలుగు', flag: '🇮🇳' },
-  ];
-
-  const handleLanguageChange = (langCode: string) => {
-    setCurrentLang(langCode);
-    setShowLangDropdown(false);
-  };
-
   const handleGetStartedClick = () => {
     setShowAuthModal(true);
+  };
+
+  // Handle Download App Click
+  const handleDownloadAppClick = () => {
+    const element = document.getElementById('mobile-app');
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth' });
+    } else {
+      alert('FieldSense mobile app coming soon! Download will be available shortly.');
+    }
   };
 
   const handleCloseAuthModal = () => {
@@ -128,35 +123,6 @@ const Navbar = () => {
 
           {/* Actions */}
           <div className={styles.actions}>
-            {/* Language Selector */}
-            <div className={styles.langSelector}>
-              <button 
-                className={styles.langButton}
-                onClick={() => setShowLangDropdown(!showLangDropdown)}
-                type="button"
-              >
-                <Globe size={16} />
-                <span>{currentLang}</span>
-                <ChevronDown size={14} className={showLangDropdown ? styles.rotated : ''} />
-              </button>
-              
-              {showLangDropdown && (
-                <div className={styles.langDropdown}>
-                  {languages.map((lang) => (
-                    <button
-                      key={lang.code}
-                      className={`${styles.langOption} ${currentLang === lang.code ? styles.active : ''}`}
-                      onClick={() => handleLanguageChange(lang.code)}
-                      type="button"
-                    >
-                      <span className={styles.flag}>{lang.flag}</span>
-                      <span>{lang.name}</span>
-                    </button>
-                  ))}
-                </div>
-              )}
-            </div>
-
             {/* Get Started Button */}
             <button 
               className={styles.getStartedBtn}
@@ -164,6 +130,16 @@ const Navbar = () => {
               type="button"
             >
               Get Started
+            </button>
+
+            {/* Download App Button - White Background, Green Text & Border, Capsule Shape */}
+            <button 
+              className={styles.downloadAppBtn}
+              onClick={handleDownloadAppClick}
+              type="button"
+            >
+              <Download size={16} />
+              <span>Download App</span>
             </button>
 
             {/* Mobile Menu Button */}
@@ -213,23 +189,19 @@ const Navbar = () => {
               >
                 Get Started
               </button>
-            </div>
 
-            <div className={styles.mobileLangSelector}>
-              <div className={styles.mobileLangTitle}>Language</div>
-              <div className={styles.mobileLangOptions}>
-                {languages.map((lang) => (
-                  <button
-                    key={lang.code}
-                    className={`${styles.mobileLangBtn} ${currentLang === lang.code ? styles.active : ''}`}
-                    onClick={() => handleLanguageChange(lang.code)}
-                    type="button"
-                  >
-                    <span className={styles.flag}>{lang.flag}</span>
-                    <span>{lang.name}</span>
-                  </button>
-                ))}
-              </div>
+              {/* Mobile Download App Button */}
+              <button 
+                className={styles.mobileDownloadApp}
+                onClick={() => {
+                  setIsMobileMenuOpen(false);
+                  handleDownloadAppClick();
+                }}
+                type="button"
+              >
+                <Download size={16} />
+                <span>Download App</span>
+              </button>
             </div>
           </div>
         </div>
