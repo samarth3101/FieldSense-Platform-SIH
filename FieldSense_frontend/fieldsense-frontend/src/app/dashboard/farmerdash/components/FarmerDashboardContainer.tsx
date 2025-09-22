@@ -393,9 +393,12 @@ const FarmerDashboardContainer = () => {
 
   const renderContent = () => {
     if (showProfile) {
-      return <ProfileSection farmerData={farmerData} onClose={() => setShowProfile(false)} />;
+      return (
+        <ProfileSection
+          onClose={() => setShowProfile(false)}
+        />
+      );
     }
-
     switch (activeTab) {
       case 'home':
         return (
@@ -403,9 +406,7 @@ const FarmerDashboardContainer = () => {
             onCaptureClick={() => setActiveTab('capture')}
             language={language as "hi" | "en"}
           />
-
         );
-
       case 'capture':
         return <CaptureSection onCaptureRequest={handleCaptureRequest} />;
       case 'krishimitra':
@@ -416,10 +417,10 @@ const FarmerDashboardContainer = () => {
             onCaptureClick={() => setActiveTab('capture')}
             language={language as "hi" | "en"}
           />
-
         );
     }
   };
+
 
   return (
     <div className={`${styles.dashboard} ${isLanguageChanging ? styles.fadeOut : styles.fadeIn}`}>
@@ -437,13 +438,13 @@ const FarmerDashboardContainer = () => {
         {renderContent()}
       </main>
 
-      {!showProfile && (
+      <div className={styles.bottomNavSticky}>
         <BottomNavigation
           activeTab={activeTab}
           onTabChange={setActiveTab}
           t={t}
         />
-      )}
+      </div>
 
       <NotificationPanel
         notifications={notifications}
