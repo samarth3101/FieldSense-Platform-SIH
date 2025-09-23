@@ -2,10 +2,8 @@
 
 import React, { useState, useEffect, useRef } from 'react';
 import { Send, Bot, Loader, Camera, Upload, X, ImageIcon, Leaf, MessageCircle, Sparkles, Mic } from 'lucide-react';
-import { GoogleGenerativeAI } from '@google/generative-ai';
 
-// Initialize Gemini AI
-const genAI = new GoogleGenerativeAI(process.env.NEXT_PUBLIC_GEMINI_API_KEY!);
+
 
 interface ChatMessage {
   role: 'user' | 'assistant';
@@ -221,68 +219,27 @@ const KrishiMitraAI: React.FC<KrishiMitraAIProps> = ({ language: propLanguage })
     setIsLoading(true);
 
     try {
-      const modelNames = ["gemini-1.5-flash", "gemini-1.5-pro", "gemini-1.0-pro"];
-      let model;
-      
-      for (const modelName of modelNames) {
-        try {
-          model = genAI.getGenerativeModel({ model: modelName });
-          break;
-        } catch (error) {
-          continue;
-        }
-      }
-      
-      if (!model) throw new Error('Model not available');
-
-      let parts: any[] = [];
-
+      let imagePayload: { data: string; mimeType: string } | null = null;
       if (currentImage) {
         const imageBase64 = await fileToBase64(currentImage);
         const base64Data = imageBase64.split(',')[1];
-
-        const prompt = language === 'hindi' 
-          ? `आप एक farming expert हैं। इस crop image को देखकर Hindi में बताएं:
-
-1. यह कौन सी फसल है?
-2. फसल की सेहत कैसी है?
-3. कोई बीमारी या कीड़े दिख रहे हैं?
-4. क्या करना चाहिए?
-
-केवल Hindi में जवाब दें:`
-          : `You are a farming expert. Analyze this crop image and respond in English only:
-
-1. What crop is this?
-2. What's the health condition?
-3. Any diseases or pests visible?
-4. What should be done?
-
-Respond only in English:`;
-
-        parts = [
-          { text: prompt },
-          { inlineData: { mimeType: currentImage.type, data: base64Data } }
-        ];
-      } else {
-        const prompt = language === 'hindi' 
-          ? `आप एक farming expert हैं। केवल Hindi में जवाब दें:
-
-सवाल: "${currentInput}"
-
-Hindi में खेती की सलाह दें:`
-          : `You are a farming expert. Respond only in English:
-
-Question: "${currentInput}"
-
-Provide farming advice in English:`;
-
-        parts = [{ text: prompt }];
+        imagePayload = { data: base64Data, mimeType: currentImage.type };
       }
 
-      const result = await model.generateContent(parts);
-      const response = await result.response;
-      const text = response.text();
+      const res = await fetch('/api/gemini', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          question: currentImage ? undefined : currentInput,
+          language,
+          image: imagePayload
+        })
+      });
 
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || 'Gemini API error');
+
+      const text = data.text as string;
       setChatMessages(prev => [...prev, {
         role: 'assistant',
         content: text || (language === 'hindi' ? 'माफ करें, मैं अभी जवाब नहीं दे पा रहा। फिर कोशिश करें।' : 'Sorry, I cannot respond right now. Please try again.'),
@@ -290,8 +247,8 @@ Provide farming advice in English:`;
         id: Date.now().toString()
       }]);
 
-    } catch (error) {
-      console.error('Error:', error);
+    } catch (error: any) {
+      console.error('Gemini error:', error);
       
       let fallbackResponse = "";
       
@@ -316,9 +273,12 @@ Provide farming advice in English:`;
         }
       }
       
+      const apiKeyInvalid = /API key missing|Invalid Gemini API key|API_KEY_INVALID/i.test(error?.message || '');
       setChatMessages(prev => [...prev, {
         role: 'assistant',
-        content: fallbackResponse + "\n\n(Demo response - API issue)",
+        content: fallbackResponse + (apiKeyInvalid
+          ? "\n\n(API key invalid or missing. Set GEMINI_API_KEY in .env.local on the server.)"
+          : "\n\n(Demo response - AI service issue)"),
         timestamp: new Date(),
         id: Date.now().toString()
       }]);

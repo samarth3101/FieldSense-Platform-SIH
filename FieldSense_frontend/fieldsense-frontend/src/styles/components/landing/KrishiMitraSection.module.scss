@@ -113,50 +113,21 @@
   }
 }
 
-// Features Grid - Mobile First Responsive
+// Features Grid - Slightly reduced spacing
 .featuresGrid {
   display: grid;
-  grid-template-columns: 1fr; /* Mobile: Single column */
   gap: 1rem;
   margin-bottom: 2.5rem;
   
-  /* Small Mobile (375px+) */
-  @media (min-width: 375px) {
-    gap: 1rem;
-  }
-  
-  /* Large Mobile (480px+) */
-  @media (min-width: 480px) {
-    gap: 1.125rem;
-  }
-  
-  /* Small Tablet (640px+) */
-  @media (min-width: 640px) {
-    grid-template-columns: repeat(2, 1fr); /* Two columns */
-    gap: 1.25rem;
-  }
-  
-  /* Tablet (768px+) */
   @media (min-width: 768px) {
-    grid-template-columns: repeat(2, 1fr); /* Two columns */
+    grid-template-columns: repeat(2, 1fr);
     gap: 1.25rem;
   }
   
-  /* Desktop (1024px+) */
   @media (min-width: 1024px) {
-    grid-template-columns: repeat(4, 1fr); /* Four columns */
+    grid-template-columns: repeat(4, 1fr);
     gap: 1.25rem;
     margin-bottom: 3rem;
-  }
-  
-  /* Large Desktop (1280px+) */
-  @media (min-width: 1280px) {
-    gap: 1.5rem;
-  }
-  
-  /* Ultra Large Desktop (1440px+) */
-  @media (min-width: 1440px) {
-    gap: 1.75rem;
   }
 }
 
@@ -181,7 +152,7 @@
     box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.15);
   }
   
-  // Color variants - PRESERVED EXACTLY
+  // Color variants
   &.green {
     &:hover, &.active {
       border-color: #2F9D46;
@@ -312,7 +283,7 @@
   }
 }
 
-// Bottom Section - Responsive
+// Bottom Section - Slightly reduced spacing
 .bottomSection {
   display: flex;
   flex-direction: column;
@@ -407,326 +378,7 @@
   }
 }
 
-/* ===== COMPREHENSIVE RESPONSIVE BREAKPOINTS ===== */
-
-/* Extra Small Mobile (320px - 374px) */
-@media (max-width: 374px) {
-  .krishiMitraSection {
-    padding-top: 2rem;
-    padding-bottom: 2rem;
-  }
-  
-  .container {
-    padding: 0 0.875rem;
-  }
-  
-  .title {
-    font-size: 1.5rem;
-    margin-bottom: 0.75rem;
-  }
-  
-  .description {
-    font-size: 0.9375rem;
-    padding: 0 0.5rem;
-  }
-  
-  .badge {
-    font-size: 0.8125rem;
-    padding: 0.375rem 0.875rem;
-    margin-bottom: 1rem;
-  }
-  
-  .badgeIcon {
-    width: 14px;
-    height: 14px;
-  }
-  
-  .featuresGrid {
-    gap: 0.875rem;
-    margin-bottom: 2rem;
-  }
-  
-  .featureCard {
-    padding: 1rem 0.875rem;
-  }
-  
-  .cardIcon {
-    width: 48px;
-    height: 48px;
-    margin-bottom: 0.75rem;
-    
-    .icon {
-      width: 24px;
-      height: 24px;
-    }
-  }
-  
-  .cardContent {
-    .cardTitle {
-      font-size: 0.9375rem;
-      margin-bottom: 0.375rem;
-    }
-    
-    .cardDescription {
-      font-size: 0.75rem;
-    }
-  }
-  
-  .stats {
-    gap: 1.25rem;
-  }
-  
-  .statValue {
-    font-size: 1.25rem;
-  }
-  
-  .statLabel {
-    font-size: 0.6875rem;
-  }
-  
-  .demoBtn {
-    padding: 0.75rem 1.5rem;
-    font-size: 0.9375rem;
-  }
-  
-  .playIcon {
-    width: 16px;
-    height: 16px;
-  }
-  
-  .bottomSection {
-    gap: 1.25rem;
-  }
-  
-  .header {
-    margin-bottom: 2rem;
-  }
-}
-
-/* Small Mobile (375px - 479px) */
-@media (min-width: 375px) and (max-width: 479px) {
-  .title {
-    font-size: 1.625rem;
-  }
-  
-  .featuresGrid {
-    gap: 0.9375rem;
-  }
-  
-  .cardIcon {
-    width: 50px;
-    height: 50px;
-    
-    .icon {
-      width: 25px;
-      height: 25px;
-    }
-  }
-}
-
-/* Large Mobile (480px - 639px) */
-@media (min-width: 480px) and (max-width: 639px) {
-  .title {
-    font-size: 1.75rem;
-  }
-  
-  .description {
-    font-size: 1rem;
-  }
-  
-  .featuresGrid {
-    gap: 1rem;
-  }
-  
-  .stats {
-    gap: 2rem;
-  }
-  
-  .statValue {
-    font-size: 1.75rem;
-  }
-}
-
-/* Landscape Orientation (Mobile/Tablet) */
-@media (max-width: 1023px) and (orientation: landscape) {
-  .krishiMitraSection {
-    padding-top: 1.5rem;
-    padding-bottom: 1.5rem;
-  }
-  
-  .title {
-    font-size: clamp(1.5rem, 4vw, 2rem);
-    margin-bottom: 0.75rem;
-  }
-  
-  .description {
-    font-size: clamp(0.875rem, 2.5vw, 1rem);
-  }
-  
-  .featuresGrid {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 1rem;
-    margin-bottom: 2rem;
-  }
-  
-  .featureCard {
-    padding: 1rem;
-  }
-  
-  .cardIcon {
-    width: 44px;
-    height: 44px;
-    margin-bottom: 0.625rem;
-    
-    .icon {
-      width: 22px;
-      height: 22px;
-    }
-  }
-  
-  .bottomSection {
-    gap: 1.5rem;
-  }
-  
-  .header {
-    margin-bottom: 1.5rem;
-  }
-}
-
-/* Ultra Large Desktop (1440px+) */
-@media (min-width: 1440px) {
-  .container {
-    max-width: 1400px;
-    padding: 0 2.5rem;
-  }
-  
-  .title {
-    font-size: 3.5rem;
-  }
-  
-  .description {
-    font-size: 1.25rem;
-    max-width: 800px;
-  }
-  
-  .featuresGrid {
-    gap: 2rem;
-    margin-bottom: 4rem;
-  }
-  
-  .featureCard {
-    padding: 2rem 1.5rem;
-  }
-  
-  .cardIcon {
-    width: 68px;
-    height: 68px;
-    
-    .icon {
-      width: 34px;
-      height: 34px;
-    }
-  }
-  
-  .cardContent {
-    .cardTitle {
-      font-size: 1.25rem;
-    }
-    
-    .cardDescription {
-      font-size: 1rem;
-    }
-  }
-  
-  .stats {
-    gap: 3rem;
-  }
-  
-  .statValue {
-    font-size: 2.5rem;
-  }
-  
-  .statLabel {
-    font-size: 1rem;
-  }
-  
-  .demoBtn {
-    padding: 1.25rem 2.5rem;
-    font-size: 1.25rem;
-  }
-  
-  .playIcon {
-    width: 22px;
-    height: 22px;
-  }
-}
-
-/* ===== ACCESSIBILITY & PERFORMANCE ===== */
-
-/* Reduced Motion Support */
-@media (prefers-reduced-motion: reduce) {
-  .content,
-  .featureCard {
-    transition: none;
-    animation: none;
-  }
-  
-  .featureCard:hover,
-  .featureCard.active {
-    transform: none;
-  }
-  
-  .demoBtn:hover {
-    transform: none;
-  }
-}
-
-/* High Contrast Mode */
-@media (prefers-contrast: high) {
-  .featureCard {
-    border-width: 3px;
-    box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.2);
-  }
-  
-  .badge {
-    border-width: 2px;
-  }
-}
-
-/* Touch Device Optimizations */
-@media (hover: none) and (pointer: coarse) {
-  .featureCard {
-    min-height: 44px; /* Minimum touch target */
-  }
-  
-  .featureCard:hover,
-  .featureCard.active {
-    transform: translateY(-2px) scale(1.01);
-  }
-  
-  .demoBtn {
-    min-height: 44px;
-  }
-}
-
-/* Print Styles */
-@media print {
-  .krishiMitraSection {
-    background: white !important;
-    page-break-inside: avoid;
-  }
-  
-  .featureCard {
-    box-shadow: none;
-    border: 1px solid #e5e7eb;
-  }
-  
-  .demoBtn {
-    background: #2F9D46 !important;
-  }
-}
-
-// Responsive Adjustments - PRESERVED ORIGINAL
+// Responsive Adjustments
 @media (max-width: 767px) {
   .title {
     font-size: 1.625rem;
