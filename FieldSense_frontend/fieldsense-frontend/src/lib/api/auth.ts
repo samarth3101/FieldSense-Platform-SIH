@@ -1,5 +1,9 @@
 // src/lib/api/auth.ts
 const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://127.0.0.1:8000";
+if (!process.env.NEXT_PUBLIC_API_URL && typeof window !== 'undefined') {
+  // eslint-disable-next-line no-console
+  console.warn('[AuthAPI] NEXT_PUBLIC_API_URL missing; defaulting to localhost. Mobile devices will fail unless overridden.');
+}
 
 export type Role = "farmer" | "researcher";
 

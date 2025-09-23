@@ -15,11 +15,20 @@ from FieldFusion.app.router import router as fusion_router
 app = FastAPI(title="FieldSense API")  # keep existing title/context; FieldFusion runs as a sub-router [web:59]
 
 # CORS
+import os
+
+# Allow local dev + LAN IP for mobile testing
+LAN_IP = os.getenv("LAN_IP", "172.20.10.7")  # fallback; override via env
+FRONTEND_ORIGIN = os.getenv("FRONTEND_ORIGIN")  # optional full origin override
+
 origins = [
     "http://localhost:3000",
     "http://127.0.0.1:3000",
+    f"http://{LAN_IP}:3000",
     "https://hoppscotch.io",
 ]
+if FRONTEND_ORIGIN and FRONTEND_ORIGIN not in origins:
+    origins.append(FRONTEND_ORIGIN)
 app.add_middleware(
     CORSMiddleware,
     allow_origins=origins,
@@ -159,11 +168,13 @@ def verify_email(token: str, request: Request, db: Session = Depends(get_db)):
     except Exception as e:
         print(f"Welcome email send error: {e}")
 
+    # Build redirect target based on provided origin (supports mobile LAN testing)
+    base_frontend = FRONTEND_ORIGIN or f"http://{LAN_IP}:3000"
     if effective_role == "researcher":
-        target = "http://localhost:3000/dashboard/researchdash"
+        target = f"{base_frontend}/dashboard/researchdash"
         role_label = "Researcher"; emoji = "🔬"
     else:
-        target = "http://localhost:3000/dashboard/farmerdash"
+        target = f"{base_frontend}/dashboard/farmerdash"
         role_label = "Farmer"; emoji = "🌾"
 
     html_content = f"""<!DOCTYPE html><html lang='en'><head><meta charset='UTF-8'/>
