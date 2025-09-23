@@ -283,14 +283,14 @@ const FeaturesGrid = () => {
               </p>
             </div>
             <div className={styles.ctaActions}>
-              <Link href="/auth?mode=register" className={styles.primaryBtn}>
+              {/* <Link href="" className={styles.primaryBtn}>
                 Get Started Free
-              </Link>
+              </Link> */}
               <button 
                 onClick={() => setShowContactModal(true)} 
                 className={styles.secondaryBtn}
               >
-                Contact Sales
+                Contact Us
               </button>
             </div>
           </div>
@@ -441,7 +441,7 @@ const FeaturesGrid = () => {
                     marginBottom: '0.75rem'
                   }}>Get detailed information</p>
                   <a 
-                    href="mailto:sales@fieldsense.com"
+                    href="mailto:samarth.patil3101@gmail.com"
                     style={{
                       display: 'inline-flex',
                       alignItems: 'center',
@@ -456,7 +456,7 @@ const FeaturesGrid = () => {
                     }}
                   >
                     <Mail size={14} />
-                    sales@fieldsense.com
+                    samarth.patil3101@gmail.com
                   </a>
                 </div>
               </div>
@@ -763,9 +763,9 @@ const FeaturesGrid = () => {
                   color: '#64748b',
                   margin: 0
                 }}>
-                  📞 Call us: <strong>+91 7058602811</strong> | 
-                  📧 Email: <strong>sales@fieldsense.com</strong> | 
-                  ⏰ Available Mon-Fri, 9 AM - 6 PM IST
+                  📞 Call us: <strong>+91 8766794922</strong> | 
+                  📧 Email: <strong>samarth.patil3101@gmail.com</strong> | 
+                  ⏰ Available 24*7
                 </p>
               </div>
             </div>
