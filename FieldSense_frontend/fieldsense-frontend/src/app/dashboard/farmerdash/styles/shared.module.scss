@@ -2881,3 +2881,597 @@
     page-break-inside: avoid;
   }
 }
+
+// ===========================================
+// MOBILE RESPONSIVE REPORT MODAL STYLES
+// ===========================================
+
+/* Extra Small Mobile (320px - 374px) - Report Modal */
+@media (max-width: 374px) {
+  .reportModal {
+    width: 100vw !important;
+    height: 100vh !important;
+    max-width: none !important;
+    max-height: none !important;
+    border-radius: 0 !important;
+    margin: 0 !important;
+  }
+  
+  .reportHeader {
+    padding: 1rem !important;
+    flex-wrap: wrap !important;
+    
+    .logoText {
+      font-size: 1rem !important;
+      
+      .aiTag {
+        font-size: 0.625rem !important;
+        padding: 0.125rem 0.25rem !important;
+      }
+    }
+  }
+  
+  .reportContent {
+    padding: 1rem 0.75rem !important;
+  }
+  
+  .reportSection {
+    padding: 1rem 0.75rem !important;
+    margin-bottom: 1.5rem !important;
+    border-radius: 0.75rem !important;
+    
+    h3 {
+      font-size: 1rem !important;
+      margin-bottom: 0.75rem !important;
+      
+      .sectionIcon {
+        width: 16px !important;
+        height: 16px !important;
+      }
+    }
+  }
+  
+  .reportTitle {
+    margin-bottom: 1.5rem !important;
+    
+    h2 {
+      font-size: 1.5rem !important;
+      line-height: 1.3 !important;
+    }
+  }
+  
+  .reportMeta {
+    gap: 1rem !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    font-size: 0.8125rem !important;
+  }
+  
+  .reportId {
+    font-size: 0.75rem !important;
+    padding: 3px 6px !important;
+  }
+  
+  .infoGrid {
+    grid-template-columns: 1fr !important;
+    gap: 0.75rem !important;
+  }
+  
+  .infoItem {
+    padding: 0.75rem !important;
+    font-size: 0.8125rem !important;
+    min-height: auto !important;
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    gap: 0.375rem !important;
+    
+    span {
+      word-break: break-word !important;
+    }
+  }
+  
+  .ndviCard {
+    padding: 1rem !important;
+    border-radius: 0.75rem !important;
+  }
+  
+  .ndviValue {
+    font-size: 1.75rem !important;
+  }
+  
+  .ndviDesc {
+    font-size: 0.875rem !important;
+  }
+  
+  .ndviDate {
+    font-size: 0.75rem !important;
+  }
+  
+  .weatherGrid {
+    grid-template-columns: 1fr !important;
+    gap: 0.75rem !important;
+  }
+  
+  .weatherCard {
+    padding: 0.875rem !important;
+    border-radius: 0.75rem !important;
+  }
+  
+  .weatherIcon {
+    width: 20px !important;
+    height: 20px !important;
+    margin-bottom: 6px !important;
+  }
+  
+  .weatherValue {
+    font-size: 1.25rem !important;
+  }
+  
+  .weatherLabel {
+    font-size: 0.8125rem !important;
+  }
+  
+  .riskGrid {
+    grid-template-columns: 1fr !important;
+    gap: 0.75rem !important;
+  }
+  
+  .riskCard {
+    padding: 0.875rem !important;
+    gap: 0.75rem !important;
+    border-radius: 0.75rem !important;
+  }
+  
+  .riskIconLow, .riskIconMedium, .riskIconHigh, .riskIconUnknown {
+    width: 20px !important;
+    height: 20px !important;
+    flex-shrink: 0 !important;
+  }
+  
+  .riskTitle {
+    font-size: 0.875rem !important;
+  }
+  
+  .riskLevel {
+    font-size: 0.8125rem !important;
+  }
+  
+  .insightsContainer {
+    padding: 1rem !important;
+    border-radius: 0.75rem !important;
+    
+    &::before {
+      font-size: 1.25rem !important;
+      top: 12px !important;
+      right: 12px !important;
+    }
+  }
+  
+  .insightItem {
+    gap: 8px !important;
+    margin-bottom: 8px !important;
+  }
+  
+  .insightText {
+    font-size: 0.8125rem !important;
+    line-height: 1.4 !important;
+  }
+  
+  .confidenceBar {
+    margin-top: 1rem !important;
+  }
+  
+  .confidenceLabel {
+    font-size: 0.8125rem !important;
+    margin-bottom: 6px !important;
+  }
+  
+  .confidenceTrack {
+    height: 6px !important;
+  }
+  
+  .driversList {
+    gap: 6px !important;
+    justify-content: center !important;
+  }
+  
+  .driverChip {
+    padding: 4px 8px !important;
+    font-size: 0.75rem !important;
+    border-radius: 16px !important;
+  }
+  
+  .reportFooter {
+    padding: 1rem 0.75rem !important;
+    border-radius: 0 !important;
+  }
+  
+  .reportActions {
+    flex-direction: column !important;
+    gap: 0.75rem !important;
+    margin-bottom: 1rem !important;
+  }
+  
+  .downloadBtn, .downloadBtnSecondary {
+    padding: 0.875rem 1.5rem !important;
+    font-size: 0.9375rem !important;
+    border-radius: 0.5rem !important;
+    gap: 0.5rem !important;
+    width: 100% !important;
+    
+    svg {
+      width: 16px !important;
+      height: 16px !important;
+    }
+  }
+  
+  .reportCredits {
+    font-size: 0.75rem !important;
+    line-height: 1.3 !important;
+    text-align: center !important;
+  }
+}
+
+/* Small Mobile (375px - 479px) - Report Modal */
+@media (min-width: 375px) and (max-width: 479px) {
+  .reportModal {
+    width: 98vw !important;
+    max-width: 98vw !important;
+    border-radius: 0.5rem !important;
+  }
+  
+  .reportHeader {
+    padding: 1.25rem !important;
+  }
+  
+  .reportContent {
+    padding: 1.25rem 1rem !important;
+  }
+  
+  .reportSection {
+    padding: 1.25rem 1rem !important;
+  }
+  
+  .reportTitle h2 {
+    font-size: 1.625rem !important;
+  }
+  
+  .infoItem {
+    flex-direction: row !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+  }
+  
+  .weatherGrid {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+  
+  .riskGrid {
+    grid-template-columns: 1fr !important;
+  }
+  
+  .reportActions {
+    flex-direction: row !important;
+    gap: 0.875rem !important;
+  }
+  
+  .downloadBtn, .downloadBtnSecondary {
+    flex: 1 !important;
+    padding: 1rem 1.25rem !important;
+    width: auto !important;
+  }
+}
+
+/* Large Mobile (480px - 639px) - Report Modal */
+@media (min-width: 480px) and (max-width: 639px) {
+  .reportModal {
+    width: 95vw !important;
+    max-width: 95vw !important;
+    border-radius: 1rem !important;
+  }
+  
+  .reportHeader {
+    padding: 1.5rem !important;
+  }
+  
+  .reportContent {
+    padding: 1.5rem !important;
+  }
+  
+  .reportSection {
+    padding: 1.5rem !important;
+  }
+  
+  .reportTitle h2 {
+    font-size: 1.75rem !important;
+  }
+  
+  .infoGrid {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+  
+  .weatherGrid {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+  
+  .riskGrid {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+  
+  .reportActions {
+    flex-direction: row !important;
+    justify-content: center !important;
+  }
+  
+  .downloadBtn, .downloadBtnSecondary {
+    min-width: 160px !important;
+  }
+}
+
+/* Small Tablet (640px - 767px) - Report Modal */
+@media (min-width: 640px) and (max-width: 767px) {
+  .reportModal {
+    width: 90vw !important;
+    max-width: 90vw !important;
+  }
+  
+  .infoGrid {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+  
+  .weatherGrid {
+    grid-template-columns: repeat(3, 1fr) !important;
+  }
+  
+  .riskGrid {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+  
+  .reportMeta {
+    flex-direction: row !important;
+    justify-content: center !important;
+  }
+}
+
+/* Medium Tablet (768px - 1023px) - Report Modal */
+@media (min-width: 768px) and (max-width: 1023px) {
+  .reportModal {
+    width: 85vw !important;
+    max-width: 800px !important;
+  }
+  
+  .weatherGrid {
+    grid-template-columns: repeat(3, 1fr) !important;
+  }
+  
+  .riskGrid {
+    grid-template-columns: repeat(3, 1fr) !important;
+  }
+  
+  .infoGrid {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+}
+
+/* Landscape Orientation (Mobile/Small Tablet) - Report Modal */
+@media (max-width: 1023px) and (orientation: landscape) {
+  .reportModal {
+    max-height: 95vh !important;
+    width: 90vw !important;
+    max-width: 900px !important;
+  }
+  
+  .reportHeader {
+    padding: 1rem 1.5rem !important;
+  }
+  
+  .reportContent {
+    padding: 1rem 1.5rem !important;
+  }
+  
+  .reportSection {
+    padding: 1rem 1.25rem !important;
+    margin-bottom: 1rem !important;
+  }
+  
+  .reportTitle {
+    margin-bottom: 1rem !important;
+    
+    h2 {
+      font-size: 1.5rem !important;
+    }
+  }
+  
+  .infoGrid {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+  
+  .weatherGrid {
+    grid-template-columns: repeat(3, 1fr) !important;
+  }
+  
+  .riskGrid {
+    grid-template-columns: repeat(3, 1fr) !important;
+  }
+  
+  .reportFooter {
+    padding: 1rem 1.5rem !important;
+  }
+  
+  .reportActions {
+    margin-bottom: 0.75rem !important;
+  }
+  
+  .insightsContainer {
+    padding: 1rem !important;
+  }
+}
+
+/* Very Small Height Screens */
+@media (max-height: 500px) and (max-width: 767px) {
+  .reportModal {
+    max-height: 98vh !important;
+    overflow-y: auto !important;
+  }
+  
+  .reportSection {
+    margin-bottom: 0.75rem !important;
+    padding: 0.875rem !important;
+  }
+  
+  .reportTitle {
+    margin-bottom: 1rem !important;
+    
+    h2 {
+      font-size: 1.25rem !important;
+    }
+  }
+  
+  .insightsContainer {
+    padding: 0.75rem !important;
+  }
+  
+  .reportFooter {
+    padding: 0.75rem !important;
+  }
+}
+
+/* Touch Device Optimizations */
+@media (hover: none) and (pointer: coarse) {
+  .closeBtn {
+    min-width: 44px !important;
+    min-height: 44px !important;
+    padding: 0.75rem !important;
+  }
+  
+  .downloadBtn, .downloadBtnSecondary {
+    min-height: 48px !important;
+    padding: 1rem 1.5rem !important;
+  }
+  
+  .reportModal {
+    -webkit-overflow-scrolling: touch !important;
+  }
+}
+
+/* High Contrast Mode (Layout Only) */
+@media (prefers-contrast: high) {
+  .reportModal {
+    border-width: 3px !important;
+  }
+  
+  .reportSection {
+    border-width: 2px !important;
+  }
+  
+  .downloadBtn, .downloadBtnSecondary {
+    border-width: 2px !important;
+  }
+}
+
+/* Reduced Motion Support */
+@media (prefers-reduced-motion: reduce) {
+  .reportModal {
+    animation: none !important;
+  }
+  
+  .ndviCard::before {
+    animation: none !important;
+  }
+  
+  .confidenceFill::after {
+    animation: none !important;
+  }
+}
+
+/* Print Styles for Report */
+@media print {
+  .modal {
+    position: static !important;
+    background: none !important;
+    backdrop-filter: none !important;
+    padding: 0 !important;
+  }
+  
+  .reportModal {
+    width: 100% !important;
+    max-width: none !important;
+    max-height: none !important;
+    box-shadow: none !important;
+    border-radius: 0 !important;
+    overflow: visible !important;
+  }
+  
+  .reportHeader .closeBtn {
+    display: none !important;
+  }
+  
+  .reportFooter .reportActions {
+    display: none !important;
+  }
+  
+  .reportContent {
+    padding: 0 !important;
+  }
+  
+  .reportSection {
+    break-inside: avoid !important;
+    page-break-inside: avoid !important;
+    margin-bottom: 1rem !important;
+  }
+  
+  .reportTitle {
+    text-align: left !important;
+  }
+}
+
+// ===========================================
+// UTILITY CLASSES FOR REPORT MODAL
+// ===========================================
+
+.reportModalScrollable {
+  -webkit-overflow-scrolling: touch !important;
+  overflow-y: auto !important;
+}
+
+.reportModalCompact {
+  .reportSection {
+    padding: 1rem !important;
+    margin-bottom: 1rem !important;
+  }
+  
+  .reportTitle h2 {
+    font-size: 1.25rem !important;
+  }
+  
+  .weatherCard, .riskCard {
+    padding: 0.75rem !important;
+  }
+}
+
+/* Specific fixes for very narrow screens */
+@media (max-width: 320px) {
+  .reportModal {
+    width: 100vw !important;
+    height: 100vh !important;
+    border-radius: 0 !important;
+  }
+  
+  .infoItem {
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    text-align: left !important;
+  }
+  
+  .weatherGrid, .riskGrid {
+    grid-template-columns: 1fr !important;
+  }
+  
+  .reportActions {
+    flex-direction: column !important;
+  }
+  
+  .downloadBtn, .downloadBtnSecondary {
+    width: 100% !important;
+  }
+}
