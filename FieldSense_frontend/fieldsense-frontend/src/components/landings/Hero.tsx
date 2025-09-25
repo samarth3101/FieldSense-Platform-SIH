@@ -292,10 +292,10 @@ const Hero = ({ onTryDemo }: HeroProps) => {
                 <span>Try Demo</span>
               </button>
               
-              <Link href="/fpi" className={styles.secondaryCta}>
-                <span>Access FPI</span>
-                <ArrowRight className={styles.ctaIcon} />
-              </Link>
+              {/* <Link href="/fpi" className={styles.secondaryCta}>
+                {/* <span>Access FPI</span> */}
+                {/* <ArrowRight className={styles.ctaIcon} /> */}
+              {/* </Link> */} 
             </div>
           </div>
 

@@ -9,10 +9,9 @@ from email_utils import send_verification_email, send_welcome_email
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, EmailStr
 
-# NEW: import FieldFusion router
 from FieldFusion.app.router import router as fusion_router
 
-app = FastAPI(title="FieldSense API")  # keep existing title/context; FieldFusion runs as a sub-router [web:59]
+app = FastAPI(title="FieldSense API") 
 
 # CORS
 import os

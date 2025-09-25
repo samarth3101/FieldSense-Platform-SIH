@@ -90,7 +90,7 @@ export default function Home() {
                 className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
                 aria-label="Close demo"
               >
-                ✕
+                
               </button>
             </div>
 
